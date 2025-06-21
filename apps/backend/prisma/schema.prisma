@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Game {
-  id Int @id
+  id Int @id @default(autoincrement())
 
   round Int @default(0)
 
@@ -23,25 +23,31 @@ model Game {
 }
 
 model Player {
-  id Int @id
+  id Int @id @default(autoincrement())
 
-  score Int
-  name  String
+  name String
 
+  gameId  Int
+  games   Game[]
+  guesses Guess[]
+}
+
+model Round {
+  id Int @id @default(autoincrement())
+
+  imageId Int
+  image   Image   @relation(fields: [imageId], references: [id])
   gameId  Int
   game    Game    @relation(fields: [gameId], references: [id])
   guesses Guess[]
 }
 
-model Round {
-  id Int @id
-
+model Image {
+  id         Int    @id @default(autoincrement())
   cordinates String
-  imageUrl   String
+  url        String
 
-  gameId  Int
-  game    Game    @relation(fields: [gameId], references: [id])
-  guesses Guess[]
+  Round Round[]
 }
 
 model Guess {
