@@ -1,4 +1,7 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { writeFileSync } from 'fs';
+import { mkdir } from 'fs/promises';
+import { request } from 'https';
 import { PrismaService } from 'nestjs-prisma';
 import { CreateImageDto } from './dto/create-image.dto';
 
@@ -10,12 +13,25 @@ export class ImagesService {
     const originLat = 46.90801;
     const originLon = 19.69256;
     const radius = 0.0115;
-    const lat = originLat + radius * Math.random();
-    const lon = originLon + radius * Math.random();
+    const lat = originLat + radius * (1 - Math.random() * 2);
+    const lon = originLon + radius * (1 - Math.random() * 2);
     const direction = Math.floor(Math.random() * 360);
     const pitch = Math.floor(Math.random() * 10);
     const fov = Math.floor(Math.random() * 20) + 10;
-    const url = `https://maps.googleapis.com/maps/api/streetview?return_error_code=true&size=1000x1000&location=${lat},${lon}&fov=${fov}&heading=${direction}&pitch=${pitch}&key=${process.env.key}`;
+    const downloadUrl = `https://maps.googleapis.com/maps/api/streetview?return_error_code=true&size=1000x1000&location=${lat},${lon}&fov=${fov}&heading=${direction}&pitch=${pitch}&key=${process.env.GOOGLE_STREET_VIEW_KEY}`;
+    const url = `./images/guessrimg${Date.now()}.jpg`;
+
+    request(downloadUrl, function (response) {
+      const data = [];
+
+      response.on('data', function (chunk) {
+        data.push(chunk);
+      });
+      mkdir('./images', { recursive: true });
+      response.on('end', function () {
+        writeFileSync(url, Buffer.concat(data));
+      });
+    }).end();
     try {
       return this.prisma.image.create({
         data: { ...createImageDto, url: url, cordinates: `${lat},${lon}` },
@@ -24,6 +40,18 @@ export class ImagesService {
       console.error(e);
       throw new BadRequestException('Could not create Image');
     }
+  }
+
+  async getImageUrl(id: number) {
+    const image = await this.prisma.image.findUnique({
+      where: { id },
+    });
+
+    if (!image) {
+      throw new NotFoundException(`Image with id ${id} not found`);
+    }
+
+    return image.url;
   }
 
   findAll() {

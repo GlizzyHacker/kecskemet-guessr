@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, StreamableFile } from '@nestjs/common';
+import { createReadStream } from 'fs';
 import { CreateImageDto } from './dto/create-image.dto';
 import { ImagesService } from './images.service';
 
@@ -17,8 +18,10 @@ export class ImagesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.imagesService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    const url = await this.imagesService.getImageUrl(id);
+    const file = createReadStream(url);
+    return new StreamableFile(file);
   }
 
   // @Patch(':id')
