@@ -5,7 +5,7 @@
       "name": "Debug backend",
       "cwd": "${workspaceFolder}/apps/backend",
       "runtimeArgs": ["run", "start:debug"],
-      "runtimeExecutable": "yarn",
+      "runtimeExecutable": "pnpm",
       "request": "launch",
       "skipFiles": ["<node_internals>/**"],
       "outputCapture": "std",
