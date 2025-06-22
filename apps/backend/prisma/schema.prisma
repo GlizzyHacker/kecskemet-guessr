@@ -16,7 +16,8 @@ datasource db {
 model Game {
   id Int @id @default(autoincrement())
 
-  round Int @default(0)
+  active Boolean @default(true)
+  round  Int     @default(0)
 
   players Player[]
   rounds  Round[]
@@ -27,7 +28,6 @@ model Player {
 
   name String
 
-  gameId  Int
   games   Game[]
   guesses Guess[]
 }
@@ -51,7 +51,7 @@ model Image {
 }
 
 model Guess {
-  id Int @id
+  id Int @id @default(autoincrement())
 
   cordinates String
 

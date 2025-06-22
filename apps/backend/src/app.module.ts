@@ -3,10 +3,21 @@ import { PrismaModule } from 'nestjs-prisma';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { GamesModule } from './games/games.module';
+import { GuessesModule } from './guesses/guesses.module';
 import { ImagesModule } from './images/images.module';
+import { PlayersModule } from './players/players.module';
+import { RoundsModule } from './rounds/rounds.module';
 
 @Module({
-  imports: [PrismaModule.forRoot({ isGlobal: true }), ImagesModule],
+  imports: [
+    PrismaModule.forRoot({ isGlobal: true }),
+    ImagesModule,
+    RoundsModule,
+    GamesModule,
+    GuessesModule,
+    PlayersModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
