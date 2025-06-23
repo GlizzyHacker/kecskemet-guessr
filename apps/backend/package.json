@@ -2,7 +2,7 @@
   "name": "@next-nest-template/backend",
   "version": "0.0.0",
   "description": "NestJS backend for NestJS + Next.js template",
-  "author": "Kir-Dev",
+  "author": "Attila Sax",
   "private": true,
   "license": "MIT",
   "scripts": {
