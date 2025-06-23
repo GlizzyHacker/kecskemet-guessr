@@ -2,7 +2,7 @@
   "name": "@next-nest-template/frontend",
   "version": "0.0.0",
   "description": "NextJS frontend for NestJS + Next.js template",
-  "author": "Kir-Dev",
+  "author": "Attila Sax",
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -12,12 +12,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "-": "^0.0.1",
+    "@types/leaflet": "^1.9.18",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "leaflet": "^1.9.4",
+    "leaflet-defaulticon-compatibility": "^0.1.2",
     "lucide-react": "^0.484.0",
     "next": "15.2.4",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-leaflet": "^5.0.0",
+    "save": "^2.9.0",
+    "socket.io-client": "^4.8.1",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7"
   },

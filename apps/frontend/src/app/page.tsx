@@ -1,9 +1,9 @@
-import { HelloWorld } from '@/components/hello-world';
+import Create from '@/components/create';
 
 export default function Home() {
   return (
     <main className='flex items-center justify-center'>
-      <HelloWorld className='mt-10' />
+      <Create />
     </main>
   );
 }
