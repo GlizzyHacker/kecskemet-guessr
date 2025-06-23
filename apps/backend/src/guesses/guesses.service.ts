@@ -13,7 +13,7 @@ export class GuessesService {
       });
     } catch (e) {
       console.error(e);
-      throw new BadRequestException('Could not create board');
+      throw new BadRequestException('Could not create Guess');
     }
   }
 

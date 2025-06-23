@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { writeFileSync } from 'fs';
-import { mkdir } from 'fs/promises';
+import { mkdir, writeFile } from 'fs/promises';
 import { request } from 'https';
 import { PrismaService } from 'nestjs-prisma';
 import { CreateImageDto } from './dto/create-image.dto';
@@ -9,7 +8,22 @@ import { CreateImageDto } from './dto/create-image.dto';
 export class ImagesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createImageDto: CreateImageDto) {
+  async getImage(url: string): Promise<Buffer> {
+    return new Promise((resolve) => {
+      request(url, async function (response) {
+        const data = [];
+
+        response.on('data', function (chunk) {
+          data.push(chunk);
+        });
+        response.on('end', async function () {
+          resolve(Buffer.concat(data));
+        });
+      }).end();
+    });
+  }
+
+  async create(createImageDto: CreateImageDto) {
     const originLat = 46.90801;
     const originLon = 19.69256;
     const radius = 0.0115;
@@ -20,20 +34,11 @@ export class ImagesService {
     const fov = Math.floor(Math.random() * 20) + 10;
     const downloadUrl = `https://maps.googleapis.com/maps/api/streetview?return_error_code=true&size=1000x1000&location=${lat},${lon}&fov=${fov}&heading=${direction}&pitch=${pitch}&key=${process.env.GOOGLE_STREET_VIEW_KEY}`;
     const url = `./images/guessrimg${Date.now()}.jpg`;
-
-    request(downloadUrl, function (response) {
-      const data = [];
-
-      response.on('data', function (chunk) {
-        data.push(chunk);
-      });
-      mkdir('./images', { recursive: true });
-      response.on('end', function () {
-        writeFileSync(url, Buffer.concat(data));
-      });
-    }).end();
+    const data = await this.getImage(downloadUrl);
+    await mkdir('./images', { recursive: true });
+    await writeFile(url, data);
     try {
-      return this.prisma.image.create({
+      return await this.prisma.image.create({
         data: { ...createImageDto, url: url, cordinates: `${lat},${lon}` },
       });
     } catch (e) {

@@ -8,8 +8,8 @@ export class ImagesController {
   constructor(private readonly imagesService: ImagesService) {}
 
   @Post()
-  create(@Body() createImageDto: CreateImageDto) {
-    return this.imagesService.create(createImageDto);
+  async create(@Body() createImageDto: CreateImageDto) {
+    return await this.imagesService.create(createImageDto);
   }
 
   @Get()
@@ -21,7 +21,7 @@ export class ImagesController {
   async findOne(@Param('id', ParseIntPipe) id: number) {
     const url = await this.imagesService.getImageUrl(id);
     const file = createReadStream(url);
-    return new StreamableFile(file);
+    return new StreamableFile(file, { type: 'image/jpeg' });
   }
 
   // @Patch(':id')

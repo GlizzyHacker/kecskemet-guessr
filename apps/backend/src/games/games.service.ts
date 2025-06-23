@@ -58,7 +58,7 @@ export class GamesService {
       return await this.prisma.game.update({
         where: { id },
         include: { players: true, rounds: true },
-        data: { round: { increment: 1 }, rounds: {} },
+        data: { round: { increment: 1 }, rounds: { connect: round } },
       });
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
