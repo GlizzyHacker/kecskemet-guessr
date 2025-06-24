@@ -7,11 +7,14 @@ class Game {
   id: number = 0;
   active: boolean = true;
   round: number = 0;
+  players: Array<any> = [];
+  rounds: Array<any> = [];
 }
 
 class Round {
   id: number = 0;
   imageId: number = 0;
+  guesses: Array<any> = [];
 }
 
 const Map = dynamic(() => import('@/components/map'), {
@@ -19,16 +22,18 @@ const Map = dynamic(() => import('@/components/map'), {
   ssr: false,
 });
 
-export default function Play({ game }) {
+export default function Play({ inital, playerId }) {
+  console.log(inital);
   const [guess, setGuess] = useState(null);
-  const [location, setLocation] = useState(null);
-  const [round, setRound] = useState<Round | null>(null);
+  const [locked, setLocked] = useState(false);
+  const [location, setLocation] = useState<any>(null);
+  const [game, setGame] = useState<Game>(inital);
+  const [answer, setAnswer] = useState<Round | null>(null);
   const [isConnected, setIsConnected] = useState(false);
-  const [transport, setTransport] = useState('N/A');
 
   useEffect(() => {
     console.log('connecting');
-    socket.auth = { game: game.id, name: 'test' };
+    socket.auth = { game: inital.id, playerId: playerId };
     socket.connect();
     if (socket.connected) {
       onConnect();
@@ -36,16 +41,10 @@ export default function Play({ game }) {
 
     function onConnect() {
       setIsConnected(true);
-      setTransport(socket.io.engine.transport.name);
-
-      socket.io.engine.on('upgrade', (transport) => {
-        setTransport(transport.name);
-      });
     }
 
     function onDisconnect() {
       setIsConnected(false);
-      setTransport('N/A');
     }
 
     socket.on('connect', onConnect);
@@ -61,40 +60,64 @@ export default function Play({ game }) {
     };
   }, []);
 
-  function onTurn(val: Round) {
+  function onTurn(val: Game) {
     console.log(val);
-    setRound(val);
+    setLocation(null);
+    setGame(val);
+    setAnswer(null);
+    setLocked(false);
   }
   function onGuess(val) {
     console.log(val);
-    const rawLatLng = val.cordinates.split(',');
-    const latLng = { lat: Number(rawLatLng[0]), lng: Number(rawLatLng[1]) };
-    setLocation(latLng);
+    setAnswer(val);
+    setLocation(parseCordinates(val.image.cordinates));
   }
 
   function handleNext() {
     socket.emit('turn', { gameId: game.id });
-    setLocation(null);
   }
   function handleGuess() {
     socket.emit('guess', {
       gameId: game.id,
-      guess: { cordinates: `${guess?.lat ?? 0},${guess?.lng ?? 0}`, roundId: round?.id, playerId: 1 },
+      guess: {
+        cordinates: `${guess?.lat ?? 0},${guess?.lng ?? 0}`,
+        roundId: game.rounds[game.round - 1].id,
+        playerId: playerId,
+      },
     });
+    setLocked(true);
   }
 
   return (
     <div>
+      <p>Game id: {game.id}</p>
+      <p>Round: {game.round}</p>
       <p>Status: {isConnected ? 'connected' : 'disconnected'}</p>
-      <p>Transport: {transport}</p>
+      <p>Players:</p>
+      <ul>{game?.players?.map((e) => <li key={e.id}>{e.name}</li>)}</ul>
       <button onClick={handleNext}>Next</button>
-      {round == null ? null : (
+      {game.round == 0 ? null : (
         <>
-          <img src={`http://localhost:3001/images/${round.imageId}`} />
-          <Map onMapClick={(e: LatLng) => setGuess(e)} guess={guess} location={location} />
+          <img src={`https://3pcdhvbt-3001.euw.devtunnels.ms/images/${game.rounds[game.round - 1].imageId}`} />
+          <Map
+            onMapClick={(e: LatLng) => (locked ? null : setGuess(e))}
+            guess={guess}
+            guesses={answer?.guesses?.map((e) => {
+              return {
+                player: game.players.find((p) => p.id == e.playerId),
+                latLng: parseCordinates(e.cordinates),
+              };
+            })}
+            location={location}
+          />
         </>
       )}
-      <button onClick={handleGuess}>Guess</button>
+      {guess == null || locked ? null : <button onClick={handleGuess}>Guess</button>}
     </div>
   );
+}
+function parseCordinates(val: string) {
+  const rawLatLng = val.split(',');
+  const latLng = { lat: Number(rawLatLng[0]), lng: Number(rawLatLng[1]) };
+  return latLng;
 }

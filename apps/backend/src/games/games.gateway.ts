@@ -33,11 +33,12 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   async handleConnection(client) {
     const gameId = client.handshake.auth.game;
-    const name = client.handshake.auth.name;
-    const player = await this.playersService.create({ name: name });
+    const playerId = client.handshake.auth.playerId;
+    const player = await this.playersService.findOne(playerId);
     this.playerToClient.set(player.id, client.id);
     //TODO: TURN INTO DTO
-    this.gamesService.addPlayer(gameId, player);
+    const game = await this.gamesService.addPlayer(gameId, player);
+    this.sendToAllInGame(game, 'turn', game);
   }
 
   handleDisconnect(client) {
@@ -56,29 +57,23 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const game = await this.gamesService.findOne(id);
     const round = await this.roundsService.findOne(game.rounds[game.round - 1].id);
     const guess = await this.guessService.create({ ...createGuessDto, roundId: round.id });
-    this.roundsService.addGuess(round.id, guess);
-    const image = await this.imageService.findOne(round.imageId);
-    if (round.guesses.length + 1 >= game.players.length) {
-      for (let index = 0; index < game.players.length; index++) {
-        const player = game.players[index];
-        try {
-          const socket = this.server.sockets.sockets.get(this.playerToClient.get(player.id));
-          socket.emit('guess', image);
-        } catch (e) {
-          console.log(e);
-        }
-      }
+    const roundNew = await this.roundsService.addGuess(round.id, guess);
+    if (roundNew.guesses.length >= game.players.length) {
+      this.sendToAllInGame(game, 'guess', roundNew);
     }
   }
 
   @SubscribeMessage('turn')
   async handleTurn(@MessageBody('gameId') gameId: number) {
     const game = await this.gamesService.nextRound(gameId);
+    this.sendToAllInGame(game, 'turn', game);
+  }
+  async sendToAllInGame(game, name: string, data) {
     for (let index = 0; index < game.players.length; index++) {
       const player = game.players[index];
       try {
         const socket = this.server.sockets.sockets.get(this.playerToClient.get(player.id));
-        socket.emit('turn', game.rounds[game.round - 1]);
+        await socket.emit(name, data);
       } catch (e) {
         console.log(e);
       }

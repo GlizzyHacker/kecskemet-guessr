@@ -11,6 +11,10 @@ async function bootstrap(): Promise<void> {
   const documentFactory = (): OpenAPIObject => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 
+  app.enableCors({
+    allowedHeaders: '*',
+    origin: '*',
+  });
   app.use(
     '/scalar',
     apiReference({
@@ -19,8 +23,6 @@ async function bootstrap(): Promise<void> {
       },
     })
   );
-
-  app.enableCors();
   await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();

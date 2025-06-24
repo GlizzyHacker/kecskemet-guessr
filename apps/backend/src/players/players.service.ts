@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
@@ -14,7 +14,7 @@ export class PlayersService {
       });
     } catch (e) {
       console.error(e);
-      throw new BadRequestException('Could not create board');
+      throw new BadRequestException('Could not create player');
     }
   }
 
@@ -22,8 +22,16 @@ export class PlayersService {
     return `This action returns all players`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} player`;
+  async findOne(id: number) {
+    const player = await this.prisma.player.findUnique({
+      where: { id },
+    });
+
+    if (!player) {
+      throw new NotFoundException(`Player with id ${id} not found`);
+    }
+
+    return player;
   }
 
   update(id: number, updatePlayerDto: UpdatePlayerDto) {

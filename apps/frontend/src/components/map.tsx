@@ -4,7 +4,7 @@ import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
 
-export default function Map({ location, guess, onMapClick }) {
+export default function Map({ location, guess, onMapClick, guesses }) {
   return (
     <MapContainer
       center={[46.90801, 19.69256]}
@@ -22,6 +22,11 @@ export default function Map({ location, guess, onMapClick }) {
           <Popup>Image Location</Popup>
         </Marker>
       )}
+      {guesses?.map((e) => (
+        <Marker position={[e.latLng.lat, e.latLng.lng]}>
+          <Popup>{e.player.name}'s Guess</Popup>
+        </Marker>
+      ))}
     </MapContainer>
   );
 }
@@ -36,7 +41,7 @@ export function GuessMarker({ onMapClick, guess }) {
     <>
       {guess == null ? null : (
         <Marker position={[guess.lat, guess.lng]}>
-          <Popup>Guess</Popup>
+          <Popup>My guess</Popup>
         </Marker>
       )}
     </>

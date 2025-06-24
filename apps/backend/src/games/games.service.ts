@@ -27,6 +27,7 @@ export class GamesService {
       return await this.prisma.game.update({
         where: { id },
         data: { players: { connect: player } },
+        include: { players: true, rounds: true },
       });
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -35,7 +36,7 @@ export class GamesService {
         }
       }
       console.error(e);
-      throw new BadRequestException(`Could not update board with id ${id}`);
+      throw new BadRequestException(`Could not update game with id ${id}`);
     }
   }
 

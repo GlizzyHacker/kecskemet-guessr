@@ -31,7 +31,7 @@ export class ImagesService {
     const lon = originLon + radius * (1 - Math.random() * 2);
     const direction = Math.floor(Math.random() * 360);
     const pitch = Math.floor(Math.random() * 10);
-    const fov = Math.floor(Math.random() * 20) + 10;
+    const fov = Math.floor(Math.random() * 30) + 20;
     const downloadUrl = `https://maps.googleapis.com/maps/api/streetview?return_error_code=true&size=1000x1000&location=${lat},${lon}&fov=${fov}&heading=${direction}&pitch=${pitch}&key=${process.env.GOOGLE_STREET_VIEW_KEY}`;
     const url = `./images/guessrimg${Date.now()}.jpg`;
     const data = await this.getImage(downloadUrl);

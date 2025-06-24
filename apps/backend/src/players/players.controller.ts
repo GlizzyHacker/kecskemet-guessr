@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { PlayersService } from './players.service';
@@ -8,8 +9,10 @@ export class PlayersController {
   constructor(private readonly playersService: PlayersService) {}
 
   @Post()
-  async create(@Body() createPlayerDto: CreatePlayerDto) {
-    return await this.playersService.create(createPlayerDto);
+  async create(@Body() createPlayerDto: CreatePlayerDto, @Res({ passthrough: true }) response: Response) {
+    const player = await this.playersService.create(createPlayerDto);
+    response.cookie('playerId', player.id);
+    return player;
   }
 
   @Get()

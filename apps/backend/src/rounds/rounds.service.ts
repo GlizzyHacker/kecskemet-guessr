@@ -46,6 +46,7 @@ export class RoundsService {
       return await this.prisma.round.update({
         where: { id },
         data: { guesses: { connect: guess } },
+        include: { guesses: true, image: true },
       });
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
