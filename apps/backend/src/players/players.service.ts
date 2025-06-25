@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { CreatePlayerDto } from './dto/create-player.dto';
-import { UpdatePlayerDto } from './dto/update-player.dto';
 
 @Injectable()
 export class PlayersService {
@@ -18,10 +17,6 @@ export class PlayersService {
     }
   }
 
-  findAll() {
-    return `This action returns all players`;
-  }
-
   async findOne(id: number) {
     const player = await this.prisma.player.findUnique({
       where: { id },
@@ -32,13 +27,5 @@ export class PlayersService {
     }
 
     return player;
-  }
-
-  update(id: number, updatePlayerDto: UpdatePlayerDto) {
-    return `This action updates a #${id} player`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} player`;
   }
 }

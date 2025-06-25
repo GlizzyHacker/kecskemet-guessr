@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { Player, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 import { RoundsService } from 'src/rounds/rounds.service';
 import { CreateGameDto } from './dto/create-game.dto';
@@ -18,32 +18,14 @@ export class GamesService {
       });
     } catch (e) {
       console.error(e);
-      throw new BadRequestException('Could not create Image');
-    }
-  }
-
-  async addPlayer(id: number, player: Player) {
-    try {
-      return await this.prisma.game.update({
-        where: { id },
-        data: { players: { connect: player } },
-        include: { players: true, rounds: true },
-      });
-    } catch (e) {
-      if (e instanceof Prisma.PrismaClientKnownRequestError) {
-        if (e.code === 'P2025') {
-          throw new NotFoundException(`Game with id ${id} not found`);
-        }
-      }
-      console.error(e);
-      throw new BadRequestException(`Could not update game with id ${id}`);
+      throw new BadRequestException('Could not create Game');
     }
   }
 
   async findOne(id: number) {
     const game = await this.prisma.game.findUnique({
       where: { id },
-      include: { rounds: true, players: true },
+      include: { rounds: true, members: { include: { guesses: true, player: true } } },
     });
 
     if (!game) {
@@ -58,7 +40,7 @@ export class GamesService {
     try {
       return await this.prisma.game.update({
         where: { id },
-        include: { players: true, rounds: true },
+        include: { members: true, rounds: true },
         data: { round: { increment: 1 }, rounds: { connect: round } },
       });
     } catch (e) {
@@ -71,6 +53,4 @@ export class GamesService {
       throw new BadRequestException(`Could not update game with id ${id}`);
     }
   }
-
-  remove(id: number) {}
 }

@@ -23,8 +23,10 @@ export default function Map({ location, guess, onMapClick, guesses }) {
         </Marker>
       )}
       {guesses?.map((e) => (
-        <Marker position={[e.latLng.lat, e.latLng.lng]}>
-          <Popup>{e.player.name}'s Guess</Popup>
+        <Marker key={e.player.id} position={[e.latLng.lat, e.latLng.lng]}>
+          <Popup>
+            {e.player.name}'s Guess score:{e.score}
+          </Popup>
         </Marker>
       ))}
     </MapContainer>

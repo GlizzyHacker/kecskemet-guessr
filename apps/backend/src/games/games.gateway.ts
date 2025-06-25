@@ -6,9 +6,8 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { CreateGuessDto } from 'src/guesses/dto/create-guess.dto';
 import { GuessesService } from 'src/guesses/guesses.service';
-import { ImagesService } from 'src/images/images.service';
+import { MembersService } from 'src/members/members.service';
 import { PlayersService } from 'src/players/players.service';
 import { RoundsService } from 'src/rounds/rounds.service';
 import { GamesService } from './games.service';
@@ -25,58 +24,110 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly gamesService: GamesService,
     private readonly guessService: GuessesService,
     private readonly roundsService: RoundsService,
-    private readonly imageService: ImagesService,
-    private readonly playersService: PlayersService
+    private readonly playersService: PlayersService,
+    private readonly membersService: MembersService
   ) {}
 
-  playerToClient = new Map();
+  memberToClient = new Map();
 
   async handleConnection(client) {
     const gameId = client.handshake.auth.game;
     const playerId = client.handshake.auth.playerId;
-    const player = await this.playersService.findOne(playerId);
-    this.playerToClient.set(player.id, client.id);
-    //TODO: TURN INTO DTO
-    const game = await this.gamesService.addPlayer(gameId, player);
-    this.sendToAllInGame(game, 'turn', game);
+    const member = await this.membersService.add({ gameId: gameId, playerId: playerId });
+    this.memberToClient.set(member.id, client.id);
+    await this.updateGameState(gameId);
   }
 
-  handleDisconnect(client) {
-    const arr = Array.from(this.playerToClient);
+  async handleDisconnect(client) {
+    const arr = Array.from(this.memberToClient);
     for (let index = 0; index < arr.length; index++) {
       const element = arr[index];
       if (element[1] == client.id) {
-        this.playerToClient.delete(element[0]);
-        return;
+        const member = await this.membersService.removeAt(element[0]);
+        this.memberToClient.delete(element[0]);
+        await this.updateGameState(member.gameId);
+        //IF EVERYONE ELSE EXCEPT THE DISCONNECTED PLAYER GUESSED LET THE GAME CONTINUE
+        await this.tryEndRound(member.gameId);
       }
     }
   }
 
   @SubscribeMessage('guess')
-  async handleGuess(@MessageBody('gameId') id: number, @MessageBody('guess') createGuessDto: CreateGuessDto) {
+  async handleGuess(@MessageBody('gameId') id: number, @MessageBody('guess') input) {
     const game = await this.gamesService.findOne(id);
+    const roundId = game.rounds[game.round - 1].id;
+    const member = game.members.find((e) => e.playerId == input.playerId);
+    const round = await this.roundsService.findOne(roundId);
+
+    //HACK: VULNERABILITY IF GAMESTATE UPDATED AFTER SOMEONE GUESSED GUESS SCORE AND CORDINATES ARE SENT TO EVERYONE
+    const target = parseCordinates(round.image.cordinates);
+    const cords = parseCordinates(input.cordinates);
+    const distance = getDistance(target.lat, target.lng, cords.lat, cords.lng) * 1000;
+    const score = Math.max(500 - distance, 0);
+
+    await this.guessService.create({
+      cordinates: input.cordinates,
+      memberId: member.id,
+      roundId: roundId,
+      score: score,
+    });
+
+    await this.tryEndRound(id);
+  }
+
+  async tryEndRound(gameId: number) {
+    const game = await this.gamesService.findOne(gameId);
     const round = await this.roundsService.findOne(game.rounds[game.round - 1].id);
-    const guess = await this.guessService.create({ ...createGuessDto, roundId: round.id });
-    const roundNew = await this.roundsService.addGuess(round.id, guess);
-    if (roundNew.guesses.length >= game.players.length) {
-      this.sendToAllInGame(game, 'guess', roundNew);
+    if (
+      game.members.every(
+        (member) =>
+          member.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1].id) || member.connected == false
+      )
+    ) {
+      await this.sendToAllInGame(game, 'guess', round);
     }
   }
 
   @SubscribeMessage('turn')
   async handleTurn(@MessageBody('gameId') gameId: number) {
-    const game = await this.gamesService.nextRound(gameId);
-    this.sendToAllInGame(game, 'turn', game);
+    await this.gamesService.nextRound(gameId);
+    await this.updateGameState(gameId);
   }
+
+  async updateGameState(gameId: number) {
+    const game = await this.gamesService.findOne(gameId);
+    await this.sendToAllInGame(game, 'turn', game);
+  }
+
   async sendToAllInGame(game, name: string, data) {
-    for (let index = 0; index < game.players.length; index++) {
-      const player = game.players[index];
+    for (let index = 0; index < game.members.length; index++) {
+      const member = game.members[index];
       try {
-        const socket = this.server.sockets.sockets.get(this.playerToClient.get(player.id));
+        const socket = this.server.sockets.sockets.get(this.memberToClient.get(member.id));
         await socket.emit(name, data);
       } catch (e) {
         console.log(e);
       }
     }
   }
+}
+
+function parseCordinates(val: string) {
+  const rawLatLng = val.split(',');
+  const latLng = { lat: Number(rawLatLng[0]), lng: Number(rawLatLng[1]) };
+  return latLng;
+}
+function getDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371; // Radius of the earth in km
+  const dLat = deg2rad(lat2 - lat1); // deg2rad below
+  const dLon = deg2rad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const d = R * c; // Distance in km
+  return d;
+}
+function deg2rad(deg) {
+  return deg * (Math.PI / 180);
 }

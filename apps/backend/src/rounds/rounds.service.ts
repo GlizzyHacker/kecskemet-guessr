@@ -3,7 +3,6 @@ import { Guess, Prisma } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 import { ImagesService } from 'src/images/images.service';
 import { CreateRoundDto } from './dto/create-round.dto';
-import { UpdateRoundDto } from './dto/update-round.dto';
 
 @Injectable()
 export class RoundsService {
@@ -46,7 +45,7 @@ export class RoundsService {
       return await this.prisma.round.update({
         where: { id },
         data: { guesses: { connect: guess } },
-        include: { guesses: true, image: true },
+        include: { guesses: { include: { member: true } }, image: true },
       });
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -57,13 +56,5 @@ export class RoundsService {
       console.error(e);
       throw new BadRequestException(`Could not update board with id ${id}`);
     }
-  }
-
-  update(id: number, updateRoundDto: UpdateRoundDto) {
-    return `This action updates a #${id} round`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} round`;
   }
 }
