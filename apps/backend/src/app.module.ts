@@ -8,6 +8,7 @@ import { GuessesModule } from './guesses/guesses.module';
 import { ImagesModule } from './images/images.module';
 import { PlayersModule } from './players/players.module';
 import { RoundsModule } from './rounds/rounds.module';
+import { MembersModule } from './members/members.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { RoundsModule } from './rounds/rounds.module';
     GamesModule,
     GuessesModule,
     PlayersModule,
+    MembersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

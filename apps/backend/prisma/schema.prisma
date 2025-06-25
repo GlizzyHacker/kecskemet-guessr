@@ -19,7 +19,7 @@ model Game {
   active Boolean @default(true)
   round  Int     @default(0)
 
-  players Player[]
+  members Member[]
   rounds  Round[]
 }
 
@@ -28,8 +28,19 @@ model Player {
 
   name String
 
-  games   Game[]
-  guesses Guess[]
+  members Member[]
+}
+
+model Member {
+  id Int @id @default(autoincrement())
+
+  connected Boolean @default(true)
+
+  game     Game    @relation(fields: [gameId], references: [id])
+  gameId   Int
+  player   Player  @relation(fields: [playerId], references: [id])
+  playerId Int
+  guesses  Guess[]
 }
 
 model Round {
@@ -43,7 +54,8 @@ model Round {
 }
 
 model Image {
-  id         Int    @id @default(autoincrement())
+  id Int @id @default(autoincrement())
+
   cordinates String
   url        String
 
@@ -54,9 +66,10 @@ model Guess {
   id Int @id @default(autoincrement())
 
   cordinates String
+  score      Int    @default(0)
 
   roundId  Int
   round    Round  @relation(fields: [roundId], references: [id])
-  playerId Int
-  player   Player @relation(fields: [playerId], references: [id])
+  memberId Int
+  member   Member @relation(fields: [memberId], references: [id])
 }

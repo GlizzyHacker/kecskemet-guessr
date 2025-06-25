@@ -1,7 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { CreatePlayerDto } from './dto/create-player.dto';
-import { UpdatePlayerDto } from './dto/update-player.dto';
 import { PlayersService } from './players.service';
 
 @Controller('players')
@@ -15,23 +14,8 @@ export class PlayersController {
     return player;
   }
 
-  @Get()
-  findAll() {
-    return this.playersService.findAll();
-  }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.playersService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePlayerDto: UpdatePlayerDto) {
-    return this.playersService.update(+id, updatePlayerDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.playersService.remove(+id);
   }
 }

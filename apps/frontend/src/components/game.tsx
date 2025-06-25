@@ -7,7 +7,7 @@ class Game {
   id: number = 0;
   active: boolean = true;
   round: number = 0;
-  players: Array<any> = [];
+  members: Array<any> = [];
   rounds: Array<any> = [];
 }
 
@@ -23,7 +23,6 @@ const Map = dynamic(() => import('@/components/map'), {
 });
 
 export default function Play({ inital, playerId }) {
-  console.log(inital);
   const [guess, setGuess] = useState(null);
   const [locked, setLocked] = useState(false);
   const [location, setLocation] = useState<any>(null);
@@ -94,7 +93,15 @@ export default function Play({ inital, playerId }) {
       <p>Round: {game.round}</p>
       <p>Status: {isConnected ? 'connected' : 'disconnected'}</p>
       <p>Players:</p>
-      <ul>{game?.players?.map((e) => <li key={e.id}>{e.name}</li>)}</ul>
+      <ul>
+        {game?.members?.map((e) => (
+          <li key={e.id}>
+            {e.player.name} {e.connected ? 'connected' : 'disconnected'} score:
+            {e.guesses.reduce((sum, e) => sum + e.score, 0)}
+            {e.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1].id) ? 'guessed' : ''}
+          </li>
+        ))}
+      </ul>
       <button onClick={handleNext}>Next</button>
       {game.round == 0 ? null : (
         <>
@@ -104,7 +111,8 @@ export default function Play({ inital, playerId }) {
             guess={guess}
             guesses={answer?.guesses?.map((e) => {
               return {
-                player: game.players.find((p) => p.id == e.playerId),
+                score: e.score,
+                player: game.members.find((p) => p.id == e.memberId).player,
                 latLng: parseCordinates(e.cordinates),
               };
             })}
@@ -116,6 +124,7 @@ export default function Play({ inital, playerId }) {
     </div>
   );
 }
+
 function parseCordinates(val: string) {
   const rawLatLng = val.split(',');
   const latLng = { lat: Number(rawLatLng[0]), lng: Number(rawLatLng[1]) };

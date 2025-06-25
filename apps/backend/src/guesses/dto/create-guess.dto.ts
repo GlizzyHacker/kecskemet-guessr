@@ -1,5 +1,6 @@
 export class CreateGuessDto {
   cordinates: string;
   roundId: number;
-  playerId: number;
+  memberId: number;
+  score: number;
 }
