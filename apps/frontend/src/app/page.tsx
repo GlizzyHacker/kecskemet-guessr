@@ -1,16 +1,14 @@
 'use client';
 
 import Play from '@/components/game';
+import { Game, Player } from '@/types/game';
 import { useState } from 'react';
 
 export default function Home() {
-  const [player, setPlayer] = useState(null);
-  const [game, setGame] = useState(null);
+  const [player, setPlayer] = useState<Player | null>(null);
+  const [game, setGame] = useState<Game | null>(null);
 
-  async function handleCreatePlayer(e) {
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
+  async function handleCreatePlayer(formData: FormData) {
     try {
       const response = await fetch('https://3pcdhvbt-3001.euw.devtunnels.ms/players', {
         method: 'POST',
@@ -42,10 +40,7 @@ export default function Home() {
       console.log(e);
     }
   }
-  async function handleJoinGame(e) {
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
+  async function handleJoinGame(formData: FormData) {
     try {
       const response = await fetch(`https://3pcdhvbt-3001.euw.devtunnels.ms/games/${formData.get('gameId')}`, {
         method: 'GET',
@@ -63,7 +58,7 @@ export default function Home() {
   return (
     <main className='flex items-center justify-center'>
       {player != null ? null : (
-        <form onSubmit={handleCreatePlayer}>
+        <form action={handleCreatePlayer}>
           <input name='name' type='text' color='green' />
           <button type='submit'>Create player</button>
         </form>
@@ -71,7 +66,7 @@ export default function Home() {
       {game != null || player == null ? null : (
         <>
           <button onClick={handleCreateGame}>Create game</button>
-          <form onSubmit={handleJoinGame}>
+          <form action={handleJoinGame}>
             <input name='gameId' type='number' />
             <button type='submit'>Join game</button>
           </form>
