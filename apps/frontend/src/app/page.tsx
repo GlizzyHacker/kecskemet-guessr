@@ -1,6 +1,6 @@
 'use client';
 
-import Play from '@/components/game';
+import Play from '@/app/Play/play';
 import { Game, Player } from '@/types/game';
 import { useState } from 'react';
 
@@ -10,7 +10,7 @@ export default function Home() {
 
   async function handleCreatePlayer(formData: FormData) {
     try {
-      const response = await fetch('https://3pcdhvbt-3001.euw.devtunnels.ms/players', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/players`, {
         method: 'POST',
         body: JSON.stringify({ name: formData.get('name') }),
         headers: {
@@ -26,7 +26,7 @@ export default function Home() {
   }
   async function handleCreateGame() {
     try {
-      const response = await fetch('https://3pcdhvbt-3001.euw.devtunnels.ms/games', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/games`, {
         method: 'POST',
         body: JSON.stringify({}),
         headers: {
@@ -42,7 +42,7 @@ export default function Home() {
   }
   async function handleJoinGame(formData: FormData) {
     try {
-      const response = await fetch(`https://3pcdhvbt-3001.euw.devtunnels.ms/games/${formData.get('gameId')}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/games/${formData.get('gameId')}`, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json; charset=UTF-8',

@@ -92,7 +92,7 @@ export default function Play(options: { inital: Game; playerId: number }) {
       <button onClick={handleNext}>Next</button>
       {game.round == 0 ? null : (
         <>
-          <img src={`https://3pcdhvbt-3001.euw.devtunnels.ms/images/${game.rounds[game.round - 1].imageId}`} />
+          <img src={`${process.env.NEXT_PUBLIC_API_URL}/images/${game.rounds[game.round - 1].imageId}`} />
           <Map
             onMapClick={(e: ParsedCordinates) => (locked ? null : setGuess(e))}
             guess={guess}
