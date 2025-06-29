@@ -2,6 +2,7 @@
 
 import useGame from '@/app/hooks/useGame';
 import useGameConnection from '@/app/hooks/useGameConnection';
+import Scoreboard from '@/components/scoreboard';
 import { ParsedCordinates } from '@/types/game';
 import dynamic from 'next/dynamic';
 import { useParams, useSearchParams } from 'next/navigation';
@@ -41,25 +42,20 @@ export default function Play() {
     sendNext();
   }
 
-  return !gameState ? null : (
+  const game = gameState ?? initialGame;
+
+  return !game ? (
+    <p>Joining game</p>
+  ) : (
     <div>
-      <p>Game id: {gameState.id}</p>
-      <p>Round: {gameState.round}</p>
+      <p>Game id: {game.id}</p>
+      <p>Round: {game.round}</p>
       <p>Status: {isConnected ? 'connected' : 'disconnected'}</p>
-      <p>Players:</p>
-      <ul>
-        {gameState?.members?.map((member) => (
-          <li key={member.id}>
-            {member.player.name} {member.connected ? 'connected' : 'disconnected'} score:
-            {member.guesses.reduce((sum, guess) => sum + guess.score, 0)}
-            {member.guesses.some((guess) => guess.roundId == gameState.rounds[gameState.round - 1].id) ? 'guessed' : ''}
-          </li>
-        ))}
-      </ul>
+      <Scoreboard members={game.members} currentRound={game.rounds[game.round - 1]} />
       <button onClick={handleNext}>Next</button>
-      {gameState.round == 0 ? null : (
+      {game.round == 0 ? null : (
         <>
-          <img src={`${process.env.NEXT_PUBLIC_API_URL}/images/${gameState.rounds[gameState.round - 1].imageId}`} />
+          <img src={`${process.env.NEXT_PUBLIC_API_URL}/images/${game.rounds[game.round - 1].imageId}`} />
           <Map
             onMapClick={(e: ParsedCordinates) => (locked ? null : setGuess(e))}
             guess={guess}
@@ -67,7 +63,7 @@ export default function Play() {
               answer?.guesses?.map((guess) => {
                 return {
                   score: guess.score,
-                  player: gameState.members.find((member) => member.id == guess.memberId)!.player,
+                  player: game.members.find((member) => member.id == guess.memberId)!.player,
                   latLng: parseCordinates(guess.cordinates),
                 };
               }) ?? []
