@@ -24,7 +24,7 @@ export default function Map(options: {
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       />
       <GuessMarker onMapClick={options.onMapClick} guess={options.guess}></GuessMarker>
-      {location == null ? null : (
+      {!options.location ? null : (
         <Marker opacity={0.5} position={[options.location!.lat, options.location!.lng]}>
           <Popup>Image Location</Popup>
         </Marker>

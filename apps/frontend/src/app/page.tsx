@@ -1,12 +1,12 @@
 'use client';
 
-import Play from '@/app/Play/play';
 import { Game, Player } from '@/types/game';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function Home() {
+  const router = useRouter();
   const [player, setPlayer] = useState<Player | null>(null);
-  const [game, setGame] = useState<Game | null>(null);
 
   async function handleCreatePlayer(formData: FormData) {
     try {
@@ -35,7 +35,7 @@ export default function Home() {
       });
       const json = await response.json();
       console.log(json);
-      setGame(json);
+      joinGame(json);
     } catch (e) {
       console.log(e);
     }
@@ -50,11 +50,16 @@ export default function Home() {
       });
       const json = await response.json();
       console.log(json);
-      setGame(json);
+      joinGame(json);
     } catch (e) {
       console.log(e);
     }
   }
+
+  function joinGame(game: Game) {
+    router.push(`/play/${game.id}?player=${player!.id}`);
+  }
+
   return (
     <main className='flex items-center justify-center'>
       {player != null ? null : (
@@ -63,7 +68,7 @@ export default function Home() {
           <button type='submit'>Create player</button>
         </form>
       )}
-      {game != null || player == null ? null : (
+      {player == null ? null : (
         <>
           <button onClick={handleCreateGame}>Create game</button>
           <form action={handleJoinGame}>
@@ -72,7 +77,6 @@ export default function Home() {
           </form>
         </>
       )}
-      {game == null || player == null ? null : <Play inital={game} playerId={player.id}></Play>}
     </main>
   );
 }
