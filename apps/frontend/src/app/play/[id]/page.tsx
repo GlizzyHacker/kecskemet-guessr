@@ -47,15 +47,19 @@ export default function Play() {
   return !game ? (
     <p>Joining game</p>
   ) : (
-    <div>
-      <p>Game id: {game.id}</p>
-      <p>Round: {game.round}</p>
-      <p>Status: {isConnected ? 'connected' : 'disconnected'}</p>
+    <main className='flex flex-col items-center justify-center'>
+      <div className=''>
+        <p>Game id: {game.id}</p>
+        <p>Round: {game.round}</p>
+        <p>Status: {isConnected ? 'connected' : 'disconnected'}</p>
+      </div>
       <Scoreboard members={game.members} currentRound={game.rounds[game.round - 1]} />
-      <button onClick={handleNext}>Next</button>
       {game.round == 0 ? null : (
-        <>
-          <img src={`${process.env.NEXT_PUBLIC_API_URL}/images/${game.rounds[game.round - 1].imageId}`} />
+        <div className='flex h-min rounded-xl p-4 bg-secondary'>
+          <img
+            src={`${process.env.NEXT_PUBLIC_API_URL}/images/${game.rounds[game.round - 1].imageId}`}
+            className='object-contain rounded-l-xl grow-1'
+          />
           <Map
             onMapClick={(e: ParsedCordinates) => (locked ? null : setGuess(e))}
             guess={guess}
@@ -70,10 +74,24 @@ export default function Play() {
             }
             location={!answer ? null : parseCordinates(answer.image.cordinates)}
           />
-        </>
+        </div>
       )}
-      {guess == null || locked ? null : <button onClick={handleGuess}>Guess</button>}
-    </div>
+      <div className='flex'>
+        <button
+          onClick={handleNext}
+          className='bg-primary outline-tertiary items-center mx-auto flex rounded-xl p-2 mt-2 mr-2'
+        >
+          Next
+        </button>
+        <button
+          onClick={handleGuess}
+          disabled={guess == null}
+          className='bg-primary outline-tertiary items-center mx-auto flex rounded-xl p-2 mt-2 ml-2'
+        >
+          Guess
+        </button>
+      </div>
+    </main>
   );
 }
 

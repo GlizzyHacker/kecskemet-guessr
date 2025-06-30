@@ -1,6 +1,7 @@
 'use client';
 
 import CreatePlayer from '@/components/create_player';
+import SelectGame from '@/components/select_game';
 import { Game, Player } from '@/types/game';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -41,9 +42,9 @@ export default function Home() {
       console.log(e);
     }
   }
-  async function handleJoinGame(formData: FormData) {
+  async function handleJoinGame(gameId: number) {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/games/${formData.get('gameId')}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/games/${gameId}`, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
@@ -64,15 +65,7 @@ export default function Home() {
   return (
     <main className='flex items-center justify-center'>
       {player != null ? null : <CreatePlayer onCreatePlayer={handleCreatePlayer} />}
-      {player == null ? null : (
-        <>
-          <button onClick={handleCreateGame}>Create game</button>
-          <form action={handleJoinGame}>
-            <input name='gameId' type='number' />
-            <button type='submit'>Join game</button>
-          </form>
-        </>
-      )}
+      {player == null ? null : <SelectGame onCreate={handleCreateGame} onJoin={handleJoinGame} />}
     </main>
   );
 }
