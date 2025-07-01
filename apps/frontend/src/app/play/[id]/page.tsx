@@ -1,11 +1,12 @@
 'use client';
 
-import useGame from '@/app/hooks/useGame';
-import useGameConnection from '@/app/hooks/useGameConnection';
 import Scoreboard from '@/components/scoreboard';
+import useGame from '@/hooks/useGame';
+import useGameConnection from '@/hooks/useGameConnection';
+import usePlayer from '@/hooks/usePlayer';
 import { ParsedCordinates } from '@/types/game';
 import dynamic from 'next/dynamic';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const Map = dynamic(() => import('@/components/map'), {
@@ -16,20 +17,17 @@ const Map = dynamic(() => import('@/components/map'), {
 export default function Play() {
   const [guess, setGuess] = useState<ParsedCordinates | null>(null);
   const [locked, setLocked] = useState(false);
-
-  const searchParams = useSearchParams();
-  const playerId = Number(searchParams.get('player'));
+  const { data: player } = usePlayer();
   const params = useParams();
   const { id } = params;
   const { data: initialGame, error: error } = useGame(Number(id));
-  console.log(error);
-  const { gameState, answer, isConnected, sendNext, sendGuess } = useGameConnection(initialGame, playerId);
+  const { gameState, answer, isConnected, sendNext, sendGuess } = useGameConnection(initialGame, player);
 
   useEffect(() => {
     if (!answer) {
       setLocked(false);
     }
-  }, [answer]);
+  }, [gameState]);
 
   function handleGuess() {
     if (guess) {
