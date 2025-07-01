@@ -21,7 +21,7 @@ export default function CreatePlayer() {
     const name = formData.get('name')!.toString();
     try {
       const response = await api.patch(`${process.env.NEXT_PUBLIC_API_URL}/players/me`, { name: name });
-
+      router.refresh();
       console.log(response);
     } catch (e) {
       console.log(e);
