@@ -1,19 +1,19 @@
 import { socket } from '@/socket';
-import { Game, ParsedCordinates, RoundWithImage } from '@/types/game';
+import { Game, ParsedCordinates, Player, RoundWithImage } from '@/types/game';
 import { useEffect, useState } from 'react';
 
-export default function useGameConnection(game: Game | undefined, playerId: number) {
+export default function useGameConnection(game: Game | undefined, player: Player | undefined) {
   const [gameState, setGameState] = useState<Game | undefined>(game);
   const [answer, setAnswer] = useState<RoundWithImage | null>(null);
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    if (!game) {
+    if (!game || !player) {
       return;
     }
     console.log(game);
     console.log('connecting');
-    socket.auth = { game: game.id, playerId: playerId };
+    socket.auth = { game: game.id, playerId: player.id };
     socket.connect();
     if (socket.connected) {
       onConnect();
@@ -38,7 +38,7 @@ export default function useGameConnection(game: Game | undefined, playerId: numb
       socket.off('turn', onTurn);
       socket.off('guess', onGuess);
     };
-  }, [playerId, game]);
+  }, [player, game]);
 
   function onTurn(val: Game) {
     console.log(val);
@@ -63,7 +63,7 @@ export default function useGameConnection(game: Game | undefined, playerId: numb
       guess: {
         cordinates: `${cords.lat ?? 0},${cords.lng ?? 0}`,
         roundId: gameState!.rounds[gameState!.round - 1].id,
-        playerId: playerId,
+        playerId: player!.id,
       },
     });
   }
