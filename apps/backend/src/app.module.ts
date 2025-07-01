@@ -9,6 +9,7 @@ import { ImagesModule } from './images/images.module';
 import { PlayersModule } from './players/players.module';
 import { RoundsModule } from './rounds/rounds.module';
 import { MembersModule } from './members/members.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { MembersModule } from './members/members.module';
     GuessesModule,
     PlayersModule,
     MembersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

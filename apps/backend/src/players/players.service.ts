@@ -28,4 +28,13 @@ export class PlayersService {
 
     return player;
   }
+
+  async update(id: number, createPlayerDto: CreatePlayerDto) {
+    const player = await this.prisma.player.findUnique({ where: { id } });
+    if (!player) {
+      throw new NotFoundException(`Player with id ${id} not found`);
+    }
+
+    return this.prisma.player.update({ where: { id }, data: createPlayerDto });
+  }
 }
