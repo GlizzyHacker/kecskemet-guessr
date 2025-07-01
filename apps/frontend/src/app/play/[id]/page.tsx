@@ -46,10 +46,10 @@ export default function Play() {
     <p>Joining game</p>
   ) : (
     <main className='flex flex-col items-center justify-center'>
-      <div className=''>
-        <p>Game id: {game.id}</p>
-        <p>Round: {game.round}</p>
-        <p>Status: {isConnected ? 'connected' : 'disconnected'}</p>
+      <div className='flex flex-row'>
+        <p className='p-2'>Game id: {game.id}</p>
+        <p className='p-2'>Round: {game.round}</p>
+        <p className='p-2'>Status: {isConnected ? 'connected' : 'disconnected'}</p>
       </div>
       <Scoreboard members={game.members} currentRound={game.rounds[game.round - 1]} />
       {game.round == 0 ? null : (

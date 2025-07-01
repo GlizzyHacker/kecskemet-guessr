@@ -17,6 +17,7 @@ export default function CreatePlayer() {
       console.log(e);
     }
   }
+
   async function handleRenamePlayer(formData: FormData) {
     const name = formData.get('name')!.toString();
     try {
