@@ -96,8 +96,17 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('turn')
   async handleTurn(@MessageBody('gameId') gameId: number) {
-    await this.gamesService.nextRound(gameId);
-    await this.updateGameState(gameId);
+    const game = await this.gamesService.findOne(gameId);
+    if (
+      game.round == 0 ||
+      game.members.every(
+        (member) =>
+          member.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1].id) || member.connected == false
+      )
+    ) {
+      await this.gamesService.nextRound(gameId);
+      await this.updateGameState(gameId);
+    }
   }
 
   async updateGameState(gameId: number) {
