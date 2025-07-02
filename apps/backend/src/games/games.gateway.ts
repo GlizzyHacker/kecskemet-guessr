@@ -58,8 +58,10 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const roundId = game.rounds[game.round - 1].id;
     const member = game.members.find((e) => e.playerId == input.playerId);
     const round = await this.roundsService.findOne(roundId);
+    if (round.guesses.some((guess) => guess.memberId == member.id)) {
+      return;
+    }
 
-    //HACK: VULNERABILITY IF GAMESTATE UPDATED AFTER SOMEONE GUESSED GUESS SCORE AND CORDINATES ARE SENT TO EVERYONE
     const target = parseCordinates(round.image.cordinates);
     const cords = parseCordinates(input.cordinates);
     const distance = getDistance(target.lat, target.lng, cords.lat, cords.lng) * 1000;
@@ -78,6 +80,10 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async tryEndRound(gameId: number) {
     const game = await this.gamesService.findOne(gameId);
     const round = await this.roundsService.findOne(game.rounds[game.round - 1].id);
+
+    //Update state to show who guessed
+    await this.sendToAllInGame(game, 'turn', game);
+
     if (
       game.members.every(
         (member) =>
