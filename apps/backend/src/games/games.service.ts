@@ -25,7 +25,12 @@ export class GamesService {
   async findOne(id: number) {
     const game = await this.prisma.game.findUnique({
       where: { id },
-      include: { rounds: true, members: { include: { guesses: true, player: true } } },
+      include: {
+        rounds: true,
+        members: {
+          include: { guesses: { select: { id: true, roundId: true, memberId: true, score: true } }, player: true },
+        },
+      },
     });
 
     if (!game) {
