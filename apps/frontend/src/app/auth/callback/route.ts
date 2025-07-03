@@ -12,6 +12,6 @@ export async function GET(request: NextRequest) {
 
   const cookieStore = await cookies();
   cookieStore.set('jwt', jwt, { path: '/' });
-
-  return NextResponse.redirect(new URL('/', request.url));
+  console.log(request);
+  return NextResponse.redirect('https://3pcdhvbt-3000.euw.devtunnels.ms');
 }

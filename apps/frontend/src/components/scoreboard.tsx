@@ -10,12 +10,12 @@ export default function Scoreboard({ members, currentRound }: { members: Member[
           <p className='bg-primary p-2'>Score</p>
           <p className='bg-primary p-2'>Guessed</p>
           {members?.map((member) => [
-            <p className='bg-primary p-2'>{member.player.name}</p>,
-            <p className='bg-primary p-2'>{member.connected ? 'connected' : 'disconnected'}</p>,
-            <p className='bg-primary p-2'>
+            <p key={`${member.id}name`} className='bg-primary p-2'>{member.player.name}</p>,
+            <p key={`${member.id}conn`} className='bg-primary p-2'>{member.connected ? 'connected' : 'disconnected'}</p>,
+            <p key={`${member.id}score`} className='bg-primary p-2'>
               {member.guesses.reduce((sum: number, guess: Guess) => sum + guess.score, 0)}
             </p>,
-            <p className='bg-primary p-2'>
+            <p key={`${member.id}guess`} className='bg-primary p-2'>
               {member.guesses.some((guess: Guess) => guess.roundId == currentRound.id) ? 'X' : ''}
             </p>,
           ])}

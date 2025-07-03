@@ -15,7 +15,7 @@ export type Round = {
 export type RoundWithImage = {
   id: number;
   image: Image;
-  guesses: Array<Guess>;
+  guesses: Array<GuessWithCordinates>;
 };
 
 export type Image = {
@@ -24,6 +24,13 @@ export type Image = {
 };
 
 export type Guess = {
+  id: number;
+  score: number;
+  roundId: number;
+  memberId: number;
+};
+
+export type GuessWithCordinates = {
   id: number;
   cordinates: string;
   score: number;
