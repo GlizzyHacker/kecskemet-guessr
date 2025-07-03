@@ -1,11 +1,21 @@
-import { socket } from '@/socket';
 import { Game, ParsedCordinates, Player, RoundWithImage } from '@/types/game';
-import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+import { useEffect, useRef, useState } from 'react';
+import { io } from 'socket.io-client';
 
 export default function useGameConnection(game: Game | undefined, player: Player | undefined) {
   const [gameState, setGameState] = useState<Game | undefined>(game);
   const [answer, setAnswer] = useState<RoundWithImage | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+
+  const socketRef = useRef(
+    io(process.env.NEXT_PUBLIC_API_URL, {
+      autoConnect: false,
+      extraHeaders: {
+        authorization: `Bearer ${Cookies.get('jwt')}`,
+      },
+    })
+  );
 
   useEffect(() => {
     if (!game || !player) {
@@ -13,9 +23,9 @@ export default function useGameConnection(game: Game | undefined, player: Player
     }
     console.log(game);
     console.log('connecting');
-    socket.auth = { game: game.id, playerId: player.id };
-    socket.connect();
-    if (socket.connected) {
+    socketRef.current.auth = { game: game.id};
+    socketRef.current.connect();
+    if (socketRef.current.connected) {
       onConnect();
     }
 
@@ -27,16 +37,16 @@ export default function useGameConnection(game: Game | undefined, player: Player
       setIsConnected(false);
     }
 
-    socket.on('connect', onConnect);
-    socket.on('disconnect', onDisconnect);
-    socket.on('turn', onTurn);
-    socket.on('guess', onGuess);
+    socketRef.current.on('connect', onConnect);
+    socketRef.current.on('disconnect', onDisconnect);
+    socketRef.current.on('turn', onTurn);
+    socketRef.current.on('guess', onGuess);
 
     return () => {
-      socket.off('connect', onConnect);
-      socket.off('disconnect', onDisconnect);
-      socket.off('turn', onTurn);
-      socket.off('guess', onGuess);
+      socketRef.current.off('connect', onConnect);
+      socketRef.current.off('disconnect', onDisconnect);
+      socketRef.current.off('turn', onTurn);
+      socketRef.current.off('guess', onGuess);
     };
   }, [player, game]);
 
@@ -54,11 +64,11 @@ export default function useGameConnection(game: Game | undefined, player: Player
   }
 
   function sendNext() {
-    socket.emit('turn', { gameId: gameState!.id });
+    socketRef.current.emit('turn', { gameId: gameState!.id });
   }
 
   function sendGuess(cords: ParsedCordinates) {
-    socket.emit('guess', {
+    socketRef.current.emit('guess', {
       gameId: gameState!.id,
       guess: {
         cordinates: `${cords.lat ?? 0},${cords.lng ?? 0}`,

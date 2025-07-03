@@ -25,7 +25,12 @@ export class GamesService {
   async findOne(id: number) {
     const game = await this.prisma.game.findUnique({
       where: { id },
-      include: { rounds: true, members: { include: { guesses: true, player: true } } },
+      include: {
+        rounds: true,
+        members: {
+          include: { guesses: { select: { id: true, roundId: true, memberId: true, score: true } }, player: true },
+        },
+      },
     });
 
     if (!game) {
@@ -36,12 +41,17 @@ export class GamesService {
   }
 
   async nextRound(id: number) {
-    const round = await this.roundService.create({ gameId: id });
     try {
+      //INCREMENT FIRST TO AVOID WAITING FOR NEXT ROUND
+      await this.prisma.game.update({
+        where: { id },
+        data: { round: { increment: 1 } },
+      });
+      const round = await this.roundService.create({ gameId: id });
       return await this.prisma.game.update({
         where: { id },
         include: { members: true, rounds: true },
-        data: { round: { increment: 1 }, rounds: { connect: round } },
+        data: { rounds: { connect: round } },
       });
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
