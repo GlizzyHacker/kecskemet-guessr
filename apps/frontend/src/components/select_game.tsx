@@ -11,14 +11,7 @@ export default function SelectGame() {
     handleJoinGame(Number(formData.get('gameId')!));
   }
   async function handleCreateGame() {
-    try {
-      const response = await api.post(`/games`, {});
-      const json = response.data;
-      console.log(json);
-      joinGame(json);
-    } catch (e) {
-      console.log(e);
-    }
+    router.push('/play/create');
   }
   async function handleJoinGame(gameId: number) {
     try {
