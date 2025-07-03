@@ -1,4 +1,6 @@
+import { JwtService } from '@nestjs/jwt';
 import {
+  ConnectedSocket,
   MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -8,7 +10,6 @@ import {
 } from '@nestjs/websockets';
 import { GuessesService } from 'src/guesses/guesses.service';
 import { MembersService } from 'src/members/members.service';
-import { PlayersService } from 'src/players/players.service';
 import { RoundsService } from 'src/rounds/rounds.service';
 import { GamesService } from './games.service';
 
@@ -24,39 +25,49 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly gamesService: GamesService,
     private readonly guessService: GuessesService,
     private readonly roundsService: RoundsService,
-    private readonly playersService: PlayersService,
-    private readonly membersService: MembersService
+    private readonly membersService: MembersService,
+    private readonly jwtService: JwtService
   ) {}
 
   memberToClient = new Map();
+  clientToMember = new Map();
 
   async handleConnection(client) {
     const gameId = client.handshake.auth.game;
-    const playerId = client.handshake.auth.playerId;
-    const member = await this.membersService.add({ gameId: gameId, playerId: playerId });
+    const jwt = await this.jwtService.verify(client.handshake.headers.authorization.split(' ')[1], {
+      secret: process.env.JWT_SECRET,
+    });
+    if (!jwt || !gameId) {
+      client.disconnect();
+      return;
+    }
+    const member = await this.membersService.add({ gameId: gameId, playerId: jwt.id });
     this.memberToClient.set(member.id, client.id);
+    this.clientToMember.set(client.id, member.id);
     await this.updateGameState(gameId);
   }
 
   async handleDisconnect(client) {
-    const arr = Array.from(this.memberToClient);
-    for (let index = 0; index < arr.length; index++) {
-      const element = arr[index];
-      if (element[1] == client.id) {
-        const member = await this.membersService.removeAt(element[0]);
-        this.memberToClient.delete(element[0]);
-        await this.updateGameState(member.gameId);
-        //IF EVERYONE ELSE EXCEPT THE DISCONNECTED PLAYER GUESSED LET THE GAME CONTINUE
-        await this.tryEndRound(member.gameId);
-      }
-    }
+    const memberId = this.clientToMember.get(client.id);
+    const member = await this.membersService.removeAt(memberId);
+    await this.updateGameState(member.gameId);
+
+    //IF EVERYONE ELSE EXCEPT THE DISCONNECTED PLAYER GUESSED LET THE GAME CONTINUE
+    await this.tryEndRound(member.gameId);
+
+    this.memberToClient.delete(this.clientToMember.get(client.id));
+    this.clientToMember.delete(client.id);
   }
 
   @SubscribeMessage('guess')
-  async handleGuess(@MessageBody('gameId') id: number, @MessageBody('guess') input) {
+  async handleGuess(@ConnectedSocket() client, @MessageBody('gameId') id: number, @MessageBody('guess') input) {
     const game = await this.gamesService.findOne(id);
+    if (game.round == 0) {
+      return;
+    }
+
     const roundId = game.rounds[game.round - 1].id;
-    const member = game.members.find((e) => e.playerId == input.playerId);
+    const member = game.members.find((e) => e.id == this.clientToMember.get(client.id));
     const round = await this.roundsService.findOne(roundId);
     if (round.guesses.some((guess) => guess.memberId == member.id)) {
       return;
@@ -79,6 +90,10 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   async tryEndRound(gameId: number) {
     const game = await this.gamesService.findOne(gameId);
+    if (game.round == 0) {
+      return;
+    }
+
     const round = await this.roundsService.findOne(game.rounds[game.round - 1].id);
 
     //Update state to show who guessed
@@ -95,13 +110,16 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('turn')
-  async handleTurn(@MessageBody('gameId') gameId: number) {
+  async handleTurn(@ConnectedSocket() client, @MessageBody('gameId') gameId: number) {
     const game = await this.gamesService.findOne(gameId);
+    if (game.members.every((e) => e.id != this.clientToMember.get(client.id))) {
+      return;
+    }
     if (
       game.round == 0 ||
       game.members.every(
         (member) =>
-          member.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1].id) || member.connected == false
+          member.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1]?.id) || member.connected == false
       )
     ) {
       await this.gamesService.nextRound(gameId);
@@ -132,9 +150,10 @@ function parseCordinates(val: string) {
   const latLng = { lat: Number(rawLatLng[0]), lng: Number(rawLatLng[1]) };
   return latLng;
 }
+
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 6371; // Radius of the earth in km
-  const dLat = deg2rad(lat2 - lat1); // deg2rad below
+  const dLat = deg2rad(lat2 - lat1);
   const dLon = deg2rad(lon2 - lon1);
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -143,6 +162,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
   const d = R * c; // Distance in km
   return d;
 }
+
 function deg2rad(deg) {
   return deg * (Math.PI / 180);
 }
