@@ -3,6 +3,7 @@
 import usePlayer from '@/hooks/usePlayer';
 import api from '@/lib/api';
 import { useRouter } from 'next/navigation';
+import Button from './button';
 
 export default function CreatePlayer() {
   const { data: player } = usePlayer();
@@ -42,13 +43,11 @@ export default function CreatePlayer() {
             className='bg-primary flex rounded-xl p-2'
           />
           <br />
-          <button type='submit' className='bg-primary outline-tertiary items-center mx-auto flex rounded-xl p-2'>
-            Create player
-          </button>
+          <Button type='submit'>Create player</Button>
         </form>
       )}
       {player && (
-        <form action={handleRenamePlayer} className='bg-secondary p-10 rounded-xl '>
+        <form action={handleRenamePlayer} className='bg-secondary flex flex-col p-2 rounded-xl '>
           <input
             id='name'
             name='name'
@@ -57,9 +56,7 @@ export default function CreatePlayer() {
             className='bg-primary flex rounded-xl p-2'
           />
           <br />
-          <button type='submit' className='bg-primary outline-tertiary items-center mx-auto flex rounded-xl p-2'>
-            Rename
-          </button>
+          <Button type='submit' className='mx-auto'>Rename</Button>
         </form>
       )}
     </div>

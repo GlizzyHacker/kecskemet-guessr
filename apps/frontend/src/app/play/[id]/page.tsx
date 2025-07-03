@@ -1,5 +1,6 @@
 'use client';
 
+import Button from '@/components/button';
 import Scoreboard from '@/components/scoreboard';
 import useGame from '@/hooks/useGame';
 import useGameConnection from '@/hooks/useGameConnection';
@@ -27,7 +28,7 @@ export default function Play() {
     if (!answer) {
       setLocked(false);
     }
-  }, [gameState]);
+  }, [answer]);
 
   function handleGuess() {
     if (guess) {
@@ -43,7 +44,9 @@ export default function Play() {
   const game = gameState ?? initialGame;
 
   return !game ? (
-    <p>Joining game</p>
+    <div className='flex flex-col items-center justify-center'>
+      <p>Joining game</p>
+    </div>
   ) : (
     <main className='flex flex-col items-center justify-center'>
       <div className='flex flex-row'>
@@ -75,19 +78,12 @@ export default function Play() {
         </div>
       )}
       <div className='flex'>
-        <button
-          onClick={handleNext}
-          className='bg-primary outline-tertiary items-center mx-auto flex rounded-xl p-2 mt-2 mr-2'
-        >
+        <Button onClick={handleNext} enable={isConnected && (game.round == 0 || answer != null)} className='m-2'>
           Next
-        </button>
-        <button
-          onClick={handleGuess}
-          disabled={guess == null}
-          className='bg-primary outline-tertiary items-center mx-auto flex rounded-xl p-2 mt-2 ml-2'
-        >
+        </Button>
+        <Button onClick={handleGuess} enable={guess != null && !locked && isConnected} className='m-2'>
           Guess
-        </button>
+        </Button>
       </div>
     </main>
   );

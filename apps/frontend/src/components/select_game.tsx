@@ -2,6 +2,7 @@
 import api from '@/lib/api';
 import { Game } from '@/types/game';
 import { useRouter } from 'next/navigation';
+import Button from './button';
 
 export default function SelectGame() {
   const router = useRouter();
@@ -35,20 +36,17 @@ export default function SelectGame() {
   }
 
   return (
-    <div className='bg-secondary p-10 rounded-xl '>
-      <button
-        onClick={handleCreateGame}
-        className='bg-primary outline-tertiary items-center mx-auto flex rounded-xl p-2'
-      >
+    <div className='bg-secondary flex flex-col p-10 rounded-xl '>
+      <Button onClick={handleCreateGame} className='mx-auto'>
         Create game
-      </button>
+      </Button>
       <br />
-      <form action={handleForm} className='mt-4'>
+      <form action={handleForm} className='mt-4 flex flex-col'>
         <label htmlFor='gameId'>Game id:</label>
         <input name='gameId' type='number' className='bg-primary flex rounded-xl p-2' />
-        <button type='submit' className='bg-primary outline-tertiary items-center mx-auto flex rounded-xl p-2 mt-2'>
+        <Button type='submit' className='mx-auto mt-2'>
           Join game
-        </button>
+        </Button>
       </form>
     </div>
   );
