@@ -21,9 +21,8 @@ export default function useGameConnection(game: Game | undefined, player: Player
     if (!game || !player) {
       return;
     }
-    console.log(game);
     console.log('connecting');
-    socketRef.current.auth = { game: game.id};
+    socketRef.current.auth = { game: game.id };
     socketRef.current.connect();
     if (socketRef.current.connected) {
       onConnect();
@@ -51,7 +50,6 @@ export default function useGameConnection(game: Game | undefined, player: Player
   }, [player, game]);
 
   function onTurn(val: Game) {
-    console.log(val);
     if (val.round != (gameState ?? game!).round) {
       setAnswer(null);
     }
@@ -59,20 +57,19 @@ export default function useGameConnection(game: Game | undefined, player: Player
   }
 
   function onGuess(val: RoundWithImage) {
-    console.log(val);
     setAnswer(val);
   }
 
   function sendNext() {
-    socketRef.current.emit('turn', { gameId: gameState!.id });
+    socketRef.current.emit('turn', { gameId: (gameState ?? game)!.id });
   }
 
   function sendGuess(cords: ParsedCordinates) {
     socketRef.current.emit('guess', {
-      gameId: gameState!.id,
+      gameId: (gameState ?? game)!.id,
       guess: {
         cordinates: `${cords.lat ?? 0},${cords.lng ?? 0}`,
-        roundId: gameState!.rounds[gameState!.round - 1].id,
+        roundId: (gameState ?? game)!.rounds[(gameState ?? game)!.round - 1].id,
         playerId: player!.id,
       },
     });

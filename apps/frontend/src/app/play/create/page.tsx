@@ -12,7 +12,6 @@ export default function Create() {
     try {
       const response = await api.post(`/games`, {});
       const json = response.data;
-      console.log(json);
       router.push(`/play/${json.id}`);
     } catch (e) {
       console.log(e);

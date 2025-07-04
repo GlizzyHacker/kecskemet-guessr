@@ -17,7 +17,6 @@ export default function SelectGame() {
     try {
       const response = await api.get(`/games/${gameId}`);
       const json = response.data;
-      console.log(json);
       joinGame(json);
     } catch (e) {
       console.log(e);
