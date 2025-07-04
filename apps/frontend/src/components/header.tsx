@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import CreatePlayer from './create_player';
+import LoginButton from './login_button';
 
 export default function Header() {
   const links = [{ href: '/rules', title: 'Szabályzat' }];
@@ -20,9 +20,9 @@ export default function Header() {
           <h1 className='font-medium text-white transition px-4 py-2'>Kesckemét Guessr</h1>
         </Link>
 
-        <div className='items-center gap-2 h-full'>
+        <div className='items-center gap-2 h-full p-2'>
           {commonHeaderItems}
-          <CreatePlayer />
+          <LoginButton />
         </div>
       </div>
     </header>
