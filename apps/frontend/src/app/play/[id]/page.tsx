@@ -1,6 +1,7 @@
 'use client';
 
 import Button from '@/components/button';
+import Card from '@/components/card';
 import GameInfo from '@/components/game_info';
 import Scoreboard from '@/components/scoreboard';
 import useGame from '@/hooks/useGame';
@@ -9,7 +10,7 @@ import usePlayer from '@/hooks/usePlayer';
 import { ParsedCordinates } from '@/types/game';
 import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const Map = dynamic(() => import('@/components/map'), {
   loading: () => <p>A map is loading</p>,
@@ -18,22 +19,14 @@ const Map = dynamic(() => import('@/components/map'), {
 
 export default function Play() {
   const [guess, setGuess] = useState<ParsedCordinates | null>(null);
-  const [locked, setLocked] = useState(false);
   const { data: player } = usePlayer();
   const params = useParams();
   const { id } = params;
   const { data: initialGame, error: error } = useGame(Number(id));
   const { gameState, answer, isConnected, sendNext, sendGuess } = useGameConnection(initialGame, player);
 
-  useEffect(() => {
-    if (!answer) {
-      setLocked(false);
-    }
-  }, [gameState]);
-
   function handleGuess() {
     if (guess) {
-      setLocked(true);
       sendGuess(guess);
     }
   }
@@ -43,9 +36,14 @@ export default function Play() {
   }
 
   const game = gameState ?? initialGame;
+  const guessed = game?.members
+    .find((member) => member.player.id == player?.id)
+    ?.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1].id);
 
   return !game ? (
-    <p>Joining game</p>
+    <Card className='mx-auto h-min'>
+      <p>Joining game</p>
+    </Card>
   ) : (
     <main className='flex flex-col items-center justify-center w-full'>
       <div className='flex w-full pb-4 space-x-2'>
@@ -60,7 +58,7 @@ export default function Play() {
           />
           <div className=' flex flex-1 rounded-r-xl'>
             <Map
-              onMapClick={(e: ParsedCordinates) => (locked ? null : setGuess(e))}
+              onMapClick={(e: ParsedCordinates) => (guessed ? null : setGuess(e))}
               guess={guess}
               guesses={
                 answer?.guesses?.map((guess) => {
@@ -79,12 +77,18 @@ export default function Play() {
       <div className='mt-2 space-x-8 items-center'>
         <Button
           onClick={handleNext}
-          enable={isConnected && (game.round == 0 || answer != null || location == null)}
+          enable={
+            isConnected &&
+            (game.round == 0 ||
+              game.members.every((member) =>
+                member.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1]?.id)
+              ))
+          }
           className=''
         >
           Next
         </Button>
-        <Button onClick={handleGuess} enable={guess != null && !locked && isConnected} className=''>
+        <Button onClick={handleGuess} enable={guess != null && !guessed && isConnected} className=''>
           Guess
         </Button>
       </div>
