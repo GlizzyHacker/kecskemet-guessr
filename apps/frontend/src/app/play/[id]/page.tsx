@@ -36,25 +36,26 @@ export default function Play() {
   }
 
   const game = gameState ?? initialGame;
+  const currentRound = game?.rounds[game.round - 1] ?? null;
   const guessed = game?.members
     .find((member) => member.player.id == player?.id)
-    ?.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1].id);
+    ?.guesses.some((guess) => guess.roundId == currentRound?.id);
 
   return !game ? (
-    <Card className='mx-auto h-min'>
+    <Card className='mx-auto w-min'>
       <p>Joining game</p>
     </Card>
   ) : (
     <main className='flex flex-col items-center justify-center w-full'>
       <div className='flex w-full pb-4 space-x-2'>
         <GameInfo className='flex-1 h-full' game={game} />
-        <Scoreboard className='flex-1 h-full' members={game.members} currentRound={game.rounds[game.round - 1]} />
+        <Scoreboard className='flex-1 h-full' members={game.members} currentRound={currentRound} />
       </div>
       {game.round == 0 ? null : (
         <div className=' shrink flex flex-row rounded-xl p-4 bg-secondary w-full  justify-center justify-items-center'>
           <img
             className='rounded-l-xl object-scale-cover flex-1'
-            src={`${process.env.NEXT_PUBLIC_API_URL}/images/${game.rounds[game.round - 1].imageId}`}
+            src={`${process.env.NEXT_PUBLIC_API_URL}/images/${currentRound?.imageId}`}
           />
           <div className=' flex flex-1 rounded-r-xl'>
             <Map
@@ -80,9 +81,7 @@ export default function Play() {
           enable={
             isConnected &&
             (game.round == 0 ||
-              game.members.every((member) =>
-                member.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1]?.id)
-              ))
+              game.members.every((member) => member.guesses.some((guess) => guess.roundId == currentRound?.id)))
           }
           className=''
         >
