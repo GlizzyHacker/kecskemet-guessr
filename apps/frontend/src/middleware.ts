@@ -9,5 +9,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/play', '/play/:id'],
+  matcher: ['/play', '/play/create', '/play/:id*'],
 };
