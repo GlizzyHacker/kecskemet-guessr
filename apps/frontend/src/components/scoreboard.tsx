@@ -8,7 +8,7 @@ export default function Scoreboard({
 }: {
   className?: string;
   members: Member[];
-  currentRound: Round;
+  currentRound: Round | null;
 }) {
   return (
     <Card className={className}>
@@ -28,7 +28,7 @@ export default function Scoreboard({
             {member.guesses.reduce((sum: number, guess: Guess) => sum + guess.score, 0)}
           </p>,
           <p key={`${member.id}guess`} className='bg-primary text-center p-2'>
-            {member.guesses.some((guess: Guess) => guess.roundId == currentRound.id) ? 'X' : ''}
+            {member.guesses.some((guess: Guess) => guess.roundId == currentRound?.id) ? 'X' : ''}
           </p>,
         ])}
       </div>
