@@ -41,10 +41,21 @@ export default function Play() {
     .find((member) => member.player.id == player?.id)
     ?.guesses.some((guess) => guess.roundId == currentRound?.id);
 
+  if (game?.active === false) {
+    return (
+      <div className='flex flex-col items-center space-y-2'>
+        <Card className=''>Game is over</Card>
+        <Scoreboard members={game.members} currentRound={currentRound} />
+      </div>
+    );
+  }
+
   return !game ? (
-    <Card className='mx-auto w-min'>
-      <p>Joining game</p>
-    </Card>
+    <div className='flex flex-col items-center space-y-2'>
+      <Card>
+        <p>Joining game</p>
+      </Card>
+    </div>
   ) : (
     <main className='flex flex-col items-center justify-center w-full'>
       <div className='flex w-full pb-4 space-x-2'>
