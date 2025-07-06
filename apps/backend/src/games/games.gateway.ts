@@ -34,7 +34,7 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   async handleConnection(client) {
     const gameId = client.handshake.auth.game;
-    const jwt = await this.jwtService.verify(client.handshake.headers.authorization.split(' ')[1], {
+    const jwt = await this.jwtService.verify(client.handshake.headers.authorization?.split(' ')[1] ?? '', {
       secret: process.env.JWT_SECRET,
     });
     if (!jwt || !gameId) {
@@ -90,7 +90,7 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   async tryEndRound(gameId: number) {
     const game = await this.gamesService.findOne(gameId);
-    if (game.round == 0) {
+    if (!game.rounds[game.round - 1]) {
       return;
     }
 
@@ -116,15 +116,20 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
       return;
     }
     if (
-      game.round == 0 ||
-      game.members.every(
+      game.round != 0 &&
+      game.members.some(
         (member) =>
-          member.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1]?.id) || member.connected == false
+          member.guesses.every((guess) => guess.roundId != game.rounds[game.round - 1]?.id) && member.connected
       )
     ) {
-      await this.gamesService.nextRound(gameId);
-      await this.updateGameState(gameId);
+      return;
     }
+    if (game.totalRounds <= game.round) {
+      await this.gamesService.finish(gameId);
+    } else {
+      await this.gamesService.nextRound(gameId);
+    }
+    await this.updateGameState(gameId);
   }
 
   async updateGameState(gameId: number) {
@@ -135,12 +140,16 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async sendToAllInGame(game, name: string, data) {
     for (let index = 0; index < game.members.length; index++) {
       const member = game.members[index];
-      try {
-        const socket = this.server.sockets.sockets.get(this.memberToClient.get(member.id));
-        await socket.emit(name, data);
-      } catch (e) {
-        console.log(e);
-      }
+      this.sendTo(member.id, name, data);
+    }
+  }
+
+  async sendTo(memberId: number, name: string, data) {
+    try {
+      const socket = this.server.sockets.sockets.get(this.memberToClient.get(memberId));
+      await socket.emit(name, data);
+    } catch (e) {
+      console.log(e);
     }
   }
 }

@@ -63,4 +63,21 @@ export class GamesService {
       throw new BadRequestException(`Could not update game with id ${id}`);
     }
   }
+
+  async finish(id: number) {
+    try {
+      return await this.prisma.game.update({
+        where: { id },
+        data: { active: false },
+      });
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === 'P2025') {
+          throw new NotFoundException(`Game with id ${id} not found`);
+        }
+      }
+      console.error(e);
+      throw new BadRequestException(`Could not update game with id ${id}`);
+    }
+  }
 }
