@@ -43,11 +43,11 @@ export class GamesService {
   async nextRound(id: number) {
     try {
       //INCREMENT FIRST TO AVOID WAITING FOR NEXT ROUND
-      await this.prisma.game.update({
+      const game = await this.prisma.game.update({
         where: { id },
         data: { round: { increment: 1 } },
       });
-      const round = await this.roundService.create({ gameId: id });
+      const round = await this.roundService.create({ gameId: id, ...game });
       return await this.prisma.game.update({
         where: { id },
         include: { members: true, rounds: true },

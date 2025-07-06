@@ -12,14 +12,15 @@ export class RoundsService {
   ) {}
 
   async create(createRoundDto: CreateRoundDto) {
-    const image = await this.imageService.create({});
+    const image = await this.imageService.create({ area: createRoundDto.area, difficulty: createRoundDto.difficulty });
     try {
       return await this.prisma.round.create({
-        data: { ...createRoundDto, imageId: image.id },
+        data: { gameId: createRoundDto.gameId, imageId: image.id },
+        include: { game: true },
       });
     } catch (e) {
       console.error(e);
-      throw new BadRequestException('Could not create board');
+      throw new BadRequestException('Could not create round');
     }
   }
 
