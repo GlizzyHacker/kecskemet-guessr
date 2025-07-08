@@ -2,18 +2,42 @@
 
 import Button from '@/components/button';
 import Radio from '@/components/radio';
+import useAreas from '@/hooks/useAreas';
 import api from '@/lib/api';
 import { useRouter } from 'next/navigation';
 
 export default function Create() {
   const router = useRouter();
+  const { data: areas } = useAreas();
 
   async function handleForm(formData: FormData) {
+    let selected;
+    switch (formData.get('area')) {
+      case 'NORMAL':
+        selected = ['Nagykorut'];
+        break;
+      case 'EXPANDED':
+        selected = [
+          'Nagykorut',
+          'Mariavaros',
+          'Mukertvaros',
+          'Szechenyivaros+hollandfalu',
+          'Domb',
+          'Szentlaszlo+rendorfalu',
+          'Egyetem+Beketer+deliiparterulet',
+          'Bethlenvaros',
+          'Hunyadivaros',
+          'Szentistvan',
+          'Petofivaros',
+        ];
+        break;
+      case 'ALL':
+        selected = Array.from(areas!, (v) => v[1]).map((area) => area.properties.Name);
+    }
     const request = {
       difficulty: formData.get('difficulty'),
-      area: formData.get('area'),
+      areas: selected,
       totalRounds: Number(formData.get('rounds')),
-      guesses: Number(formData.get('guesses')),
     };
     try {
       const response = await api.post(`/games`, request);
@@ -57,16 +81,6 @@ export default function Create() {
               id='rounds'
               name='rounds'
               defaultValue={5}
-              className='bg-primary flex rounded-xl p-2'
-            />
-          </div>
-          <div className='mx-auto m-2'>
-            <label htmlFor='guesses'>Number of guesses</label>
-            <input
-              type='number'
-              id='guesses'
-              name='guesses'
-              defaultValue={1}
               className='bg-primary flex rounded-xl p-2'
             />
           </div>

@@ -4,12 +4,6 @@ export enum Difficulty {
   HARD = 'Impossible',
 }
 
-export enum Area {
-  NORMAL = 'Nagykörút',
-  EXPANDED = 'Nagykörút + 2km',
-  ALL = 'Egész Kecskemét',
-}
-
 export type Game = {
   id: number;
   active: boolean;
@@ -17,7 +11,7 @@ export type Game = {
   totalRounds: number;
   guesses: number;
   difficulty: Difficulty;
-  area: Area;
+  area: string;
   members: Array<Member>;
   rounds: Array<Round>;
 };
