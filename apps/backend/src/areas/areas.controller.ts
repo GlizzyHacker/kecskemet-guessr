@@ -7,6 +7,8 @@ export class AreasController {
 
   @Get()
   async getAll() {
-    return this.areasService.findAll();
+    const map = await this.areasService.findAll();
+    //Map cannot be converted to json
+    return [...map];
   }
 }
