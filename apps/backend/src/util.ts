@@ -13,3 +13,29 @@ export function getDistance(lat1, lon1, lat2, lon2) {
 function deg2rad(deg) {
   return deg * (Math.PI / 180);
 }
+
+//Winding number algorithm implementation
+export function inPolygon(x: number, y: number, polygon: number[][]) {
+  let wn = 0;
+  polygon.forEach((a, i) => {
+    const b = i + 1 >= polygon.length ? polygon[0] : polygon[i + 1];
+    if (a[1] >= y && b[1] <= y) {
+      //Interpolate the x value of the line at the same y of the given point
+      const t = (y - b[1]) / (a[1] - b[1]);
+      const lineX = a[0] * t + b[0] * (1 - t);
+      if (lineX > x) {
+        wn--;
+      }
+    }
+    if (a[1] < y && b[1] > y) {
+      //Interpolate the x value of the line at the same y of the given point
+      const t = (y - a[1]) / (b[1] - a[1]);
+      const lineX = b[0] * t + a[0] * (1 - t);
+      if (lineX > x) {
+        wn++;
+      }
+    }
+  });
+
+  return wn != 0;
+}
