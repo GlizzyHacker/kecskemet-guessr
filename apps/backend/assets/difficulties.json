@@ -1,0 +1,7 @@
+{
+  "presets": [
+    { "name": "easy", "pitchMax": 10, "pitchMin": 0, "fovMax": 70, "fovMin": 50 },
+    { "name": "normal", "pitchMax": 15, "pitchMin": -5, "fovMax": 40, "fovMin": 30 },
+    { "name": "hard", "pitchMax": 20, "pitchMin": -10, "fovMax": 20, "fovMin": 10 }
+  ]
+}

@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { mkdir, writeFile } from 'fs/promises';
+import { mkdir, readFile, writeFile } from 'fs/promises';
 import { request } from 'https';
 import { PrismaService } from 'nestjs-prisma';
 import { AreasService } from 'src/areas/areas.service';
@@ -13,6 +13,8 @@ export class ImagesService {
     private readonly prisma: PrismaService,
     private readonly areas: AreasService
   ) {}
+
+  difficulties;
 
   async create(createImageDto: CreateImageDto) {
     const allAreas = await this.areas.findAll();
@@ -40,8 +42,17 @@ export class ImagesService {
         areas = Array.from(allAreas, (v) => v[1]);
         break;
     }
+    if (!this.difficulties) {
+      const response = await readFile('./assets/difficulties.json', { encoding: 'utf-8' });
+      if (!response) {
+        throw new InternalServerErrorException('Failed to get difficulties');
+      }
+      this.difficulties = JSON.parse(response);
+    }
+    const preset = this.difficulties.presets.find((preset) => preset.name == createImageDto.difficulty.toLowerCase());
+
     const cordinates = await getCordinates(areas);
-    const downloadUrl = getImageAt(cordinates.lat, cordinates.lng);
+    const downloadUrl = await getImageAt(cordinates.lat, cordinates.lng, preset);
     const data = await getImage(downloadUrl);
     if (!data) {
       throw new InternalServerErrorException('Failed to create image');
@@ -141,10 +152,14 @@ async function getCordinates(areas: Feature[]) {
   return { lat: body.location.lat, lng: body.location.lng, area: area };
 }
 
-function getImageAt(lat: number, lon: number) {
+async function getImageAt(
+  lat: number,
+  lon: number,
+  preset: { pitchMax: number; pitchMin: number; fovMax: number; fovMin: number }
+) {
   const direction = Math.floor(Math.random() * 360);
-  const pitch = Math.floor(Math.random() * 10);
-  const fov = Math.floor(Math.random() * 30) + 20;
+  const pitch = Math.floor(Math.random() * (preset.pitchMax - preset.pitchMin)) + preset.pitchMin;
+  const fov = Math.floor(Math.random() * (preset.fovMax - preset.fovMin)) + preset.fovMin;
   return `https://maps.googleapis.com/maps/api/streetview?return_error_code=true&size=1000x1000&location=${lat},${lon}&fov=${fov}&heading=${direction}&pitch=${pitch}&key=${process.env.GOOGLE_STREET_VIEW_KEY}`;
 }
 
