@@ -1,5 +1,5 @@
-import { Area, Difficulty } from '@prisma/client';
-import { IsEnum, IsNumber } from 'class-validator';
+import { Difficulty } from '@prisma/client';
+import { ArrayMinSize, IsArray, IsEnum, IsNumber, IsString } from 'class-validator';
 
 export class CreateRoundDto {
   @IsNumber()
@@ -8,6 +8,8 @@ export class CreateRoundDto {
   @IsEnum(Difficulty)
   difficulty: Difficulty;
 
-  @IsEnum(Area)
-  area: Area;
+  @IsArray()
+  @IsString({ each: true })
+  @ArrayMinSize(1)
+  areas: string[];
 }

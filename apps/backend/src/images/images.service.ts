@@ -18,30 +18,17 @@ export class ImagesService {
 
   async create(createImageDto: CreateImageDto) {
     const allAreas = await this.areas.findAll();
-    let areas: Array<Feature>;
-    switch (createImageDto.area) {
-      case 'NORMAL':
-        areas = [allAreas.get('Nagykorut')];
-        break;
-      case 'EXPANDED':
-        areas = [
-          allAreas.get('Nagykorut'),
-          allAreas.get('Mariavaros'),
-          allAreas.get('Mukertvaros'),
-          allAreas.get('Szechenyivaros+hollandfalu'),
-          allAreas.get('Domb'),
-          allAreas.get('Szentlaszlo+rendorfalu'),
-          allAreas.get('Egyetem+Beketer+deliiparterulet'),
-          allAreas.get('Bethlenvaros'),
-          allAreas.get('Hunyadivaros'),
-          allAreas.get('Szentistvan'),
-          allAreas.get('Petofivaros'),
-        ];
-        break;
-      case 'ALL':
-        areas = Array.from(allAreas, (v) => v[1]);
-        break;
+    const areas: Array<Feature> = [];
+    createImageDto.areas.forEach((area) => {
+      const feat = allAreas.get(area);
+      if (feat) {
+        areas.push(feat);
+      }
+    });
+    if (areas.length == 0) {
+      throw new InternalServerErrorException('Failed to find areas');
     }
+
     if (!this.difficulties) {
       const response = await readFile('./assets/difficulties.json', { encoding: 'utf-8' });
       if (!response) {
@@ -64,7 +51,12 @@ export class ImagesService {
 
     try {
       return await this.prisma.image.create({
-        data: { ...createImageDto, url: url, cordinates: `${cordinates.lat},${cordinates.lng}` },
+        data: {
+          url: url,
+          cordinates: `${cordinates.lat},${cordinates.lng}`,
+          area: cordinates.area.properties.Name,
+          difficulty: createImageDto.difficulty,
+        },
       });
     } catch (e) {
       console.error(e);
@@ -109,7 +101,7 @@ export class ImagesService {
   }
 }
 
-async function getCordinates(areas: Feature[]) {
+async function getCordinates(areas: Feature[]): Promise<{ lat: number; lng: number; area: Feature }> {
   const originLat = 46.90801;
   const originLon = 19.69256;
 

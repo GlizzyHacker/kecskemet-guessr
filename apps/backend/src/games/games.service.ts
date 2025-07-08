@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
+import { AreasService } from 'src/areas/areas.service';
 import { RoundsService } from 'src/rounds/rounds.service';
 import { CreateGameDto } from './dto/create-game.dto';
 
@@ -8,13 +9,15 @@ import { CreateGameDto } from './dto/create-game.dto';
 export class GamesService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly roundService: RoundsService
+    private readonly roundService: RoundsService,
+    private readonly areaService: AreasService
   ) {}
 
   async create(createGameDto: CreateGameDto) {
+    const areas = await this.areaService.validate(createGameDto.areas);
     try {
       return await this.prisma.game.create({
-        data: { ...createGameDto },
+        data: { totalRounds: createGameDto.totalRounds, difficulty: createGameDto.difficulty, area: areas.join(',') },
       });
     } catch (e) {
       console.error(e);
@@ -47,7 +50,11 @@ export class GamesService {
         where: { id },
         data: { round: { increment: 1 } },
       });
-      const round = await this.roundService.create({ gameId: id, ...game });
+      const round = await this.roundService.create({
+        gameId: id,
+        difficulty: game.difficulty,
+        areas: game.area.split(','),
+      });
       return await this.prisma.game.update({
         where: { id },
         include: { members: true, rounds: true },

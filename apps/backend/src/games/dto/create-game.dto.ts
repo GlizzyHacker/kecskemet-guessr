@@ -1,18 +1,16 @@
-import { Area, Difficulty } from '@prisma/client';
-import { IsEnum, IsNumber, IsPositive } from 'class-validator';
+import { Difficulty } from '@prisma/client';
+import { ArrayMinSize, IsArray, IsEnum, IsNumber, IsPositive, IsString } from 'class-validator';
 
 export class CreateGameDto {
   @IsNumber()
   @IsPositive()
   totalRounds: number;
 
-  @IsNumber()
-  @IsPositive()
-  guesses: number;
-
   @IsEnum(Difficulty)
   difficulty: Difficulty;
 
-  @IsEnum(Area)
-  area: Area;
+  @IsArray()
+  @IsString({ each: true })
+  @ArrayMinSize(1)
+  areas: string[];
 }

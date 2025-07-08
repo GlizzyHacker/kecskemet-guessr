@@ -12,7 +12,10 @@ export class RoundsService {
   ) {}
 
   async create(createRoundDto: CreateRoundDto) {
-    const image = await this.imageService.create({ area: createRoundDto.area, difficulty: createRoundDto.difficulty });
+    const image = await this.imageService.create({
+      areas: createRoundDto.areas,
+      difficulty: createRoundDto.difficulty,
+    });
     try {
       return await this.prisma.round.create({
         data: { gameId: createRoundDto.gameId, imageId: image.id },

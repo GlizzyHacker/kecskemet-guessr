@@ -19,9 +19,8 @@ model Game {
   active      Boolean    @default(true)
   round       Int        @default(0)
   totalRounds Int
-  guesses     Int        @default(1)
-  difficulty  Difficulty @default(NORMAL)
-  area        Area @default(NORMAL)
+  area        String     @default("")
+  difficulty  Difficulty @default(EASY)
 
   members Member[]
   rounds  Round[]
@@ -63,8 +62,8 @@ model Image {
 
   cordinates String
   url        String
+  area       String
   difficulty Difficulty
-  area       Area
 
   Round Round[]
 }
@@ -85,10 +84,4 @@ enum Difficulty {
   EASY
   NORMAL
   HARD
-}
-
-enum Area {
-  NORMAL
-  EXPANDED
-  ALL
 }
