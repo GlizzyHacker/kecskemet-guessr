@@ -17,7 +17,7 @@ export default function Header() {
     <header className='bg-secondary overflow-hidden'>
       <div className='flex flex-row container mx-auto items-center justify-between'>
         <Link href='/'>
-          <h1 className='font-medium text-white transition px-4 py-2'>Kesckemét Guessr</h1>
+          <h1 className='font-medium text-white transition px-4 py-2'>Kecskemét Guessr</h1>
         </Link>
 
         <div className='items-center gap-2 h-full p-2'>
