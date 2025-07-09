@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import DrawAreas from './draw_areas';
 import { GuessMarker } from './guess_marker';
 import LocationMarker from './location_marker';
 
@@ -13,6 +14,7 @@ export default function Map(options: {
   guess: ParsedCordinates | null;
   onMapClick: (point: LatLng) => void;
   guesses: GuessWithPlayer[];
+  areas: string[];
 }) {
   return (
     <MapContainer
@@ -33,6 +35,7 @@ export default function Map(options: {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       />
+      <DrawAreas areasToShow={options.areas}></DrawAreas>
       <GuessMarker onMapClick={options.onMapClick} guess={options.guess}></GuessMarker>
       <LocationMarker location={options.location} bounds={options.guesses.map((e) => e.latLng)} />
       {options.guesses?.map((e) => (
