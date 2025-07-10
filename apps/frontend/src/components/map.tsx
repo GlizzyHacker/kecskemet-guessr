@@ -5,19 +5,32 @@ import 'leaflet-defaulticon-compatibility';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import DrawAreas from './draw_areas';
 import { GuessMarker } from './guess_marker';
 import LocationMarker from './location_marker';
 
-export default function Map(options: {
-  location: ParsedCordinates | null;
-  guess: ParsedCordinates | null;
-  onMapClick: (point: LatLng) => void;
-  guesses: GuessWithPlayer[];
+export default function Map({
+  location,
+  guess,
+  onMapClick = () => {},
+  guesses,
+  areas,
+  hint,
+}: {
+  location?: ParsedCordinates | undefined;
+  guess?: ParsedCordinates | undefined;
+  onMapClick?: (point: LatLng) => void;
+  guesses?: GuessWithPlayer[];
+  areas?: string[];
+  hint?: string | undefined;
 }) {
+  //NEEDED TO FIX MAP GLITCHES
+  window.dispatchEvent(new Event('resize'));
+
   return (
     <MapContainer
       center={[46.90801, 19.69256]}
-      zoom={15}
+      zoom={12}
       scrollWheelZoom={true}
       style={{
         objectFit: 'cover',
@@ -33,9 +46,10 @@ export default function Map(options: {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       />
-      <GuessMarker onMapClick={options.onMapClick} guess={options.guess}></GuessMarker>
-      <LocationMarker location={options.location} bounds={options.guesses.map((e) => e.latLng)} />
-      {options.guesses?.map((e) => (
+      {areas && <DrawAreas areasToShow={areas} hint={hint}></DrawAreas>}
+      <GuessMarker onMapClick={onMapClick} guess={guess}></GuessMarker>
+      <LocationMarker location={location} bounds={guesses?.map((e) => e.latLng) ?? []} />
+      {guesses?.map((e) => (
         <Marker key={e.player.id} position={[e.latLng.lat, e.latLng.lng]}>
           <Popup>
             {e.player.name}'s guess score:{e.score}

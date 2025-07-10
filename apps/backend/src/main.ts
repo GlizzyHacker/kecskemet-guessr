@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
 
+import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 
 async function bootstrap(): Promise<void> {
@@ -10,6 +11,8 @@ async function bootstrap(): Promise<void> {
   const config = new DocumentBuilder().setTitle('API').setDescription('API description').setVersion('1.0').build();
   const documentFactory = (): OpenAPIObject => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
+
+  app.useGlobalPipes(new ValidationPipe());
 
   app.enableCors({
     allowedHeaders: '*',

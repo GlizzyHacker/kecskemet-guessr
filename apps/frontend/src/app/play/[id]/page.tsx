@@ -18,7 +18,7 @@ const Map = dynamic(() => import('@/components/map'), {
 });
 
 export default function Play() {
-  const [guess, setGuess] = useState<ParsedCordinates | null>(null);
+  const [guess, setGuess] = useState<ParsedCordinates | undefined>(undefined);
   const { data: player } = usePlayer();
   const params = useParams();
   const { id } = params;
@@ -41,25 +41,38 @@ export default function Play() {
     .find((member) => member.player.id == player?.id)
     ?.guesses.some((guess) => guess.roundId == currentRound?.id);
 
+  if (game?.active === false) {
+    return (
+      <div className='flex flex-col items-center space-y-2'>
+        <Card className=''>Game is over</Card>
+        <Scoreboard members={game.members} currentRound={currentRound} />
+      </div>
+    );
+  }
+
   return !game ? (
-    <Card className='mx-auto w-min'>
-      <p>Joining game</p>
-    </Card>
+    <div className='flex flex-col items-center space-y-2'>
+      <Card>
+        <p>Joining game</p>
+      </Card>
+    </div>
   ) : (
-    <main className='flex flex-col items-center justify-center w-full'>
-      <div className='flex w-full pb-4 space-x-2'>
-        <GameInfo className='flex-1 h-full' game={game} />
-        <Scoreboard className='flex-1 h-full' members={game.members} currentRound={currentRound} />
+    <main className='flex flex-col items-center justify-center w-full space-y-2'>
+      <div className='flex  items-stretch w-full space-x-3'>
+        <GameInfo className='flex-1  min-w-0' game={game} />
+        <Scoreboard className='flex-1  min-w-0' members={game.members} currentRound={currentRound} />
       </div>
       {game.round == 0 ? null : (
         <div className=' shrink flex flex-row rounded-xl p-4 bg-secondary w-full  justify-center justify-items-center'>
           <img
             className='rounded-l-xl object-scale-cover flex-1'
-            src={`${process.env.NEXT_PUBLIC_API_URL}/images/${currentRound?.imageId}`}
+            src={`${process.env.NEXT_PUBLIC_API_URL}/images/${currentRound?.image.id}`}
           />
-          <div className=' flex flex-1 rounded-r-xl'>
+          <div className='flex flex-1 rounded-r-xl'>
             <Map
               onMapClick={(e: ParsedCordinates) => (guessed ? null : setGuess(e))}
+              areas={game.area.split(',')}
+              hint={currentRound?.image.area}
               guess={guess}
               guesses={
                 answer?.guesses?.map((guess) => {
@@ -70,12 +83,12 @@ export default function Play() {
                   };
                 }) ?? []
               }
-              location={!answer ? null : parseCordinates(answer.image.cordinates)}
+              location={!answer ? undefined : parseCordinates(answer.image.cordinates)}
             />
           </div>
         </div>
       )}
-      <div className='mt-2 space-x-8 items-center'>
+      <div className='space-x-8 items-center'>
         <Button
           onClick={handleNext}
           enable={
@@ -87,7 +100,7 @@ export default function Play() {
         >
           Next
         </Button>
-        <Button onClick={handleGuess} enable={guess != null && !guessed && isConnected} className=''>
+        <Button onClick={handleGuess} enable={guess != undefined && !guessed && isConnected} className=''>
           Guess
         </Button>
       </div>

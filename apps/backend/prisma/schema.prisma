@@ -16,8 +16,12 @@ datasource db {
 model Game {
   id Int @id @default(autoincrement())
 
-  active Boolean @default(true)
-  round  Int     @default(0)
+  active      Boolean    @default(true)
+  round       Int        @default(0)
+  totalRounds Int
+  area        String     @default("")
+  hint        Boolean    @default(false)
+  difficulty  Difficulty @default(EASY)
 
   members Member[]
   rounds  Round[]
@@ -35,6 +39,7 @@ model Member {
   id Int @id @default(autoincrement())
 
   connected Boolean @default(true)
+  isOwner   Boolean @default(false)
 
   game     Game    @relation(fields: [gameId], references: [id])
   gameId   Int
@@ -58,6 +63,8 @@ model Image {
 
   cordinates String
   url        String
+  area       String
+  difficulty Difficulty
 
   Round Round[]
 }
@@ -72,4 +79,10 @@ model Guess {
   round    Round  @relation(fields: [roundId], references: [id])
   memberId Int
   member   Member @relation(fields: [memberId], references: [id])
+}
+
+enum Difficulty {
+  EASY
+  NORMAL
+  HARD
 }

@@ -1,24 +1,39 @@
+export enum Difficulty {
+  EASY = 'Normal',
+  NORMAL = 'Hard',
+  HARD = 'Impossible',
+}
+
 export type Game = {
   id: number;
   active: boolean;
   round: number;
+  totalRounds: number;
+  guesses: number;
+  difficulty: Difficulty;
+  area: string;
   members: Array<Member>;
   rounds: Array<Round>;
 };
 
 export type Round = {
   id: number;
-  imageId: number;
-  guesses: Array<Guess>;
-};
-
-export type RoundWithImage = {
-  id: number;
   image: Image;
   guesses: Array<Guess>;
 };
 
+export type RoundWithAnswer = {
+  id: number;
+  image: ImageWithAnswer;
+  guesses: Array<Guess>;
+};
+
 export type Image = {
+  id: number;
+  area: string | undefined;
+};
+
+export type ImageWithAnswer = {
   id: number;
   cordinates: string;
 };

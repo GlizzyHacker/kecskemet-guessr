@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
+import { AreasService } from 'src/areas/areas.service';
 import { RoundsService } from 'src/rounds/rounds.service';
 import { CreateGameDto } from './dto/create-game.dto';
 
@@ -8,13 +9,20 @@ import { CreateGameDto } from './dto/create-game.dto';
 export class GamesService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly roundService: RoundsService
+    private readonly roundService: RoundsService,
+    private readonly areaService: AreasService
   ) {}
 
   async create(createGameDto: CreateGameDto) {
+    const areas = await this.areaService.validate(createGameDto.areas);
     try {
       return await this.prisma.game.create({
-        data: { ...createGameDto },
+        data: {
+          totalRounds: createGameDto.totalRounds,
+          difficulty: createGameDto.difficulty,
+          area: areas.join(','),
+          hint: createGameDto.hint,
+        },
       });
     } catch (e) {
       console.error(e);
@@ -26,7 +34,7 @@ export class GamesService {
     const game = await this.prisma.game.findUnique({
       where: { id },
       include: {
-        rounds: true,
+        rounds: { include: { image: { select: { id: true, area: true } } } },
         members: {
           include: { guesses: { select: { id: true, roundId: true, memberId: true, score: true } }, player: true },
         },
@@ -37,21 +45,46 @@ export class GamesService {
       throw new NotFoundException(`Game with id ${id} not found`);
     }
 
+    if (!game.hint) {
+      game.rounds.forEach((round) => (round.image.area = undefined));
+    }
+
     return game;
   }
 
   async nextRound(id: number) {
     try {
       //INCREMENT FIRST TO AVOID WAITING FOR NEXT ROUND
-      await this.prisma.game.update({
+      const game = await this.prisma.game.update({
         where: { id },
         data: { round: { increment: 1 } },
       });
-      const round = await this.roundService.create({ gameId: id });
+      const round = await this.roundService.create({
+        gameId: id,
+        difficulty: game.difficulty,
+        areas: game.area.split(','),
+      });
       return await this.prisma.game.update({
         where: { id },
         include: { members: true, rounds: true },
         data: { rounds: { connect: round } },
+      });
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === 'P2025') {
+          throw new NotFoundException(`Game with id ${id} not found`);
+        }
+      }
+      console.error(e);
+      throw new BadRequestException(`Could not update game with id ${id}`);
+    }
+  }
+
+  async finish(id: number) {
+    try {
+      return await this.prisma.game.update({
+        where: { id },
+        data: { active: false },
       });
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
