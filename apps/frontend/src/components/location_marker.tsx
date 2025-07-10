@@ -4,8 +4,8 @@ import { useMemo } from 'react';
 import { Marker, Popup, useMap } from 'react-leaflet';
 
 export default function LocationMarker(options: {
-  location: ParsedCordinates | null;
-  bounds: ParsedCordinates[] | null;
+  location: ParsedCordinates | undefined;
+  bounds: ParsedCordinates[] | undefined;
 }) {
   const map = useMap();
   useMemo(() => {
