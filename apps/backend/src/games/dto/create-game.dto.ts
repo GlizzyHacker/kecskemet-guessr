@@ -1,5 +1,5 @@
 import { Difficulty } from '@prisma/client';
-import { ArrayMinSize, IsArray, IsEnum, IsNumber, IsPositive, IsString } from 'class-validator';
+import { ArrayMinSize, IsArray, IsBoolean, IsEnum, IsNumber, IsPositive, IsString } from 'class-validator';
 
 export class CreateGameDto {
   @IsNumber()
@@ -13,4 +13,7 @@ export class CreateGameDto {
   @IsString({ each: true })
   @ArrayMinSize(1)
   areas: string[];
+
+  @IsBoolean()
+  hint: boolean;
 }

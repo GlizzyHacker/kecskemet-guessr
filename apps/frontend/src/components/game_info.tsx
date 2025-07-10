@@ -8,6 +8,9 @@ export default function GameInfo({ className = '', game }: { className?: string;
         Round {game.round} out of {game.totalRounds}
       </h1>
       <div className=''>
+        {game.rounds[game.round - 1]?.image.area && (
+          <p className='p-2'>Hint: {game.rounds[game.round - 1]?.image.area}</p>
+        )}
         <p className='p-2'>Game id: {game.id}</p>
         <p className='p-2'>Difficulty: {game.difficulty}</p>
         <p className='p-2'>Area: {game.area.split(',').join(', ')}</p>

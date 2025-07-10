@@ -1,11 +1,11 @@
-import { Game, ParsedCordinates, Player, RoundWithImage } from '@/types/game';
+import { Game, ParsedCordinates, Player, RoundWithAnswer } from '@/types/game';
 import Cookies from 'js-cookie';
 import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 
 export default function useGameConnection(game: Game | undefined, player: Player | undefined) {
   const [gameState, setGameState] = useState<Game | undefined>(game);
-  const [answer, setAnswer] = useState<RoundWithImage | null>(null);
+  const [answer, setAnswer] = useState<RoundWithAnswer | null>(null);
   const [isConnected, setIsConnected] = useState(false);
 
   const socketRef = useRef(
@@ -56,7 +56,7 @@ export default function useGameConnection(game: Game | undefined, player: Player
     setGameState(val);
   }
 
-  function onGuess(val: RoundWithImage) {
+  function onGuess(val: RoundWithAnswer) {
     setAnswer(val);
   }
 

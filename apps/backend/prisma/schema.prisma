@@ -20,6 +20,7 @@ model Game {
   round       Int        @default(0)
   totalRounds Int
   area        String     @default("")
+  hint        Boolean    @default(false)
   difficulty  Difficulty @default(EASY)
 
   members Member[]

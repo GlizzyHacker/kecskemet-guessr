@@ -18,7 +18,7 @@ const Map = dynamic(() => import('@/components/map'), {
 });
 
 export default function Play() {
-  const [guess, setGuess] = useState<ParsedCordinates | null>(null);
+  const [guess, setGuess] = useState<ParsedCordinates | undefined>(undefined);
   const { data: player } = usePlayer();
   const params = useParams();
   const { id } = params;
@@ -66,12 +66,13 @@ export default function Play() {
         <div className=' shrink flex flex-row rounded-xl p-4 bg-secondary w-full  justify-center justify-items-center'>
           <img
             className='rounded-l-xl object-scale-cover flex-1'
-            src={`${process.env.NEXT_PUBLIC_API_URL}/images/${currentRound?.imageId}`}
+            src={`${process.env.NEXT_PUBLIC_API_URL}/images/${currentRound?.image.id}`}
           />
           <div className='flex flex-1 rounded-r-xl'>
             <Map
               onMapClick={(e: ParsedCordinates) => (guessed ? null : setGuess(e))}
               areas={game.area.split(',')}
+              hint={currentRound?.image.area}
               guess={guess}
               guesses={
                 answer?.guesses?.map((guess) => {
@@ -82,7 +83,7 @@ export default function Play() {
                   };
                 }) ?? []
               }
-              location={!answer ? null : parseCordinates(answer.image.cordinates)}
+              location={!answer ? undefined : parseCordinates(answer.image.cordinates)}
             />
           </div>
         </div>
@@ -99,7 +100,7 @@ export default function Play() {
         >
           Next
         </Button>
-        <Button onClick={handleGuess} enable={guess != null && !guessed && isConnected} className=''>
+        <Button onClick={handleGuess} enable={guess != undefined && !guessed && isConnected} className=''>
           Guess
         </Button>
       </div>

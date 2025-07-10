@@ -18,17 +18,22 @@ export type Game = {
 
 export type Round = {
   id: number;
-  imageId: number;
-  guesses: Array<Guess>;
-};
-
-export type RoundWithImage = {
-  id: number;
   image: Image;
   guesses: Array<Guess>;
 };
 
+export type RoundWithAnswer = {
+  id: number;
+  image: ImageWithAnswer;
+  guesses: Array<Guess>;
+};
+
 export type Image = {
+  id: number;
+  area: string | undefined;
+};
+
+export type ImageWithAnswer = {
   id: number;
   cordinates: string;
 };

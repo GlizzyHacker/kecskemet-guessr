@@ -17,7 +17,12 @@ export class GamesService {
     const areas = await this.areaService.validate(createGameDto.areas);
     try {
       return await this.prisma.game.create({
-        data: { totalRounds: createGameDto.totalRounds, difficulty: createGameDto.difficulty, area: areas.join(',') },
+        data: {
+          totalRounds: createGameDto.totalRounds,
+          difficulty: createGameDto.difficulty,
+          area: areas.join(','),
+          hint: createGameDto.hint,
+        },
       });
     } catch (e) {
       console.error(e);
@@ -29,7 +34,7 @@ export class GamesService {
     const game = await this.prisma.game.findUnique({
       where: { id },
       include: {
-        rounds: true,
+        rounds: { include: { image: { select: { id: true, area: true } } } },
         members: {
           include: { guesses: { select: { id: true, roundId: true, memberId: true, score: true } }, player: true },
         },
@@ -38,6 +43,10 @@ export class GamesService {
 
     if (!game) {
       throw new NotFoundException(`Game with id ${id} not found`);
+    }
+
+    if (!game.hint) {
+      game.rounds.forEach((round) => (round.image.area = undefined));
     }
 
     return game;
