@@ -95,7 +95,7 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   async tryEndRound(gameId: number) {
     const game = await this.gamesService.findOne(gameId);
-    if (!game.rounds[game.round - 1]) {
+    if (!game.rounds[game.round - 1] || game.members.every((member) => !member.connected)) {
       return;
     }
 
