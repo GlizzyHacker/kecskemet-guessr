@@ -1,6 +1,7 @@
 'use client';
 
 import Button from '@/components/button';
+import Checkboxes from '@/components/checkboxes';
 import Radio from '@/components/radio';
 import useAreas from '@/hooks/useAreas';
 import api from '@/lib/api';
@@ -16,6 +17,7 @@ const Map = dynamic(() => import('@/components/map'), {
 export default function Create() {
   const router = useRouter();
   const { data: areas } = useAreas();
+  const [showAreaSelection, setShowAreaSelection] = useState(false);
   const [selectedAreas, setSelectedAreas] = useState<string[]>(getAreasForOption('NORMAL') ?? []);
 
   function getAreasForOption(option: string) {
@@ -45,11 +47,19 @@ export default function Create() {
     return selected;
   }
 
+  function onPresetArea(preset: 'NORMAL' | 'EXPANDED' | 'ALL'): void {
+    setShowAreaSelection(false);
+    setSelectedAreas(getAreasForOption(preset) ?? []);
+  }
+
+  function onCustomArea(): void {
+    setShowAreaSelection(true);
+  }
+
   async function handleForm(formData: FormData) {
-    let selected = getAreasForOption(String(formData.get('area')));
     const request = {
       difficulty: formData.get('difficulty'),
-      areas: selected,
+      areas: selectedAreas,
       totalRounds: Number(formData.get('rounds')),
       hint: Boolean(formData.get('hint')),
     };
@@ -82,25 +92,22 @@ export default function Create() {
               </Radio>
             </div>
             <div className='m-2'>
-              <Radio
-                group='area'
-                value='NORMAL'
-                isDefault={true}
-                onSelect={() => setSelectedAreas(getAreasForOption('NORMAL') ?? [])}
-              >
+              <Radio group='area' value='NORMAL' isDefault={true} onSelect={() => onPresetArea('NORMAL')}>
                 Nagykörút
               </Radio>
-              <Radio
-                group='area'
-                value='EXPANDED'
-                onSelect={() => setSelectedAreas(getAreasForOption('EXPANDED') ?? [])}
-              >
+              <Radio group='area' value='EXPANDED' onSelect={() => onPresetArea('EXPANDED')}>
                 Külső körutak
               </Radio>
-              <Radio group='area' value='ALL' onSelect={() => setSelectedAreas(getAreasForOption('ALL') ?? [])}>
+              <Radio group='area' value='ALL' onSelect={() => onPresetArea('ALL')}>
                 Egész Kecskemét
               </Radio>
+              <Radio group='area' value='OTHER' onSelect={onCustomArea}>
+                Egyéb
+              </Radio>
             </div>
+            {showAreaSelection && areas && (
+              <Checkboxes options={[...areas].map((area) => area[0])} selectionChanged={setSelectedAreas} />
+            )}
             <div className='mx-auto m-2'>
               <label htmlFor='rounds'>Number of rounds</label>
               <input
