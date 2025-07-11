@@ -72,15 +72,15 @@ export default function Create() {
   }
 
   return (
-    <main className='flex flex-col items-5 w-2/3 mx-auto'>
+    <main className='flex flex-col items-5 min-w-2/3 mx-auto'>
       <div className='flex flex-row bg-secondary rounded-xl p-2'>
         <div className='flex-1'>
           <Map areas={selectedAreas}></Map>
         </div>
-        <div className='flex-1 flex flex-col p-8 items-center'>
-          <form className='flex flex-col' action={handleForm}>
-            <h2 className='font-medium text-white transition px-4 py-2 mx-auto'>Create Game</h2>
-            <div className='m-2'>
+        <div className='flex-1 flex flex-col px-8 pb-8 items-center'>
+          <form className='grid grid-cols-2 space-y-2' action={handleForm}>
+            <h2 className='font-medium text-white transition px-4 pb-2 pt-4 col-span-2 mx-auto'>Create Game</h2>
+            <div>
               <Radio group='difficulty' value='EASY' isDefault={true}>
                 Normal
               </Radio>
@@ -91,7 +91,7 @@ export default function Create() {
                 Impossible
               </Radio>
             </div>
-            <div className='m-2'>
+            <div>
               <Radio group='area' value='NORMAL' isDefault={true} onSelect={() => onPresetArea('NORMAL')}>
                 Nagykörút
               </Radio>
@@ -106,9 +106,17 @@ export default function Create() {
               </Radio>
             </div>
             {showAreaSelection && areas && (
-              <Checkboxes options={[...areas].map((area) => area[0])} selectionChanged={setSelectedAreas} />
+              <div className='grid grid-cols-2 col-span-2 '>
+                <Checkboxes options={[...areas].map((area) => area[0])} selectionChanged={setSelectedAreas} />
+              </div>
             )}
-            <div className='mx-auto m-2'>
+            <div>
+              <input type='checkbox' id='hint' name='hint' />
+              <label className='pl-2' htmlFor='hint'>
+                Give area hint
+              </label>
+            </div>
+            <div className='mx-auto m-2 col-span-2'>
               <label htmlFor='rounds'>Number of rounds</label>
               <input
                 type='number'
@@ -118,13 +126,7 @@ export default function Create() {
                 className='bg-primary flex rounded-xl p-2'
               />
             </div>
-            <div className='m-2'>
-              <input type='checkbox' id='hint' name='hint' />
-              <label className='pl-2' htmlFor='hint'>
-                Give area hint
-              </label>
-            </div>
-            <Button className='mx-auto m-2' type='submit'>
+            <Button className='mx-auto col-span-2' type='submit'>
               Create Game
             </Button>
           </form>
