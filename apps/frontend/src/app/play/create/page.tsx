@@ -24,21 +24,37 @@ export default function Create() {
     let selected;
     switch (option) {
       case 'NORMAL':
-        selected = ['Nagykorut'];
+        selected = [
+          'belváros',
+          'belső bethlenváros',
+          'rákócziváros',
+          'erzsébetváros',
+          'kossuthváros',
+          'árpádváros',
+          'máriaváros',
+          'villanegyed',
+        ];
         break;
       case 'EXPANDED':
         selected = [
-          'Nagykorut',
-          'Mariavaros',
-          'Mukertvaros',
-          'Szechenyivaros+hollandfalu',
-          'Domb',
-          'Szentlaszlo+rendorfalu',
-          'Egyetem+Beketer+deliiparterulet',
-          'Bethlenvaros',
-          'Hunyadivaros',
-          'Szentistvan',
-          'Petofivaros',
+          'belváros',
+          'belső bethlenváros',
+          'rákócziváros',
+          'erzsébetváros',
+          'kossuthváros',
+          'árpádváros',
+          'máriaváros',
+          'villanegyed',
+          'hunyadiváros',
+          'szent istván-város',
+          'muszáj',
+          'szent lászló-város',
+          'belső alsószéktó',
+          'vízmű és egyetem',
+          'petőfiváros',
+          'domb',
+          'széchenyiváros',
+          'külső bethlenváros',
         ];
         break;
       case 'ALL':
@@ -96,7 +112,7 @@ export default function Create() {
                 Nagykörút
               </Radio>
               <Radio group='area' value='EXPANDED' onSelect={() => onPresetArea('EXPANDED')}>
-                Külső körutak
+                Belterületek
               </Radio>
               <Radio group='area' value='ALL' onSelect={() => onPresetArea('ALL')}>
                 Egész Kecskemét
