@@ -102,20 +102,22 @@ export class ImagesService {
 }
 
 async function getCordinates(areas: Feature[]): Promise<{ lat: number; lng: number; area: Feature }> {
-  const originLat = 46.90801;
-  const originLon = 19.69256;
+  const origin = areas
+    .map((feat) => feat.geometry.coordinates[0])
+    .flat()
+    .reduce((avg, cord) => [(avg[0] + cord[0]) / 2, (avg[1] + cord[1]) / 2]);
 
   //GET FARTHEST CORDINATE
   const farthest = areas
     .map((feat) => feat.geometry.coordinates[0])
     .flat()
     .reduce((max: number[], point: number[]) =>
-      getDistance(point[1], point[0], originLat, originLon) > getDistance(max[1], max[0], originLat, originLon)
+      getDistance(point[1], point[0], origin[1], origin[0]) > getDistance(max[1], max[0], origin[1], origin[0])
         ? point
         : max
     );
 
-  const radius = Math.sqrt(Math.pow(farthest[1] - originLat, 2) + Math.pow(farthest[0] - originLon, 2));
+  const radius = Math.sqrt(Math.pow(farthest[1] - origin[1], 2) + Math.pow(farthest[0] - origin[0], 2));
 
   let retries = 0;
   let status = '';
@@ -125,8 +127,8 @@ async function getCordinates(areas: Feature[]): Promise<{ lat: number; lng: numb
     if (retries > 100) {
       throw new InternalServerErrorException('Failed to create image');
     }
-    const lat = originLat + radius * (1 - Math.random() * 2);
-    const lng = originLon + radius * (1 - Math.random() * 2);
+    const lat = origin[1] + radius * (1 - Math.random() * 2);
+    const lng = origin[0] + radius * (1 - Math.random() * 2);
     area = areas.find((a) => inPolygon(lng, lat, a.geometry.coordinates[0]));
     if (area) {
       const response = await fetch(
