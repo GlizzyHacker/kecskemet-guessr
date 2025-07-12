@@ -59,16 +59,24 @@ export class GamesService {
         where: { id },
         data: { round: { increment: 1 } },
       });
-      const round = await this.roundService.create({
-        gameId: id,
-        difficulty: game.difficulty,
-        areas: game.area.split(','),
-      });
-      return await this.prisma.game.update({
-        where: { id },
-        include: { members: true, rounds: true },
-        data: { rounds: { connect: round } },
-      });
+      try {
+        const round = await this.roundService.create({
+          gameId: id,
+          difficulty: game.difficulty,
+          areas: game.area.split(','),
+        });
+        return await this.prisma.game.update({
+          where: { id },
+          include: { members: true, rounds: true },
+          data: { rounds: { connect: round } },
+        });
+      } catch (e) {
+        await this.prisma.game.update({
+          where: { id },
+          data: { round: { decrement: 1 } },
+        });
+        throw e;
+      }
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         if (e.code === 'P2025') {
