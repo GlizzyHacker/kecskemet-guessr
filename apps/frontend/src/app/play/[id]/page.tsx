@@ -3,6 +3,7 @@
 import Button from '@/components/button';
 import Card from '@/components/card';
 import GameInfo from '@/components/game_info';
+import LoadingIndicator from '@/components/loading_indicator';
 import Scoreboard from '@/components/scoreboard';
 import useGame from '@/hooks/useGame';
 import useGameConnection from '@/hooks/useGameConnection';
@@ -10,7 +11,7 @@ import usePlayer from '@/hooks/usePlayer';
 import { ParsedCordinates } from '@/types/game';
 import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Map = dynamic(() => import('@/components/map'), {
   loading: () => <p>A map is loading</p>,
@@ -20,10 +21,15 @@ const Map = dynamic(() => import('@/components/map'), {
 export default function Play() {
   const [guess, setGuess] = useState<ParsedCordinates | undefined>(undefined);
   const { data: player } = usePlayer();
-  const params = useParams();
-  const { id } = params;
+  const { id } = useParams();
   const { data: initialGame, error: error } = useGame(Number(id));
   const { gameState, answer, isConnected, sendNext, sendGuess } = useGameConnection(initialGame, player);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [gameState]);
 
   function handleGuess() {
     if (guess) {
@@ -32,6 +38,7 @@ export default function Play() {
   }
 
   function handleNext() {
+    setLoading(true);
     sendNext();
   }
 
@@ -63,29 +70,36 @@ export default function Play() {
         <Scoreboard className='flex-1  min-w-0' members={game.members} currentRound={currentRound} />
       </div>
       {game.round == 0 ? null : (
-        <div className=' shrink flex flex-row rounded-xl p-4 bg-secondary w-full  justify-center justify-items-center'>
-          <img
-            className='rounded-l-xl object-scale-cover flex-1'
-            src={`${process.env.NEXT_PUBLIC_API_URL}/images/${currentRound?.image.id}`}
-          />
-          <div className='flex flex-1 rounded-r-xl'>
-            <Map
-              onMapClick={(e: ParsedCordinates) => (guessed ? null : setGuess(e))}
-              areas={game.area.split(',')}
-              hint={currentRound?.image.area}
-              guess={guess}
-              guesses={
-                answer?.guesses?.map((guess) => {
-                  return {
-                    score: guess.score,
-                    player: game.members.find((member) => member.id == guess.memberId)!.player,
-                    latLng: parseCordinates(guess.cordinates),
-                  };
-                }) ?? []
-              }
-              location={!answer ? undefined : parseCordinates(answer.image.cordinates)}
+        <div className='shrink rounded-xl p-2 bg-secondary w-full relative'>
+          <div className={`${loading ? 'blur-xl' : ''} flex flex-row justify-center justify-items-center`}>
+            <img
+              className='rounded-l-xl object-scale-cover flex-1'
+              src={`${process.env.NEXT_PUBLIC_API_URL}/images/${currentRound?.image.id}`}
             />
+            <div className='flex flex-1 rounded-r-xl items-center'>
+              <Map
+                onMapClick={(e: ParsedCordinates) => (guessed ? null : setGuess(e))}
+                areas={game.area.split(',')}
+                hint={currentRound?.image.area}
+                guess={guess}
+                guesses={
+                  answer?.guesses?.map((guess) => {
+                    return {
+                      score: guess.score,
+                      player: game.members.find((member) => member.id == guess.memberId)!.player,
+                      latLng: parseCordinates(guess.cordinates),
+                    };
+                  }) ?? []
+                }
+                location={!answer ? undefined : parseCordinates(answer.image.cordinates)}
+              />
+            </div>
           </div>
+          {loading && (
+            <div className='absolute top-1/3 bottom-1/3 left-1/3 right-1/3'>
+              <LoadingIndicator />
+            </div>
+          )}
         </div>
       )}
       <div className='space-x-8 items-center'>
