@@ -8,3 +8,4 @@ yarn-error.log*
 .yarn
 apps/backend/images/*
 .env
+pnpm-lock.yaml
