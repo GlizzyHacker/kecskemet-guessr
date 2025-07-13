@@ -1,6 +1,6 @@
 'use client';
 
-import Button from '@/components/button';
+import ActionBar from '@/components/action_bar';
 import Card from '@/components/card';
 import GameInfo from '@/components/game_info';
 import LoadingIndicator from '@/components/loading_indicator';
@@ -8,9 +8,9 @@ import Scoreboard from '@/components/scoreboard';
 import useGame from '@/hooks/useGame';
 import useGameConnection from '@/hooks/useGameConnection';
 import usePlayer from '@/hooks/usePlayer';
-import { ParsedCordinates } from '@/types/game';
+import { GamePhase, ParsedCordinates } from '@/types/game';
 import dynamic from 'next/dynamic';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const Map = dynamic(() => import('@/components/map'), {
@@ -19,57 +19,66 @@ const Map = dynamic(() => import('@/components/map'), {
 });
 
 export default function Play() {
-  const [guess, setGuess] = useState<ParsedCordinates | undefined>(undefined);
   const { data: player } = usePlayer();
   const { id } = useParams();
   const { data: initialGame, error: error } = useGame(Number(id));
   const { gameState, answer, isConnected, sendNext, sendGuess } = useGameConnection(initialGame, player);
 
+  const router = useRouter();
+  const [guess, setGuess] = useState<ParsedCordinates | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(false);
   }, [gameState]);
 
-  function handleGuess() {
-    if (guess) {
+  function handleAction(phase: GamePhase) {
+    if (phase == GamePhase.GUESSING && guess) {
       sendGuess(guess);
+    } else if (phase == GamePhase.REVEAL || phase == GamePhase.START) {
+      setLoading(true);
+      sendNext();
+    } else if (phase == GamePhase.END) {
+      router.push('/play');
     }
   }
 
-  function handleNext() {
-    setLoading(true);
-    sendNext();
-  }
-
   const game = gameState ?? initialGame;
-  const currentRound = game?.rounds[game.round - 1] ?? null;
-  const guessed = game?.members
-    .find((member) => member.player.id == player?.id)
-    ?.guesses.some((guess) => guess.roundId == currentRound?.id);
 
-  if (game?.active === false) {
+  if (!game) {
     return (
       <div className='flex flex-col items-center space-y-2'>
-        <Card className=''>Game is over</Card>
-        <Scoreboard members={game.members} currentRound={currentRound} />
+        <Card>
+          <p>Loading game</p>
+        </Card>
       </div>
     );
   }
 
-  return !game ? (
-    <div className='flex flex-col items-center space-y-2'>
-      <Card>
-        <p>Joining game</p>
-      </Card>
-    </div>
-  ) : (
+  const currentRound = game.rounds[game.round - 1] ?? null;
+  const guessed = game.members
+    .find((member) => member.player.id == player?.id)
+    ?.guesses.some((guess) => guess.roundId == currentRound?.id);
+
+  const phase = game.active
+    ? isConnected
+      ? game.round == 0
+        ? GamePhase.START
+        : answer
+          ? GamePhase.REVEAL
+          : guessed
+            ? GamePhase.GUESSED
+            : GamePhase.GUESSING
+      : GamePhase.DISCONNECTED
+    : GamePhase.END;
+
+  return (
     <main className='flex flex-col items-center justify-center w-full space-y-2'>
       <div className='flex  items-stretch w-full space-x-3'>
         <GameInfo className='flex-1  min-w-0' game={game} />
         <Scoreboard className='flex-1  min-w-0' members={game.members} currentRound={currentRound} />
       </div>
-      {game.round == 0 ? null : (
+      {game.round == 0 || !game.active ? null : (
         <div className='shrink rounded-xl p-2 bg-secondary w-full relative'>
           <div className={`${loading ? 'blur-xl' : ''} flex flex-row justify-center justify-items-center`}>
             <img
@@ -102,22 +111,7 @@ export default function Play() {
           )}
         </div>
       )}
-      <div className='space-x-8 items-center'>
-        <Button
-          onClick={handleNext}
-          enable={
-            isConnected &&
-            (game.round == 0 ||
-              game.members.every((member) => member.guesses.some((guess) => guess.roundId == currentRound?.id)))
-          }
-          className=''
-        >
-          Next
-        </Button>
-        <Button onClick={handleGuess} enable={guess != undefined && !guessed && isConnected} className=''>
-          Guess
-        </Button>
-      </div>
+      <ActionBar phase={phase} onAction={handleAction} />
     </main>
   );
 }
