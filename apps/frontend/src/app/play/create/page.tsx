@@ -2,9 +2,11 @@
 
 import Button from '@/components/button';
 import Checkboxes from '@/components/checkboxes';
+import ErrorCard from '@/components/error_card';
 import Radio from '@/components/radio';
 import useAreas from '@/hooks/useAreas';
 import api from '@/lib/api';
+import { AxiosError } from 'axios';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -19,6 +21,9 @@ export default function Create() {
   const { data: areas } = useAreas();
   const [showAreaSelection, setShowAreaSelection] = useState(false);
   const [selectedAreas, setSelectedAreas] = useState<string[]>(getAreasForOption('NORMAL') ?? []);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function getAreasForOption(option: string) {
     let selected;
@@ -73,6 +78,7 @@ export default function Create() {
   }
 
   async function handleForm(formData: FormData) {
+    setLoading(true);
     const request = {
       difficulty: formData.get('difficulty'),
       areas: selectedAreas,
@@ -82,9 +88,17 @@ export default function Create() {
     try {
       const response = await api.post(`/games`, request);
       router.push(`/play/${response.data.id}`);
-    } catch (e) {
+    } catch (e: any) {
+      if (e instanceof AxiosError) {
+        if (e.response?.data?.message) {
+          setError(e.response.data.message.join(', '));
+        } else {
+          setError(e.message);
+        }
+      }
       console.log(e);
     }
+    setLoading(false);
   }
 
   return (
@@ -132,7 +146,7 @@ export default function Create() {
                 Give area hint
               </label>
             </div>
-            <div className='mx-auto m-2 col-span-2'>
+            <div className='mx-auto col-span-2'>
               <label htmlFor='rounds'>Number of rounds</label>
               <input
                 type='number'
@@ -142,9 +156,10 @@ export default function Create() {
                 className='bg-primary flex rounded-xl p-2'
               />
             </div>
-            <Button className='mx-auto col-span-2' type='submit'>
+            <Button enable={!loading} className='mx-auto col-span-2 mt-2' type='submit'>
               Create Game
             </Button>
+            {error && <ErrorCard className='col-span-2'>{error}</ErrorCard>}
           </form>
         </div>
       </div>
