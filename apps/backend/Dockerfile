@@ -38,7 +38,7 @@ COPY --from=build /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=build /app/prisma ./prisma
 
 # Install only production dependencies
-RUN pnpm install --production --frozen-lockfile
+RUN pnpm install --production
 RUN pnpm prisma generate
 
 # Command to run the application
