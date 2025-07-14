@@ -42,5 +42,7 @@ COPY --from=build /app/assets ./assets
 RUN pnpm install --production
 RUN pnpx prisma generate
 
+EXPOSE 3001
+
 # Command to run the application
 CMD ["node", "dist/main"]
