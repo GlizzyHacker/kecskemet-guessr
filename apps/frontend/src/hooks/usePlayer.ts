@@ -3,6 +3,7 @@ import useSWR from 'swr';
 import api from '@/lib/api';
 import { Player } from '@/types/game';
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const fetcher = (url: string) => api.get(`${url}`).then((res) => res.data);
 
 export default function usePlayer(): {

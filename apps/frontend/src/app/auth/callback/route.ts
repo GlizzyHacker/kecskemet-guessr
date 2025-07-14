@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): Promise<Response> {
   const jwt = request.nextUrl.searchParams.get('jwt');
 
   if (!jwt) {
@@ -13,5 +13,5 @@ export async function GET(request: NextRequest) {
   const cookieStore = await cookies();
   cookieStore.set('jwt', jwt, { path: '/' });
 
-  return NextResponse.redirect('https://3pcdhvbt-3000.euw.devtunnels.ms');
+  return NextResponse.redirect(new URL('/player', request.url));
 }

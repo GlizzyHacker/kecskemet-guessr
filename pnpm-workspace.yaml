@@ -9,3 +9,6 @@ onlyBuiltDependencies:
   - esbuild
   - prisma
   - sharp
+publicHoistPattern:
+  - "@next/eslint-plugin-next"
+  - "eslint-plugin-react-hooks"
