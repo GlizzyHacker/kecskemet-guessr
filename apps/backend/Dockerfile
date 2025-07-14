@@ -39,7 +39,7 @@ COPY --from=build /app/prisma ./prisma
 
 # Install only production dependencies
 RUN pnpm install --production
-RUN prisma generate
+RUN pnpx prisma generate
 
 # Command to run the application
 CMD ["node", "dist/src/main"]
