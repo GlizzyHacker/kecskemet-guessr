@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='hu'>
-      <head></head>
+      <head/>
       <body
         className={`${inter.className}`}
         style={{

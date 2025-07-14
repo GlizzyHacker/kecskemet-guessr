@@ -12,7 +12,7 @@ import LocationMarker from './location_marker';
 export default function Map({
   location,
   guess,
-  onMapClick = () => {},
+  onMapClick,
   guesses,
   areas,
   hint,
@@ -31,7 +31,7 @@ export default function Map({
     <MapContainer
       center={[46.90801, 19.69256]}
       zoom={12}
-      scrollWheelZoom={true}
+      scrollWheelZoom
       style={{
         objectFit: 'cover',
         height: '100%',
@@ -46,13 +46,13 @@ export default function Map({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
       />
-      {areas && <DrawAreas areasToShow={areas} hint={hint}></DrawAreas>}
-      <GuessMarker onMapClick={onMapClick} guess={guess}></GuessMarker>
+      {areas && <DrawAreas areasToShow={areas} hint={hint} />}
+      <GuessMarker onMapClick={onMapClick} guess={guess} />
       <LocationMarker location={location} bounds={guesses?.map((e) => e.latLng) ?? []} />
       {guesses?.map((e) => (
         <Marker key={e.player.id} position={[e.latLng.lat, e.latLng.lng]}>
           <Popup>
-            {e.player.name}'s guess score:{e.score}
+            {e.player.name}&apos;s guess score:{e.score}
           </Popup>
         </Marker>
       ))}

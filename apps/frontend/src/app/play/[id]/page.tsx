@@ -22,7 +22,7 @@ export default function Play() {
   const { data: player } = usePlayer();
   const params = useParams();
   const { id } = params;
-  const { data: initialGame, error: error } = useGame(Number(id));
+  const { data: initialGame} = useGame(Number(id));
   const { gameState, answer, isConnected, sendNext, sendGuess } = useGameConnection(initialGame, player);
 
   function handleGuess() {

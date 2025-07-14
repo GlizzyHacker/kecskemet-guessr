@@ -10,7 +10,7 @@ export default function Checkboxes({
   const [selection, setSelection] = useState<string[]>([]);
 
   return options.map((option) => (
-    <div id={option}>
+    <div key={option}>
       <input
         type='checkbox'
         id={option + 'input'}

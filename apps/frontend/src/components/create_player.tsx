@@ -22,7 +22,7 @@ export default function CreatePlayer() {
   async function handleRenamePlayer(formData: FormData) {
     const name = formData.get('name')!.toString();
     try {
-      const response = await api.patch(`${process.env.NEXT_PUBLIC_API_URL}/players/me`, { name: name });
+      await api.patch(`${process.env.NEXT_PUBLIC_API_URL}/players/me`, { name: name });
       router.refresh();
     } catch (e) {
       console.log(e);

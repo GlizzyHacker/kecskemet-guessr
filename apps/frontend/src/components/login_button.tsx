@@ -9,14 +9,14 @@ export default function LoginButton() {
 
   if (player) {
     return (
-      <Link className='text-white' href={'/player'}>
+      <Link className='text-white' href='/player'>
         {player.name}
       </Link>
     );
   }
 
   return (
-    <Link href={'/player'}>
+    <Link href='/player'>
       <Button>Create player</Button>
     </Link>
   );
