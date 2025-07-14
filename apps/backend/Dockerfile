@@ -36,6 +36,7 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=build /app/prisma ./prisma
+COPY --from=build /app/assets ./assets
 
 # Install only production dependencies
 RUN pnpm install --production
