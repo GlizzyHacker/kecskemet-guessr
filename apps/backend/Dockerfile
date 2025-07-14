@@ -42,4 +42,4 @@ RUN pnpm install --production
 RUN pnpx prisma generate
 
 # Command to run the application
-CMD ["node", "dist/src/main"]
+CMD ["node", "dist/main"]
