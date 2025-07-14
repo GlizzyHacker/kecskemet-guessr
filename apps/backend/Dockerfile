@@ -22,7 +22,10 @@ RUN pnpm prisma generate
 RUN pnpm build
 
 # Stage 2: Create a lightweight container with the built application
-FROM node:20-alpine AS production
+FROM node:20-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 ENV NODE_ENV=production
 
 # Set the working directory inside the container
