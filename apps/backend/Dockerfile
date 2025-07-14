@@ -1,6 +1,8 @@
 # Stage 1: Build the application
-# Use the official Node.js LTS (Long Term Support) image as the base image
-FROM node:20-alpine-pnpm AS build
+FROM node:20-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 ENV NODE_ENV=development
 
 # Set the working directory inside the container
