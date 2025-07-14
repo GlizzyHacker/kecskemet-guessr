@@ -11,10 +11,6 @@ overrides:
 importers:
 
   .:
-    dependencies:
-      class-validator:
-        specifier: ^0.14.2
-        version: 0.14.2
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.3.1
