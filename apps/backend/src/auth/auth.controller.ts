@@ -17,7 +17,7 @@ export class AuthController {
   async register(@Body() createPlayerDto: CreatePlayerDto) {
     const jwt = await this.authService.register(createPlayerDto);
     return {
-      url: `${process.env.FRONTEND_AUTHORIZED_URL}?jwt=${jwt}`,
+      url: `${process.env.FRONTEND_URL}/auth/callback?jwt=${jwt}`,
     };
   }
 }
