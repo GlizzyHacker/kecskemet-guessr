@@ -11,8 +11,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
-    "start:migrate:prod": "pnpx prisma migrate deploy && pnpx start:prod",
+    "start:migrate:prod": "pnpx prisma migrate deploy && node dist/main",
     "lint": "eslint src/**/*.ts"
   },
   "dependencies": {
