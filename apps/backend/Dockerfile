@@ -45,4 +45,4 @@ RUN pnpx prisma generate
 EXPOSE 3001
 
 # Command to run the application
-CMD ["node", "dist/main"]
+CMD [ "npm", "run", "start:migrate:prod" ]
