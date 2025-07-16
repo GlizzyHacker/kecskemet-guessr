@@ -9,6 +9,7 @@ import useGameConnection from '@/hooks/useGameConnection';
 import usePlayer from '@/hooks/usePlayer';
 import { ParsedCordinates } from '@/types/game';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
@@ -22,7 +23,7 @@ export default function Play() {
   const { data: player } = usePlayer();
   const params = useParams();
   const { id } = params;
-  const { data: initialGame} = useGame(Number(id));
+  const { data: initialGame } = useGame(Number(id));
   const { gameState, answer, isConnected, sendNext, sendGuess } = useGameConnection(initialGame, player);
 
   function handleGuess() {
@@ -64,7 +65,8 @@ export default function Play() {
       </div>
       {game.round == 0 ? null : (
         <div className=' shrink flex flex-row rounded-xl p-4 bg-secondary w-full  justify-center justify-items-center'>
-          <img
+          <Image
+            alt='Image to guess'
             className='rounded-l-xl object-scale-cover flex-1'
             src={`${process.env.NEXT_PUBLIC_API_URL}/images/${currentRound?.image.id}`}
           />

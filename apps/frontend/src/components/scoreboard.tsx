@@ -10,8 +10,8 @@ export default function Scoreboard({
   members: Member[];
   currentRound: Round | null;
 }) {
-  const sorted = members.toSorted(
-    (member) => member.guesses.reduce((sum: number, guess: Guess) => sum + guess.score, 0)
+  const sorted = members.toSorted((member) =>
+    member.guesses.reduce((sum: number, guess: Guess) => sum + guess.score, 0)
   );
 
   return (
