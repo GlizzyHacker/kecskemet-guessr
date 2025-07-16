@@ -7,7 +7,7 @@ export default function LoginButton() {
   const { data: player } = usePlayer();
 
   return (
-    <Link className='text-white' href={'/player'}>
+    <Link className='text-white' href='/player'>
       {player ? player.name : 'Create player'}
     </Link>
   );

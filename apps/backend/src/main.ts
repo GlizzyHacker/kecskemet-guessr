@@ -15,8 +15,10 @@ async function bootstrap(): Promise<void> {
   app.useGlobalPipes(new ValidationPipe());
 
   app.enableCors({
-    allowedHeaders: '*',
-    origin: '*',
+    origin: process.env.FRONTEND_URL, // add your frontend URLs here
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: ['Content-Type', 'Authorization'], // explicitly list headers your frontend sends
+    credentials: false, // or true if you use cookies/auth tokens with credentials: 'include'
   });
   app.use(
     '/scalar',

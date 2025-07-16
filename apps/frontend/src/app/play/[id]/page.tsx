@@ -10,6 +10,7 @@ import useGameConnection from '@/hooks/useGameConnection';
 import usePlayer from '@/hooks/usePlayer';
 import { GamePhase, ParsedCordinates } from '@/types/game';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -21,7 +22,7 @@ const Map = dynamic(() => import('@/components/map'), {
 export default function Play() {
   const { data: player } = usePlayer();
   const { id } = useParams();
-  const { data: initialGame, error: error } = useGame(Number(id));
+  const { data: initialGame } = useGame(Number(id));
   const { gameState, answer, isConnected, sendNext, sendGuess } = useGameConnection(initialGame, player);
 
   const router = useRouter();
@@ -81,7 +82,8 @@ export default function Play() {
       {game.round == 0 || !game.active ? null : (
         <div className='shrink rounded-xl p-2 bg-secondary w-full relative'>
           <div className={`${loading ? 'blur-xl' : ''} flex flex-row justify-center justify-items-center`}>
-            <img
+            <Image
+              alt='Image to guess'
               className='rounded-l-xl object-scale-cover flex-1'
               src={`${process.env.NEXT_PUBLIC_API_URL}/images/${currentRound?.image.id}`}
             />

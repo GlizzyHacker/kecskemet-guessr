@@ -1,6 +1,5 @@
 import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
-import typescriptEslintPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -18,10 +17,6 @@ const config = [
   },
   ...compat.extends('plugin:@typescript-eslint/recommended', 'nestjs'),
   {
-    plugins: {
-      '@typescript-eslint': typescriptEslintPlugin,
-    },
-
     languageOptions: {
       parser: tsParser,
       ecmaVersion: 'latest',

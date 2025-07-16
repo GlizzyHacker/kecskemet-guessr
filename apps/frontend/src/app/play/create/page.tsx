@@ -105,13 +105,13 @@ export default function Create() {
     <main className='flex flex-col items-5 min-w-2/3 mx-auto'>
       <div className='flex flex-row bg-secondary rounded-xl p-2'>
         <div className='flex-1'>
-          <Map areas={selectedAreas}></Map>
+          <Map areas={selectedAreas} />
         </div>
         <div className='flex-1 flex flex-col px-8 pb-8 items-center'>
           <form className='grid grid-cols-2 space-y-2' action={handleForm}>
             <h2 className='font-medium text-white transition px-4 pb-2 pt-4 col-span-2 mx-auto'>Create Game</h2>
             <div>
-              <Radio group='difficulty' value='EASY' isDefault={true}>
+              <Radio group='difficulty' value='EASY' isDefault>
                 Normal
               </Radio>
               <Radio group='difficulty' value='NORMAL'>
@@ -122,7 +122,7 @@ export default function Create() {
               </Radio>
             </div>
             <div>
-              <Radio group='area' value='NORMAL' isDefault={true} onSelect={() => onPresetArea('NORMAL')}>
+              <Radio group='area' value='NORMAL' isDefault onSelect={() => onPresetArea('NORMAL')}>
                 Nagykörút
               </Radio>
               <Radio group='area' value='EXPANDED' onSelect={() => onPresetArea('EXPANDED')}>

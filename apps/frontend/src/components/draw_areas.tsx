@@ -27,7 +27,7 @@ export default function DrawAreas({ areasToShow, hint }: { areasToShow: string[]
   }
 
   return [...areas].map((area) => (
-    <div id={area[0]}>
+    <div key={area[0]}>
       {areasToShow.find((show) => show == area[0]) ? (
         <Polygon
           className={hint == area[0] ? 'fill-green-300' : 'fill-primary'}
@@ -39,9 +39,8 @@ export default function DrawAreas({ areasToShow, hint }: { areasToShow: string[]
               lat: cord[1],
             };
           })}
-        ></Polygon>
+        />
       ) : null}
     </div>
   ));
 }
- 
