@@ -10,7 +10,6 @@ import useGameConnection from '@/hooks/useGameConnection';
 import usePlayer from '@/hooks/usePlayer';
 import { GamePhase, ParsedCordinates } from '@/types/game';
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -80,10 +79,9 @@ export default function Play() {
         <Scoreboard className='flex-1  min-w-0' members={game.members} currentRound={currentRound} />
       </div>
       {game.round == 0 || !game.active ? null : (
-        <div className='shrink rounded-xl p-2 bg-secondary w-full relative'>
+        <div className='flex-1 rounded-xl p-2 bg-secondary w-full relative'>
           <div className={`${loading ? 'blur-xl' : ''} flex flex-row justify-center justify-items-center`}>
-            <Image
-              alt='Image to guess'
+            <img
               className='rounded-l-xl object-scale-cover flex-1'
               src={`${process.env.NEXT_PUBLIC_API_URL}/images/${currentRound?.image.id}`}
             />
