@@ -20,7 +20,7 @@ export default function Button({
       disabled={!enable}
       className={`${className} disabled:opacity-15 enabled:cursor-pointer disabled:bg-black bg-tertiary items-center rounded-xl p-1`}
     >
-      <div className='bg-primary items-center rounded-xl p-2'>{children}</div>
+      <div className='bg-primary items-center rounded-[8] p-2'>{children}</div>
     </button>
   );
 }

@@ -4,6 +4,15 @@ export enum Difficulty {
   HARD = 'Impossible',
 }
 
+export enum GamePhase {
+  START,
+  GUESSING,
+  GUESSED,
+  REVEAL,
+  END,
+  DISCONNECTED,
+}
+
 export type Game = {
   id: number;
   active: boolean;
