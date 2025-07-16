@@ -2,11 +2,15 @@
 
 import usePlayer from '@/hooks/usePlayer';
 import api from '@/lib/api';
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import Button from './button';
+import ErrorCard from './error_card';
+import { useState } from 'react';
 
 export default function CreatePlayer() {
   const { data: player } = usePlayer();
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   async function handleCreatePlayer(formData: FormData) {
@@ -14,7 +18,14 @@ export default function CreatePlayer() {
     try {
       const response = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, { name: name });
       router.push(response.data.url);
-    } catch (e) {
+    } catch (e: unknown) {
+      if (e instanceof AxiosError) {
+        if (e.response?.data?.message) {
+          setError(e.response.data.message.join(', '));
+        } else {
+          setError(e.message);
+        }
+      }
       console.log(e);
     }
   }
@@ -24,7 +35,14 @@ export default function CreatePlayer() {
     try {
       const response = await api.patch(`${process.env.NEXT_PUBLIC_API_URL}/players/me`, { name: name });
       router.refresh();
-    } catch (e) {
+    } catch (e: unknown) {
+      if (e instanceof AxiosError) {
+        if (e.response?.data?.message) {
+          setError(e.response.data.message.join(', '));
+        } else {
+          setError(e.message);
+        }
+      }
       console.log(e);
     }
   }
@@ -58,6 +76,7 @@ export default function CreatePlayer() {
           <Button type='submit' className='mx-auto'>
             Rename
           </Button>
+          {error && <ErrorCard className='m-2'>{error}</ErrorCard>}
         </form>
       )}
     </div>

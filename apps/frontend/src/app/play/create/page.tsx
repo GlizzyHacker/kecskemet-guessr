@@ -88,7 +88,7 @@ export default function Create() {
     try {
       const response = await api.post(`/games`, request);
       router.push(`/play/${response.data.id}`);
-    } catch (e: any) {
+    } catch (e: unknown) {
       if (e instanceof AxiosError) {
         if (e.response?.data?.message) {
           setError(e.response.data.message.join(', '));
