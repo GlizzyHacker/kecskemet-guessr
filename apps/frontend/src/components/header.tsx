@@ -5,6 +5,7 @@ import LoginButton from './login_button';
 export default function Header() {
   const links = [{ href: '/rules', title: 'Szabályzat' }];
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const commonHeaderItems = (
     <>
       {links.map((link) => (
@@ -21,7 +22,7 @@ export default function Header() {
         </Link>
 
         <div className='items-center gap-2 h-full p-2'>
-          {commonHeaderItems}
+          {/*commonHeaderItems*/}
           <LoginButton />
         </div>
       </div>
