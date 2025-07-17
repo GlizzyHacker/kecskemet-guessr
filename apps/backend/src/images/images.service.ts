@@ -137,6 +137,8 @@ async function getCordinates(areas: Feature[]): Promise<{ lat: number; lng: numb
       if (response.status == 200) {
         body = await response.json();
         status = body.status;
+      } else {
+        console.log(response);
       }
     }
     retries++;
