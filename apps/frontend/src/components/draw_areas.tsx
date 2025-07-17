@@ -27,7 +27,7 @@ export default function DrawAreas({ areasToShow, hint }: { areasToShow: string[]
   }
 
   return [...areas].map((area) => (
-    <div key={area[0]}>
+    <div key={area[0] + hint}>
       {areasToShow.find((show) => show == area[0]) ? (
         <Polygon
           className={hint == area[0] ? 'fill-green-300' : 'fill-primary'}
