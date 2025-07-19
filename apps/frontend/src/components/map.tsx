@@ -39,6 +39,8 @@ export default function Map({
         minHeight: '250px',
         minWidth: '250px',
         overflow: 'hidden',
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 10,
         zIndex: 0,
       }}
     >
