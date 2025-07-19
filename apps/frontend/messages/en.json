@@ -1,1 +1,68 @@
-{}
+{
+  "Play": {
+    "loading": "Loading game",
+    "image_placeholder": "Image to guess"
+  },
+  "Create": {
+    "easy": "Normal",
+    "normal": "Hard",
+    "hard": "Impossible",
+    "grand_boulevard": "Grand Boulevard",
+    "urban_areas": "Urban areas",
+    "all": "All of Kecskemét",
+    "other": "Other",
+    "area_hint": "Give area hint",
+    "rounds": "Number of rounds",
+    "create": "Create game"
+  },
+  "ActionBar": {
+    "start": "Press 'Start' to start the game",
+    "guessing": "Select on the map where the image on the left is shot from",
+    "guessed": "Waiting for other players to guess",
+    "reveal": "Anwer revealed. Press 'Next' to begin next round",
+    "disconnected": "You have been disconnected from the game",
+    "end": "Game has ended",
+    "start_button": "Start",
+    "guessing_button": "Guess",
+    "reveal_button": "Next",
+    "disconnected_button": "Reconnect",
+    "end_button": "Leave"
+  },
+  "CreatePlayer": {
+    "name": "Name",
+    "create": "Create player",
+    "rename": "Rename"
+  },
+  "GameInfo": {
+    "round": "Round {round} out of {rounds}",
+    "hint": "Hint",
+    "id": "Game id",
+    "difficulty": "Difficulty",
+    "area": "Area"
+  },
+  "GuessMarker": {
+    "my": "My guess",
+    "location": "Image location"
+  },
+  "LoadingIndicator": {
+    "loading": "Loading..."
+  },
+  "LoginButton": {
+    "create": "Create player"
+  },
+  "Map": {
+    "guess": "{name}'s guess, score:{score}"
+  },
+  "Scoreboard": {
+    "ranking": "Ranking",
+    "name": "Name",
+    "score": "Score",
+    "guessed": "Guessed",
+    "left": "left"
+  },
+  "SelectGame": {
+    "create": "Create game",
+    "id": "Game id",
+    "join": "Join game"
+  }
+}

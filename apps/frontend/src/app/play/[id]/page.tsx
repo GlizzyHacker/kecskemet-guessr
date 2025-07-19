@@ -9,6 +9,7 @@ import useGame from '@/hooks/useGame';
 import useGameConnection from '@/hooks/useGameConnection';
 import usePlayer from '@/hooks/usePlayer';
 import { GamePhase, ParsedCordinates } from '@/types/game';
+import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
@@ -25,9 +26,10 @@ export default function Play() {
   const { data: initialGame } = useGame(Number(id));
   const { gameState, answer, isConnected, sendNext, sendGuess } = useGameConnection(initialGame, player);
 
-  const router = useRouter();
   const [guess, setGuess] = useState<ParsedCordinates | undefined>(undefined);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const t = useTranslations('Play');
 
   useEffect(() => {
     setLoading(false);
@@ -50,7 +52,7 @@ export default function Play() {
     return (
       <div className='flex flex-col items-center space-y-2'>
         <Card>
-          <p>Loading game</p>
+          <p>{t('loading')}</p>
         </Card>
       </div>
     );
@@ -85,7 +87,7 @@ export default function Play() {
             <div className='flex-1'>
               <Image
                 className='w-full h-auto rounded-l-[10]'
-                alt='Image to guess'
+                alt={t('image_placeholder')}
                 width={250}
                 height={250}
                 src={`${process.env.NEXT_PUBLIC_API_URL}/images/${currentRound?.image.id}`}

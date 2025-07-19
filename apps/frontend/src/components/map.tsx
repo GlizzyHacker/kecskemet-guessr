@@ -4,6 +4,7 @@ import { LatLng } from 'leaflet';
 import 'leaflet-defaulticon-compatibility';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 import 'leaflet/dist/leaflet.css';
+import { useTranslations } from 'next-intl';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import DrawAreas from './draw_areas';
 import { GuessMarker } from './guess_marker';
@@ -26,6 +27,7 @@ export default function Map({
 }) {
   //NEEDED TO FIX MAP GLITCHES
   window.dispatchEvent(new Event('resize'));
+  const t = useTranslations('Map');
 
   return (
     <MapContainer
@@ -53,9 +55,7 @@ export default function Map({
       <LocationMarker location={location} bounds={guesses?.map((e) => e.latLng) ?? []} />
       {guesses?.map((e) => (
         <Marker key={e.player.id} position={[e.latLng.lat, e.latLng.lng]}>
-          <Popup>
-            {e.player.name}&apos;s guess score:{e.score}
-          </Popup>
+          <Popup>{t('guess', { name: e.player.name, score: e.score })}</Popup>
         </Marker>
       ))}
     </MapContainer>

@@ -1,26 +1,29 @@
 import { GamePhase } from '@/types/game';
+import { useTranslations } from 'next-intl';
 import Button from './button';
 
 export default function ActionBar({ phase, onAction }: { phase: GamePhase; onAction: (phase: GamePhase) => void }) {
+  const t = useTranslations('ActionBar');
+
   let text;
   switch (phase) {
     case GamePhase.START:
-      text = "Press 'Start' to start the game";
+      text = t('start');
       break;
     case GamePhase.GUESSING:
-      text = 'Select on the map where the image on the left is shot from';
+      text = t('guessing');
       break;
     case GamePhase.GUESSED:
-      text = 'Waiting for other players to guess';
+      text = t('guessed');
       break;
     case GamePhase.REVEAL:
-      text = "Anwer revealed. Press 'Next' to begin next round";
+      text = t('reveal');
       break;
     case GamePhase.DISCONNECTED:
-      text = 'You have been disconnected from the game';
+      text = t('disconnected');
       break;
     case GamePhase.END:
-      text = 'Game has ended';
+      text = t('end');
       break;
 
     default:
@@ -29,22 +32,22 @@ export default function ActionBar({ phase, onAction }: { phase: GamePhase; onAct
   let button;
   switch (phase) {
     case GamePhase.START:
-      button = 'Start';
+      button = t('start_button');
       break;
     case GamePhase.GUESSING:
-      button = 'Guess';
+      button = t('guessing_button');
       break;
     case GamePhase.GUESSED:
-      button = 'Guess';
+      button = t('guessing_button');
       break;
     case GamePhase.REVEAL:
-      button = 'Next';
+      button = t('reveal_button');
       break;
     case GamePhase.DISCONNECTED:
-      button = 'Reconnect';
+      button = t('disconnected_button');
       break;
     case GamePhase.END:
-      button = 'Leave';
+      button = t('end_button');
       break;
 
     default:

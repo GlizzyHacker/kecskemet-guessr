@@ -1,3 +1,6 @@
+import { useTranslations } from 'next-intl';
+
 export default function LoadingIndicator() {
-  return <p className='text-center'>Loading...</p>;
+  const t = useTranslations('LoadingIndicator');
+  return <p className='text-center'>{t('loading')}</p>;
 }
