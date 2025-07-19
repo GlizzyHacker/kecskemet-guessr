@@ -15,6 +15,9 @@
     "rounds": "Number of rounds",
     "create": "Create game"
   },
+  "Home": {
+    "play": "Play"
+  },
   "ActionBar": {
     "start": "Press 'Start' to start the game",
     "guessing": "Select on the map where the image on the left is shot from",
