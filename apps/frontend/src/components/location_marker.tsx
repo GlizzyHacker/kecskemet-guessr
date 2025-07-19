@@ -1,5 +1,6 @@
 import { ParsedCordinates } from '@/types/game';
 import { LatLngBounds } from 'leaflet';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { Marker, Popup, useMap } from 'react-leaflet';
 
@@ -7,6 +8,7 @@ export default function LocationMarker(options: {
   location: ParsedCordinates | undefined;
   bounds: ParsedCordinates[] | undefined;
 }) {
+  const t = useTranslations('GuessMarker');
   const map = useMap();
   useMemo(() => {
     if (options.location) {
@@ -22,7 +24,7 @@ export default function LocationMarker(options: {
 
   return !options.location ? null : (
     <Marker opacity={0.5} position={[options.location!.lat, options.location!.lng]}>
-      <Popup>Image Location</Popup>
+      <Popup>{t('location')}</Popup>
     </Marker>
   );
 }

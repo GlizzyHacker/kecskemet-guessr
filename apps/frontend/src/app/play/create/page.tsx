@@ -7,6 +7,7 @@ import Radio from '@/components/radio';
 import useAreas from '@/hooks/useAreas';
 import api from '@/lib/api';
 import { AxiosError } from 'axios';
+import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -22,6 +23,7 @@ export default function Create() {
   const [showAreaSelection, setShowAreaSelection] = useState(false);
   const [selectedAreas, setSelectedAreas] = useState<string[]>(getAreasForOption('NORMAL') ?? []);
 
+  const t = useTranslations('Create');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -112,27 +114,27 @@ export default function Create() {
             <h2 className='font-medium text-white transition px-4 pb-2 pt-4 col-span-2 mx-auto'>Create Game</h2>
             <div>
               <Radio group='difficulty' value='EASY' isDefault>
-                Normal
+                {t('easy')}
               </Radio>
               <Radio group='difficulty' value='NORMAL'>
-                Hard
+                {t('normal')}
               </Radio>
               <Radio group='difficulty' value='HARD'>
-                Impossible
+                {t('hard')}
               </Radio>
             </div>
             <div>
               <Radio group='area' value='NORMAL' isDefault onSelect={() => onPresetArea('NORMAL')}>
-                Nagykörút
+                {t('grand_boulevard')}
               </Radio>
               <Radio group='area' value='EXPANDED' onSelect={() => onPresetArea('EXPANDED')}>
-                Belterületek
+                {t('urban_areas')}
               </Radio>
               <Radio group='area' value='ALL' onSelect={() => onPresetArea('ALL')}>
-                Egész Kecskemét
+                {t('all')}
               </Radio>
               <Radio group='area' value='OTHER' onSelect={onCustomArea}>
-                Egyéb
+                {t('other')}
               </Radio>
             </div>
             {showAreaSelection && areas && (
@@ -143,11 +145,11 @@ export default function Create() {
             <div>
               <input type='checkbox' id='hint' name='hint' />
               <label className='pl-2' htmlFor='hint'>
-                Give area hint
+                {t('area_hint')}
               </label>
             </div>
             <div className='mx-auto col-span-2'>
-              <label htmlFor='rounds'>Number of rounds</label>
+              <label htmlFor='rounds'>{t('rounds')}</label>
               <input
                 type='number'
                 id='rounds'
@@ -157,7 +159,7 @@ export default function Create() {
               />
             </div>
             <Button enable={!loading} className='mx-auto col-span-2 mt-2' type='submit'>
-              Create Game
+              {t('create')}
             </Button>
             {error && <ErrorCard className='col-span-2'>{error}</ErrorCard>}
           </form>

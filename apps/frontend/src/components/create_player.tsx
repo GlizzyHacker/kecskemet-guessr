@@ -3,15 +3,17 @@
 import usePlayer from '@/hooks/usePlayer';
 import api from '@/lib/api';
 import { AxiosError } from 'axios';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import Button from './button';
 import ErrorCard from './error_card';
-import { useState } from 'react';
 
 export default function CreatePlayer() {
   const { data: player } = usePlayer();
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const t = useTranslations('CreatePlayer');
 
   async function handleCreatePlayer(formData: FormData) {
     const name = formData.get('name')!.toString();
@@ -51,7 +53,7 @@ export default function CreatePlayer() {
     <div>
       {!player && (
         <form action={handleCreatePlayer} className='bg-secondary p-2'>
-          <label htmlFor='name'>Name:</label>
+          <label htmlFor='name'>{t('name')}:</label>
           <input
             id='name'
             name='name'
@@ -60,7 +62,7 @@ export default function CreatePlayer() {
             className='bg-primary flex rounded-xl p-2'
           />
           <br />
-          <Button type='submit'>Create player</Button>
+          <Button type='submit'>{t('create')}</Button>
         </form>
       )}
       {player && (
@@ -74,7 +76,7 @@ export default function CreatePlayer() {
           />
           <br />
           <Button type='submit' className='mx-auto'>
-            Rename
+            {t('rename')}
           </Button>
           {error && <ErrorCard className='m-2'>{error}</ErrorCard>}
         </form>

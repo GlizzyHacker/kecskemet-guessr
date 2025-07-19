@@ -9,7 +9,9 @@ import useGame from '@/hooks/useGame';
 import useGameConnection from '@/hooks/useGameConnection';
 import usePlayer from '@/hooks/usePlayer';
 import { GamePhase, ParsedCordinates } from '@/types/game';
+import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -24,9 +26,10 @@ export default function Play() {
   const { data: initialGame } = useGame(Number(id));
   const { gameState, answer, isConnected, sendNext, sendGuess } = useGameConnection(initialGame, player);
 
-  const router = useRouter();
   const [guess, setGuess] = useState<ParsedCordinates | undefined>(undefined);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const t = useTranslations('Play');
 
   useEffect(() => {
     setLoading(false);
@@ -49,7 +52,7 @@ export default function Play() {
     return (
       <div className='flex flex-col items-center space-y-2'>
         <Card>
-          <p>Loading game</p>
+          <p>{t('loading')}</p>
         </Card>
       </div>
     );
@@ -81,11 +84,16 @@ export default function Play() {
       {game.round == 0 || !game.active ? null : (
         <div className='flex-1 rounded-xl p-2 bg-secondary w-full relative'>
           <div className={`${loading ? 'blur-xl' : ''} flex flex-row justify-center justify-items-center`}>
-            <img
-              className='rounded-l-xl object-scale-cover flex-1'
-              src={`${process.env.NEXT_PUBLIC_API_URL}/images/${currentRound?.image.id}`}
-            />
-            <div className='flex flex-1 rounded-r-xl items-center'>
+            <div className='flex-1'>
+              <Image
+                className='w-full h-auto rounded-l-[10]'
+                alt={t('image_placeholder')}
+                width={250}
+                height={250}
+                src={`${process.env.NEXT_PUBLIC_API_URL}/images/${currentRound?.image.id}`}
+              />
+            </div>
+            <div className='flex flex-1 items-center'>
               <Map
                 onMapClick={(e: ParsedCordinates) => (guessed ? null : setGuess(e))}
                 areas={game.area.split(',')}

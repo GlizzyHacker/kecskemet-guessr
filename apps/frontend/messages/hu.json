@@ -1,0 +1,69 @@
+{
+  "Play": {
+    "loading": "Játék töltése",
+    "image_placeholder": "Keresendő kép"
+  },
+  "Create": {
+    "easy": "Normál",
+    "normal": "Nehéz",
+    "hard": "Lehetetlen",
+    "grand_boulevard": "Nagykörút",
+    "urban_areas": "Belterületek",
+    "all": "Egész Kecskemét",
+    "other": "Egyéb",
+    "area_hint": "Városrész segítség",
+    "rounds": "Körök száma",
+    "create": "Játék létrehozása"
+  },
+  "Home": { "play": "Játék" },
+  "ActionBar": {
+    "start": "Nyomja meg a 'Start' gombot a kezdéshez",
+    "guessing": "Válassza ki a térképen, hogy hol készült a baloldali kép",
+    "guessed": "Várakozás a többi játékos tippjére",
+    "reveal": "Válasz felfedve. Nyomja meg a 'Következő' gombot a következő kör kezdéséhez",
+    "disconnected": "Megszakadt a kapcsolat a szerverrel",
+    "end": "A játék véget ért",
+    "start_button": "Start",
+    "guessing_button": "Tipp",
+    "reveal_button": "Következő",
+    "disconnected_button": "Újracsatlakozás",
+    "end_button": "Kilépés"
+  },
+  "CreatePlayer": {
+    "name": "Név",
+    "create": "Játékos létrehozása",
+    "rename": "Átnevezés"
+  },
+  "GameInfo": {
+    "round": "{round}/{rounds} kör",
+    "hint": "Segítség",
+    "id": "Játék azonosító",
+    "difficulty": "Nehézség",
+    "area": "Terület"
+  },
+  "GuessMarker": {
+    "my": "Tippem",
+    "location": "Kép helye"
+  },
+  "LoadingIndicator": {
+    "loading": "Töltés..."
+  },
+  "LoginButton": {
+    "create": "Játékos létrehozása"
+  },
+  "Map": {
+    "guess": "{name} tippje, {score} pont"
+  },
+  "Scoreboard": {
+    "ranking": "Helyezés",
+    "name": "Név",
+    "score": "Pontszám",
+    "guessed": "Tippelt",
+    "left": "kilépett"
+  },
+  "SelectGame": {
+    "create": "Játék létrehozása",
+    "id": "Játék azonosító",
+    "join": "Belépés a játékba"
+  }
+}
