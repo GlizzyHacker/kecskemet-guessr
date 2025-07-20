@@ -4,16 +4,20 @@
     "image_placeholder": "Keresendő kép"
   },
   "Create": {
+    "difficulty": "Nehézség",
     "easy": "Normál",
     "normal": "Nehéz",
     "hard": "Lehetetlen",
+    "area": "Terület",
     "grand_boulevard": "Nagykörút",
     "urban_areas": "Belterületek",
     "all": "Egész Kecskemét",
     "other": "Egyéb",
     "area_hint": "Városrész segítség",
     "rounds": "Körök száma",
-    "create": "Játék létrehozása"
+    "create": "Játék létrehozása",
+    "timer": "Időkorlát",
+    "limit": "{minute, plural, =0 {Nincs} other {# perc}}"
   },
   "Home": { "play": "Játék" },
   "ActionBar": {

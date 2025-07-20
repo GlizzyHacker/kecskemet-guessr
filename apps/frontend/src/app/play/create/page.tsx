@@ -84,6 +84,7 @@ export default function Create() {
     const request = {
       difficulty: formData.get('difficulty'),
       areas: selectedAreas,
+      timer: Number(formData.get('timer')),
       totalRounds: Number(formData.get('rounds')),
       hint: Boolean(formData.get('hint')),
     };
@@ -113,35 +114,55 @@ export default function Create() {
           <form className='grid grid-cols-2 space-y-2' action={handleForm}>
             <h2 className='font-medium text-white transition px-4 pb-2 pt-4 col-span-2 mx-auto'>Create Game</h2>
             <div>
-              <Radio group='difficulty' value='EASY' isDefault>
-                {t('easy')}
-              </Radio>
-              <Radio group='difficulty' value='NORMAL'>
-                {t('normal')}
-              </Radio>
-              <Radio group='difficulty' value='HARD'>
-                {t('hard')}
-              </Radio>
+              <h2>{t('difficulty')}</h2>
+              <div className='pl-2'>
+                <Radio group='difficulty' value='EASY' isDefault>
+                  {t('easy')}
+                </Radio>
+                <Radio group='difficulty' value='NORMAL'>
+                  {t('normal')}
+                </Radio>
+                <Radio group='difficulty' value='HARD'>
+                  {t('hard')}
+                </Radio>
+              </div>
             </div>
             <div>
-              <Radio group='area' value='NORMAL' isDefault onSelect={() => onPresetArea('NORMAL')}>
-                {t('grand_boulevard')}
-              </Radio>
-              <Radio group='area' value='EXPANDED' onSelect={() => onPresetArea('EXPANDED')}>
-                {t('urban_areas')}
-              </Radio>
-              <Radio group='area' value='ALL' onSelect={() => onPresetArea('ALL')}>
-                {t('all')}
-              </Radio>
-              <Radio group='area' value='OTHER' onSelect={onCustomArea}>
-                {t('other')}
-              </Radio>
+              <h2>{t('area')}</h2>
+              <div className='pl-2'>
+                <Radio group='area' value='NORMAL' isDefault onSelect={() => onPresetArea('NORMAL')}>
+                  {t('grand_boulevard')}
+                </Radio>
+                <Radio group='area' value='EXPANDED' onSelect={() => onPresetArea('EXPANDED')}>
+                  {t('urban_areas')}
+                </Radio>
+                <Radio group='area' value='ALL' onSelect={() => onPresetArea('ALL')}>
+                  {t('all')}
+                </Radio>
+                <Radio group='area' value='OTHER' onSelect={onCustomArea}>
+                  {t('other')}
+                </Radio>
+              </div>
             </div>
             {showAreaSelection && areas && (
               <div className='grid grid-cols-2 col-span-2 '>
                 <Checkboxes options={[...areas].map((area) => area[0])} selectionChanged={setSelectedAreas} />
               </div>
             )}
+            <div>
+              <h2>{t('timer')}</h2>
+              <div className='pl-2'>
+                <Radio group='timer' value='0' isDefault>
+                  {t('limit', { minute: 0 })}
+                </Radio>
+                <Radio group='timer' value='1'>
+                  {t('limit', { minute: 1 })}
+                </Radio>
+                <Radio group='timer' value='2'>
+                  {t('limit', { minute: 2 })}
+                </Radio>
+              </div>
+            </div>
             <div>
               <input type='checkbox' id='hint' name='hint' />
               <label className='pl-2' htmlFor='hint'>
