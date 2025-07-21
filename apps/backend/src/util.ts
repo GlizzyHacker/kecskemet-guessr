@@ -39,3 +39,7 @@ export function inPolygon(x: number, y: number, polygon: number[][]) {
 
   return wn != 0;
 }
+
+export function getSecondsSince(date: Date): number {
+  return Math.floor(Math.abs(Date.now() - date.getTime()) / 1000);
+}
