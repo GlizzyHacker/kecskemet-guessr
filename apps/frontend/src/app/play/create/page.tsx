@@ -155,10 +155,10 @@ export default function Create() {
                 <Radio group='timer' value='0' isDefault>
                   {t('limit', { minute: 0 })}
                 </Radio>
-                <Radio group='timer' value='1'>
+                <Radio group='timer' value='60'>
                   {t('limit', { minute: 1 })}
                 </Radio>
-                <Radio group='timer' value='2'>
+                <Radio group='timer' value='120'>
                   {t('limit', { minute: 2 })}
                 </Radio>
               </div>
