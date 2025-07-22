@@ -4,12 +4,15 @@ CREATE TYPE "Difficulty" AS ENUM ('EASY', 'NORMAL', 'HARD');
 -- CreateTable
 CREATE TABLE "Game" (
     "id" SERIAL NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "active" BOOLEAN NOT NULL DEFAULT true,
     "round" INTEGER NOT NULL DEFAULT 0,
     "totalRounds" INTEGER NOT NULL,
     "area" TEXT NOT NULL DEFAULT '',
     "hint" BOOLEAN NOT NULL DEFAULT false,
     "difficulty" "Difficulty" NOT NULL DEFAULT 'EASY',
+    "timer" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "Game_pkey" PRIMARY KEY ("id")
 );
@@ -36,6 +39,7 @@ CREATE TABLE "Member" (
 -- CreateTable
 CREATE TABLE "Round" (
     "id" SERIAL NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "imageId" INTEGER NOT NULL,
     "gameId" INTEGER NOT NULL,
 
