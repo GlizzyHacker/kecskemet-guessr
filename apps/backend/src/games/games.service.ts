@@ -22,6 +22,7 @@ export class GamesService {
           difficulty: createGameDto.difficulty,
           area: areas.join(','),
           hint: createGameDto.hint,
+          timer: createGameDto.timer,
         },
       });
     } catch (e) {

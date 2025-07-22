@@ -23,10 +23,12 @@ export type Game = {
   area: string;
   members: Array<Member>;
   rounds: Array<Round>;
+  timer: number;
 };
 
 export type Round = {
   id: number;
+  createdAt: string;
   image: Image;
   guesses: Array<Guess>;
 };

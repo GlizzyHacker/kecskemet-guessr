@@ -14,7 +14,9 @@ datasource db {
 }
 
 model Game {
-  id Int @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   active      Boolean    @default(true)
   round       Int        @default(0)
@@ -22,6 +24,7 @@ model Game {
   area        String     @default("")
   hint        Boolean    @default(false)
   difficulty  Difficulty @default(EASY)
+  timer       Int        @default(0)
 
   members Member[]
   rounds  Round[]
@@ -49,7 +52,8 @@ model Member {
 }
 
 model Round {
-  id Int @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
 
   imageId Int
   image   Image   @relation(fields: [imageId], references: [id])

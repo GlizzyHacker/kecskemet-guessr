@@ -3,6 +3,7 @@
 import ActionBar from '@/components/action_bar';
 import Card from '@/components/card';
 import GameInfo from '@/components/game_info';
+import GuessCountdown from '@/components/guess_countdown';
 import LoadingIndicator from '@/components/loading_indicator';
 import Scoreboard from '@/components/scoreboard';
 import useGame from '@/hooks/useGame';
@@ -88,8 +89,8 @@ export default function Play() {
               <Image
                 className='w-full h-auto rounded-l-[10]'
                 alt={t('image_placeholder')}
-                width={250}
-                height={250}
+                width={1000}
+                height={1000}
                 src={`${process.env.NEXT_PUBLIC_API_URL}/images/${currentRound?.image.id}`}
               />
             </div>
@@ -119,7 +120,9 @@ export default function Play() {
           )}
         </div>
       )}
-      <ActionBar phase={phase} onAction={handleAction} />
+      <ActionBar phase={phase} onAction={handleAction}>
+        <GuessCountdown game={game} />
+      </ActionBar>
     </main>
   );
 }

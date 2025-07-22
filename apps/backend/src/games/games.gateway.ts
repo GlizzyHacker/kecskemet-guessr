@@ -11,7 +11,7 @@ import {
 import { GuessesService } from 'src/guesses/guesses.service';
 import { MembersService } from 'src/members/members.service';
 import { RoundsService } from 'src/rounds/rounds.service';
-import { getDistance } from 'src/util';
+import { getDistance, getSecondsSince } from 'src/util';
 import { GamesService } from './games.service';
 
 @WebSocketGateway({
@@ -32,6 +32,7 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   memberToClient = new Map();
   clientToMember = new Map();
+  gameToTimeout = new Map();
 
   async handleConnection(client) {
     const gameId = client.handshake.auth.game;
@@ -93,7 +94,7 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
     await this.tryEndRound(id);
   }
 
-  async tryEndRound(gameId: number) {
+  async tryEndRound(gameId: number, force: boolean = false) {
     const game = await this.gamesService.findOne(gameId);
     if (!game.rounds[game.round - 1] || game.members.every((member) => !member.connected)) {
       return;
@@ -105,11 +106,14 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
     await this.sendToAllInGame(game, 'turn', game);
 
     if (
+      force ||
       game.members.every(
         (member) =>
           member.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1].id) || member.connected == false
       )
     ) {
+      this.gameToTimeout.get(game.id)?.close();
+      this.gameToTimeout.delete(game.id);
       await this.sendToAllInGame(game, 'guess', round);
     }
   }
@@ -122,6 +126,7 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
     if (
       game.round != 0 &&
+      getSecondsSince(game.rounds[game.round - 1].createdAt) < game.timer &&
       game.members.some(
         (member) =>
           member.guesses.every((guess) => guess.roundId != game.rounds[game.round - 1]?.id) && member.connected
@@ -132,7 +137,13 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
     if (game.totalRounds <= game.round) {
       await this.gamesService.finish(gameId);
     } else {
-      await this.gamesService.nextRound(gameId);
+      const game = await this.gamesService.nextRound(gameId);
+      if (game.timer) {
+        this.gameToTimeout.set(
+          game.id,
+          setTimeout(() => this.tryEndRound(game.id, true), game.timer * 1000)
+        );
+      }
     }
     await this.updateGameState(gameId);
   }
