@@ -44,6 +44,7 @@
     "round": "Round {round} out of {rounds}",
     "hint": "Hint",
     "id": "Game id",
+    "timer" :"Time limit",
     "difficulty": "Difficulty",
     "area": "Area"
   },

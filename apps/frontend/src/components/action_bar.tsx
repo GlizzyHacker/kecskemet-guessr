@@ -1,8 +1,17 @@
 import { GamePhase } from '@/types/game';
 import { useTranslations } from 'next-intl';
+import { ReactNode } from 'react';
 import Button from './button';
 
-export default function ActionBar({ phase, onAction }: { phase: GamePhase; onAction: (phase: GamePhase) => void }) {
+export default function ActionBar({
+  phase,
+  children,
+  onAction,
+}: {
+  phase: GamePhase;
+  children: ReactNode;
+  onAction: (phase: GamePhase) => void;
+}) {
   const t = useTranslations('ActionBar');
 
   let text;
@@ -57,6 +66,7 @@ export default function ActionBar({ phase, onAction }: { phase: GamePhase; onAct
   return (
     <div className=' bg-secondary rounded-xl p-2 w-full flex items-center'>
       <p className='flex-1 ml-2'>{text}</p>
+      <div className='min-w-14 mx-2'>{children}</div>
       <Button onClick={() => onAction(phase)} enable={phase != GamePhase.GUESSED}>
         {button}
       </Button>

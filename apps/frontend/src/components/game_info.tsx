@@ -4,7 +4,7 @@ import Card from './card';
 
 export default function GameInfo({ className = '', game }: { className?: string; game: Game }) {
   const t = useTranslations('GameInfo');
-  const tdiff = useTranslations('Create');
+  const topt = useTranslations('Create');
   return (
     <Card className={`${className}`}>
       <h1 className='text-center p-3'>{t('round', { round: game.round, rounds: game.totalRounds })}</h1>
@@ -18,7 +18,10 @@ export default function GameInfo({ className = '', game }: { className?: string;
           {t('id')}: {game.id}
         </p>
         <p className='p-2'>
-          {t('difficulty')}: {tdiff(game.difficulty.toLowerCase())}
+          {t('timer')}: {topt('limit', { minute: game.timer / 60 })}
+        </p>
+        <p className='p-2'>
+          {t('difficulty')}: {topt(game.difficulty.toLowerCase())}
         </p>
         <p className='p-2'>
           {t('area')}: {game.area.split(',').join(', ')}

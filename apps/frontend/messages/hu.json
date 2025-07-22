@@ -42,6 +42,7 @@
     "round": "{round}/{rounds} kör",
     "hint": "Segítség",
     "id": "Játék azonosító",
+    "timer": "Időkorlát",
     "difficulty": "Nehézség",
     "area": "Terület"
   },
