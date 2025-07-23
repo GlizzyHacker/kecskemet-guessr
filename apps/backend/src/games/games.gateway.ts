@@ -10,6 +10,8 @@ import {
 } from '@nestjs/websockets';
 import { GuessesService } from 'src/guesses/guesses.service';
 import { MembersService } from 'src/members/members.service';
+import { createMessageDto } from 'src/messages/dto/create-message.dto';
+import { MessagesService } from 'src/messages/messages.service';
 import { RoundsService } from 'src/rounds/rounds.service';
 import { getDistance, getSecondsSince } from 'src/util';
 import { GamesService } from './games.service';
@@ -27,6 +29,7 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly guessService: GuessesService,
     private readonly roundsService: RoundsService,
     private readonly membersService: MembersService,
+    private readonly messagesService: MessagesService,
     private readonly jwtService: JwtService
   ) {}
 
@@ -146,6 +149,15 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
       }
     }
     await this.updateGameState(gameId);
+  }
+
+  @SubscribeMessage('chat')
+  async handleMessage(@ConnectedSocket() client, @MessageBody('message') createMessageDto: createMessageDto) {
+    createMessageDto.memberId = this.clientToMember.get(client.id);
+    const message = await this.messagesService.create(createMessageDto);
+    if (message) {
+      await this.sendToAllInGame(message.game, 'chat', message);
+    }
   }
 
   async updateGameState(gameId: number) {
