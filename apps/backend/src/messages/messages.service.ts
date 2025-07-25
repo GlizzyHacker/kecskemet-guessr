@@ -13,7 +13,7 @@ export class MessagesService {
           gameId: createMessageDto.gameId,
           memberId: createMessageDto.memberId,
         },
-        include: { member: true, game: true },
+        include: { member: true, game: { include: { members: true } } },
       });
     } catch (e) {
       console.error(e);

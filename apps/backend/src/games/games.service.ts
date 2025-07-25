@@ -35,12 +35,12 @@ export class GamesService {
     const game = await this.prisma.game.findUnique({
       where: { id },
       include: {
+        messages: includeMessages,
         rounds: { include: { image: { select: { id: true, area: true } } } },
         members: {
           include: {
             guesses: { select: { id: true, roundId: true, memberId: true, score: true } },
             player: true,
-            messages: includeMessages,
           },
         },
       },
