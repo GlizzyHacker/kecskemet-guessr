@@ -5,6 +5,9 @@ export default function GuessCountdown({ game }: { game: Game }) {
   if (!game?.rounds[game.round - 1]) {
     return;
   }
+  if (game.timer == 0) {
+    return;
+  }
   return (
     <Countdown
       key={game.round}

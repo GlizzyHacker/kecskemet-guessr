@@ -1,4 +1,4 @@
-import { Game, ParsedCordinates, Player, RoundWithAnswer } from '@/types/game';
+import { Game, Message, ParsedCordinates, Player, RoundWithAnswer } from '@/types/game';
 import Cookies from 'js-cookie';
 import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
@@ -10,12 +10,15 @@ export default function useGameConnection(
   gameState: Game | undefined;
   answer: RoundWithAnswer | null;
   isConnected: boolean;
+  messages: Message[];
   sendNext: () => void;
   sendGuess: (cords: ParsedCordinates) => void;
+  sendMessage: (content: string) => void;
 } {
   const [gameState, setGameState] = useState<Game | undefined>(game);
   const [answer, setAnswer] = useState<RoundWithAnswer | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const socketRef = useRef(
     io(process.env.NEXT_PUBLIC_API_URL, {
@@ -49,12 +52,14 @@ export default function useGameConnection(
     socketRef.current.on('disconnect', onDisconnect);
     socketRef.current.on('turn', onTurn);
     socketRef.current.on('guess', onGuess);
+    socketRef.current.on('chat', onChat);
 
     return (): void => {
       socketRef.current.off('connect', onConnect);
       socketRef.current.off('disconnect', onDisconnect);
       socketRef.current.off('turn', onTurn);
       socketRef.current.off('guess', onGuess);
+      socketRef.current.off('chat', onChat);
     };
   }, [player, game]);
 
@@ -67,6 +72,10 @@ export default function useGameConnection(
 
   function onGuess(val: RoundWithAnswer): void {
     setAnswer(val);
+  }
+
+  function onChat(val: Message): void {
+    setMessages([...messages, val]);
   }
 
   function sendNext(): void {
@@ -84,11 +93,17 @@ export default function useGameConnection(
     });
   }
 
+  function sendMessage(content: string): void {
+    socketRef.current.emit('chat', { message: { gameId: (gameState ?? game)?.id, content: content } });
+  }
+
   return {
     gameState,
     answer,
     isConnected,
+    messages,
     sendNext,
     sendGuess,
+    sendMessage,
   };
 }
