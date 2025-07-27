@@ -19,7 +19,7 @@ export default function Chat({
   console.log(messages);
   return (
     <div className={`${className} bg-secondary rounded-xl p-2 space-y-2 h-[300] flex flex-col`}>
-      <div className='flex-1 space-y-4 overflow-y-scroll overflow-'>
+      <div className='bg-primary flex-1 space-y-4 overflow-y-scroll rounded-[8] p-2'>
         {messages.map((message) => (
           <div key={message.author + message.id} className='flex flex-col space-x-2'>
             <div className='flex flex-row space-x-2'>
