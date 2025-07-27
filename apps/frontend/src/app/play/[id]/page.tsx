@@ -86,7 +86,7 @@ export default function Play() {
       <div className='flex items-stretch w-full space-x-3'>
         <Chat
           className='flex-1 min-w-0'
-          messages={[...(initialGame?.messages ?? []), ...messages].map((msg) => ({
+          messages={[...(initialGame?.messages ?? []).filter((msg) => !messages.find((m) => m.id == msg.id)), ...messages].map((msg) => ({
             id: msg.id,
             content: msg.content,
             author: game.members.find((member) => member.id == msg.memberId)?.player.name ?? '',
