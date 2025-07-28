@@ -16,7 +16,6 @@ export default function Chat({
     onSend(String(form.get('content')));
   }
 
-  console.log(messages);
   return (
     <div className={`${className} bg-secondary rounded-xl p-2 space-y-2 h-[300] flex flex-col`}>
       <div className='bg-primary flex-1 space-y-4 overflow-y-scroll rounded-[8] p-2'>
@@ -31,7 +30,13 @@ export default function Chat({
         ))}
       </div>
       <form action={handleForm} className='flex space-x-2'>
-        <input id='content' name='content' type='text' className='bg-primary flex rounded-xl p-2 flex-1' />
+        <input
+          id='content'
+          name='content'
+          type='text'
+          autoComplete='off'
+          className='bg-primary flex rounded-xl p-2 flex-1'
+        />
         <Button type='submit'>{t('send')}</Button>
       </form>
     </div>

@@ -84,6 +84,7 @@ export default function Play() {
     <main className='flex flex-col items-stretch w-full space-y-2'>
       <GameInfo game={game} />
       <div className='flex items-stretch w-full space-x-3'>
+        <Scoreboard className='flex-1  min-w-0' members={game.members} currentRound={currentRound} />
         <Chat
           className='flex-1 min-w-0'
           messages={[...(initialGame?.messages ?? []).filter((msg) => !messages.find((m) => m.id == msg.id)), ...messages].map((msg) => ({
@@ -94,7 +95,6 @@ export default function Play() {
           }))}
           onSend={sendMessage}
         />
-        <Scoreboard className='flex-1  min-w-0' members={game.members} currentRound={currentRound} />
       </div>
       {game.round == 0 || !game.active ? null : (
         <div className='flex-1 rounded-xl p-2 bg-secondary w-full relative'>
