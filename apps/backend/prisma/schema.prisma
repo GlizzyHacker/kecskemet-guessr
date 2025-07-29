@@ -80,6 +80,7 @@ model Guess {
 
   cordinates String
   score      Int    @default(0)
+  vote       Int    @default(0)
 
   roundId  Int
   round    Round  @relation(fields: [roundId], references: [id])

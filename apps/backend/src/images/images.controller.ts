@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, StreamableFile } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, StreamableFile } from '@nestjs/common';
 import { createReadStream } from 'fs';
 import { CreateImageDto } from './dto/create-image.dto';
+import { UpdateImageDto } from './dto/update-image.dto';
 import { ImagesService } from './images.service';
 
 @Controller('images')
@@ -24,13 +25,8 @@ export class ImagesController {
     return new StreamableFile(file, { type: 'image/jpeg' });
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateImageDto: UpdateImageDto) {
-  //   return this.imagesService.update(+id, updateImageDto);
-  // }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.imagesService.remove(+id);
+  @Patch(':id')
+  async update(@Param('id', ParseIntPipe) id: number, @Body() updateImageDto: UpdateImageDto) {
+    return await this.imagesService.update(id, updateImageDto);
   }
 }

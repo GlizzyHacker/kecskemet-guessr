@@ -6,6 +6,7 @@ import { AreasService } from 'src/areas/areas.service';
 import { Feature } from 'src/areas/entity/area.entity';
 import { getDistance, inPolygon } from 'src/util';
 import { CreateImageDto } from './dto/create-image.dto';
+import { UpdateImageDto } from './dto/update-image.dto';
 
 @Injectable()
 export class ImagesService {
@@ -92,9 +93,15 @@ export class ImagesService {
     return image;
   }
 
-  // update(id: number, updateImageDto: UpdateImageDto) {
-  //   return `This action updates a #${id} image`;
-  // }
+  async update(id: number, updateImageDto: UpdateImageDto) {
+    const image = await this.prisma.image.update({ where: { id }, data: updateImageDto });
+
+    if (!image) {
+      throw new NotFoundException(`Image with id ${id} not found`);
+    }
+
+    return image;
+  }
 
   remove(id: number) {
     return `This action removes a #${id} image`;
