@@ -92,10 +92,6 @@ export class ImagesService {
     return image;
   }
 
-  // update(id: number, updateImageDto: UpdateImageDto) {
-  //   return `This action updates a #${id} image`;
-  // }
-
   remove(id: number) {
     return `This action removes a #${id} image`;
   }

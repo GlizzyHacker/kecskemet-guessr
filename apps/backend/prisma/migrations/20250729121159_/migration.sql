@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Guess" ADD COLUMN     "vote" INTEGER NOT NULL DEFAULT 0;

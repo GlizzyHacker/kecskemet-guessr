@@ -1,6 +1,7 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { CreateGuessDto } from './dto/create-guess.dto';
+import { UpdateGuessDto } from './dto/update-guess.dto';
 
 @Injectable()
 export class GuessesService {
@@ -19,5 +20,15 @@ export class GuessesService {
       console.error(e);
       throw new BadRequestException('Could not create Guess');
     }
+  }
+
+  async update(id: number, updateGuessDto: UpdateGuessDto) {
+    const image = await this.prisma.guess.update({ where: { id }, data: updateGuessDto });
+
+    if (!image) {
+      throw new NotFoundException(`Guess with id ${id} not found`);
+    }
+
+    return image;
   }
 }
