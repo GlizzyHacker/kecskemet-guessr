@@ -5,6 +5,7 @@ import Card from '@/components/card';
 import Chat from '@/components/chat';
 import GameInfo from '@/components/game_info';
 import GuessCountdown from '@/components/guess_countdown';
+import ImageVote from '@/components/image_vote';
 import LoadingIndicator from '@/components/loading_indicator';
 import Scoreboard from '@/components/scoreboard';
 import useGame from '@/hooks/useGame';
@@ -87,7 +88,10 @@ export default function Play() {
         <Scoreboard className='flex-1  min-w-0' members={game.members} currentRound={currentRound} />
         <Chat
           className='flex-1 min-w-0'
-          messages={[...(initialGame?.messages ?? []).filter((msg) => !messages.find((m) => m.id == msg.id)), ...messages].map((msg) => ({
+          messages={[
+            ...(initialGame?.messages ?? []).filter((msg) => !messages.find((m) => m.id == msg.id)),
+            ...messages,
+          ].map((msg) => ({
             id: msg.id,
             content: msg.content,
             author: game.members.find((member) => member.id == msg.memberId)?.player.name ?? '',
@@ -135,7 +139,15 @@ export default function Play() {
         </div>
       )}
       <ActionBar phase={phase} onAction={handleAction}>
-        <GuessCountdown game={game} />
+        {phase == GamePhase.REVEAL ? (
+          <ImageVote
+            guess={answer?.guesses.find(
+              (guess) => game.members.find((member) => member.player.id == player?.id)?.id == guess.memberId
+            )}
+          />
+        ) : (
+          <GuessCountdown game={game} />
+        )}
       </ActionBar>
     </main>
   );
