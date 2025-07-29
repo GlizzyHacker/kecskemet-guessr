@@ -11,6 +11,7 @@ import { ImagesModule } from './images/images.module';
 import { MembersModule } from './members/members.module';
 import { PlayersModule } from './players/players.module';
 import { RoundsModule } from './rounds/rounds.module';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { RoundsModule } from './rounds/rounds.module';
     MembersModule,
     AuthModule,
     AreasModule,
+    MessagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

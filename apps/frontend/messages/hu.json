@@ -33,6 +33,7 @@
     "disconnected_button": "Újracsatlakozás",
     "end_button": "Kilépés"
   },
+  "Chat": { "send": "Küldés" },
   "CreatePlayer": {
     "name": "Név",
     "create": "Játékos létrehozása",

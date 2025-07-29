@@ -24,6 +24,14 @@ export type Game = {
   members: Array<Member>;
   rounds: Array<Round>;
   timer: number;
+  messages?: Message[];
+};
+
+export type Message = {
+  id: number;
+  createdAt: string;
+  content: string;
+  memberId: number;
 };
 
 export type Round = {

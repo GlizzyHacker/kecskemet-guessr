@@ -2,6 +2,7 @@
 
 import ActionBar from '@/components/action_bar';
 import Card from '@/components/card';
+import Chat from '@/components/chat';
 import GameInfo from '@/components/game_info';
 import GuessCountdown from '@/components/guess_countdown';
 import LoadingIndicator from '@/components/loading_indicator';
@@ -25,7 +26,10 @@ export default function Play() {
   const { data: player } = usePlayer();
   const { id } = useParams();
   const { data: initialGame } = useGame(Number(id));
-  const { gameState, answer, isConnected, sendNext, sendGuess } = useGameConnection(initialGame, player);
+  const { gameState, answer, isConnected, messages, sendNext, sendGuess, sendMessage } = useGameConnection(
+    initialGame,
+    player
+  );
 
   const [guess, setGuess] = useState<ParsedCordinates | undefined>(undefined);
   const [loading, setLoading] = useState(true);
@@ -77,10 +81,20 @@ export default function Play() {
     : GamePhase.END;
 
   return (
-    <main className='flex flex-col items-center justify-center w-full space-y-2'>
-      <div className='flex  items-stretch w-full space-x-3'>
-        <GameInfo className='flex-1  min-w-0' game={game} />
+    <main className='flex flex-col items-stretch w-full space-y-2'>
+      <GameInfo game={game} />
+      <div className='flex items-stretch w-full space-x-3'>
         <Scoreboard className='flex-1  min-w-0' members={game.members} currentRound={currentRound} />
+        <Chat
+          className='flex-1 min-w-0'
+          messages={[...(initialGame?.messages ?? []).filter((msg) => !messages.find((m) => m.id == msg.id)), ...messages].map((msg) => ({
+            id: msg.id,
+            content: msg.content,
+            author: game.members.find((member) => member.id == msg.memberId)?.player.name ?? '',
+            date: new Date(msg.createdAt),
+          }))}
+          onSend={sendMessage}
+        />
       </div>
       {game.round == 0 || !game.active ? null : (
         <div className='flex-1 rounded-xl p-2 bg-secondary w-full relative'>

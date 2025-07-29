@@ -4,11 +4,11 @@
     "image_placeholder": "Image to guess"
   },
   "Create": {
-    "difficulty" : "Difficulty",
+    "difficulty": "Difficulty",
     "easy": "Normal",
     "normal": "Hard",
     "hard": "Impossible",
-    "area" : "Area",
+    "area": "Area",
     "grand_boulevard": "Grand Boulevard",
     "urban_areas": "Urban areas",
     "all": "All of Kecskemét",
@@ -16,7 +16,7 @@
     "area_hint": "Give area hint",
     "rounds": "Number of rounds",
     "create": "Create game",
-    "timer" : "Time limit",
+    "timer": "Time limit",
     "limit": "{minute, plural, =0 {None} =1 {1 minute} other {# minutes}}"
   },
   "Home": {
@@ -35,6 +35,7 @@
     "disconnected_button": "Reconnect",
     "end_button": "Leave"
   },
+  "Chat": { "send": "Send" },
   "CreatePlayer": {
     "name": "Name",
     "create": "Create player",
@@ -44,7 +45,7 @@
     "round": "Round {round} out of {rounds}",
     "hint": "Hint",
     "id": "Game id",
-    "timer" :"Time limit",
+    "timer": "Time limit",
     "difficulty": "Difficulty",
     "area": "Area"
   },

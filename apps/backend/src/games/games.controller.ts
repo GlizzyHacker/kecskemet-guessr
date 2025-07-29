@@ -17,6 +17,6 @@ export class GamesController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return await this.gamesService.findOne(+id);
+    return await this.gamesService.findOne(+id, true);
   }
 }

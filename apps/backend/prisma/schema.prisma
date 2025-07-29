@@ -26,8 +26,9 @@ model Game {
   difficulty  Difficulty @default(EASY)
   timer       Int        @default(0)
 
-  members Member[]
-  rounds  Round[]
+  members  Member[]
+  rounds   Round[]
+  messages Message[]
 }
 
 model Player {
@@ -44,11 +45,12 @@ model Member {
   connected Boolean @default(true)
   isOwner   Boolean @default(false)
 
-  game     Game    @relation(fields: [gameId], references: [id])
+  game     Game      @relation(fields: [gameId], references: [id])
   gameId   Int
-  player   Player  @relation(fields: [playerId], references: [id])
+  player   Player    @relation(fields: [playerId], references: [id])
   playerId Int
   guesses  Guess[]
+  messages Message[]
 }
 
 model Round {
@@ -83,6 +85,18 @@ model Guess {
   round    Round  @relation(fields: [roundId], references: [id])
   memberId Int
   member   Member @relation(fields: [memberId], references: [id])
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  content String
+
+  member   Member @relation(fields: [memberId], references: [id])
+  memberId Int
+  game     Game?  @relation(fields: [gameId], references: [id])
+  gameId   Int?
 }
 
 enum Difficulty {
