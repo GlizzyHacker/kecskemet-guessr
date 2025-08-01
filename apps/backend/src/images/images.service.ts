@@ -92,8 +92,33 @@ export class ImagesService {
     return image;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} image`;
+  async findForPlayers(createImageDto: CreateImageDto, playerIds: number[]) {
+    const imageScore = await this.prisma.imageScore.findFirst({
+      where: {
+        image: {
+          area: { in: createImageDto.areas },
+          difficulty: createImageDto.difficulty,
+          //Filter for rounds none of the players have played before
+          Round: { none: { game: { members: { some: { playerId: { in: playerIds } } } } } },
+        },
+      },
+      orderBy: { score: 'desc' },
+      skip: Math.random() * 100,
+      include: { image: true },
+    });
+    return imageScore?.image;
+  }
+
+  async findOrCreateForPlayers(createImageDto: CreateImageDto, playerIds: number[]) {
+    let image;
+    //Small chance to create new image anyway
+    if (Math.random() > 0.01 && (await this.prisma.image.count()) >= Number(process.env.TARGET_IMAGE_COUNT)) {
+      image = await this.findForPlayers(createImageDto, playerIds);
+    }
+    if (!image) {
+      image = await this.create(createImageDto);
+    }
+    return image;
   }
 }
 

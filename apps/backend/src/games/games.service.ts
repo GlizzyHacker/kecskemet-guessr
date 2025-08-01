@@ -63,12 +63,14 @@ export class GamesService {
       const game = await this.prisma.game.update({
         where: { id },
         data: { round: { increment: 1 } },
+        include: { members: true },
       });
       try {
         const round = await this.roundService.create({
           gameId: id,
           difficulty: game.difficulty,
           areas: game.area.split(','),
+          playerIds: game.members.map((member) => member.playerId),
         });
         return await this.prisma.game.update({
           where: { id },
