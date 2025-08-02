@@ -17,6 +17,10 @@ export class ImagesService {
   difficulties;
 
   async create(createImageDto: CreateImageDto) {
+    if ((await this.prisma.image.count()) >= Number(process.env.MAXIMUM_IMAGE_COUNT)) {
+      this.deleteWorstImage();
+    }
+
     const allAreas = await this.areas.findAll();
     const areas: Array<Feature> = [];
     createImageDto.areas.forEach((area) => {
@@ -119,6 +123,24 @@ export class ImagesService {
       image = await this.create(createImageDto);
     }
     return image;
+  }
+
+  async delete(id: number) {
+    return await this.prisma.image.delete({ where: { id: id } });
+  }
+
+  async deleteWorstImage() {
+    const imageScore = await this.prisma.imageScore.findFirst({
+      where: {
+        //Filter for images not in play
+        image: { Round: { none: { game: { active: { equals: true } } } } },
+      },
+      orderBy: { score: 'asc' },
+    });
+    if (imageScore) {
+      return this.delete(imageScore.id);
+    }
+    return null;
   }
 }
 
