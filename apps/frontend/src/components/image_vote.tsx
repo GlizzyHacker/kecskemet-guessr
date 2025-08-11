@@ -2,8 +2,8 @@ import api from '@/lib/api';
 import { Guess } from '@/types/game';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
+import { FaRegThumbsDown, FaRegThumbsUp } from 'react-icons/fa';
 import ErrorCard from './error_card';
-import Radio from './radio';
 
 export default function ImageVote({ guess }: { guess: Guess | undefined }) {
   const [vote, setVote] = useState(0);
@@ -30,12 +30,34 @@ export default function ImageVote({ guess }: { guess: Guess | undefined }) {
 
   return (
     <div className='flex flex-row space-x-2'>
-      <Radio group='vote' value='1' onSelect={() => onVote(1)} isDefault={vote == 1}>
-        Like
-      </Radio>
-      <Radio group='vote' value='-1' onSelect={() => onVote(-1)} isDefault={vote == -1}>
-        Dislike
-      </Radio>
+      <div>
+        <input
+          className='sr-only peer'
+          type='radio'
+          id='vote+'
+          onClick={() => onVote(1)}
+          name='vote'
+          value='1'
+          defaultChecked={vote == 1}
+        />
+        <label className='opacity-50 peer-checked:opacity-100 cursor-pointer' htmlFor='vote+'>
+          <FaRegThumbsUp />
+        </label>
+      </div>
+      <div>
+        <input
+          className='sr-only peer'
+          type='radio'
+          id='vote-'
+          onClick={() => onVote(-1)}
+          name='vote'
+          value='-1'
+          defaultChecked={vote == -1}
+        />
+        <label className='opacity-50 peer-checked:opacity-100 cursor-pointer' htmlFor='vote-'>
+          <FaRegThumbsDown />
+        </label>
+      </div>
       {error && <ErrorCard className='m-2'>{error}</ErrorCard>}
     </div>
   );
