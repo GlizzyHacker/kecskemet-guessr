@@ -2,7 +2,7 @@
 CREATE VIEW "ImageScore" AS
 SELECT
     i.id AS id,
-    COALESCE(SUM(g.vote), 0) AS score,
+    COALESCE(SUM(g.vote), 0) AS score
 FROM
     "Image" i
 LEFT JOIN
