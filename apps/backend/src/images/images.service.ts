@@ -1,5 +1,11 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { mkdir, readFile, writeFile } from 'fs/promises';
+import {
+  BadRequestException,
+  GoneException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
+import { mkdir, readFile, unlink, writeFile } from 'fs/promises';
 import { request } from 'https';
 import { PrismaService } from 'nestjs-prisma';
 import { AreasService } from 'src/areas/areas.service';
@@ -77,6 +83,10 @@ export class ImagesService {
       throw new NotFoundException(`Image with id ${id} not found`);
     }
 
+    if (image.deleted) {
+      new GoneException('Image was deleted');
+    }
+
     return image.url;
   }
 
@@ -102,6 +112,7 @@ export class ImagesService {
         image: {
           area: { in: createImageDto.areas },
           difficulty: createImageDto.difficulty,
+          deleted: false,
           //Filter for rounds none of the players have played before
           Round: { none: { game: { members: { some: { playerId: { in: playerIds } } } } } },
         },
@@ -126,7 +137,9 @@ export class ImagesService {
   }
 
   async delete(id: number) {
-    return await this.prisma.image.delete({ where: { id: id } });
+    const image = await this.prisma.image.update({ where: { id }, data: { deleted: true } });
+    await unlink(image.url);
+    return image;
   }
 
   async deleteWorstImage() {
@@ -138,7 +151,7 @@ export class ImagesService {
       orderBy: { score: 'asc' },
     });
     if (imageScore) {
-      return this.delete(imageScore.id);
+      return await this.delete(imageScore.id);
     }
     return null;
   }

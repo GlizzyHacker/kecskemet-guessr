@@ -70,6 +70,7 @@ model Image {
 
   cordinates String
   url        String
+  deleted    Boolean      @default(false)
   area       String
   difficulty Difficulty
   //TODO: RENAME TO rounds
@@ -78,7 +79,7 @@ model Image {
 }
 
 view ImageScore {
-  id    Int   @id
+  id    Int   @unique
   image Image @relation(fields: [id], references: [id])
   score Int
 }
