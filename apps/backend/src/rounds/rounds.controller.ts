@@ -11,11 +11,6 @@ export class RoundsController {
     return this.roundsService.create(createRoundDto);
   }
 
-  @Get()
-  findAll() {
-    return this.roundsService.findAll();
-  }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.roundsService.findOne(+id);
