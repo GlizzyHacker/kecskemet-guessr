@@ -146,7 +146,7 @@ export class ImagesService {
     const imageScore = await this.prisma.imageScore.findFirst({
       where: {
         //Filter for images not in play
-        image: { Round: { none: { game: { active: { equals: true } } } } },
+        image: { deleted: false, Round: { none: { game: { active: { equals: true } } } } },
       },
       orderBy: { score: 'asc' },
     });
