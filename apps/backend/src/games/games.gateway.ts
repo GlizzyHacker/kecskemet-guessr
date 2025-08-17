@@ -50,7 +50,7 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     if (
       game.round != 0 &&
-      game.members.every((member) => member.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1].id))
+      game.members.every((member) => member.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1]?.id))
     ) {
       const round = await this.roundsService.findOne(game.rounds[game.round - 1].id);
       const socket = this.server.sockets.sockets.get(client.id);
@@ -154,6 +154,7 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
       if (game.timer) {
         this.gameToTimeout.set(
           game.id,
+          //CHANGE TO A FIX TIME DATE.NOW + OFFSET
           setTimeout(() => this.tryEndRound(game.id, true), game.timer * 1000)
         );
       }

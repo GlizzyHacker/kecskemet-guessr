@@ -12,10 +12,13 @@ export class RoundsService {
   ) {}
 
   async create(createRoundDto: CreateRoundDto) {
-    const image = await this.imageService.create({
-      areas: createRoundDto.areas,
-      difficulty: createRoundDto.difficulty,
-    });
+    const image = await this.imageService.findOrCreateForPlayers(
+      {
+        areas: createRoundDto.areas,
+        difficulty: createRoundDto.difficulty,
+      },
+      createRoundDto.playerIds
+    );
     try {
       return await this.prisma.round.create({
         data: { gameId: createRoundDto.gameId, imageId: image.id },
@@ -25,10 +28,6 @@ export class RoundsService {
       console.error(e);
       throw new BadRequestException('Could not create round');
     }
-  }
-
-  findAll() {
-    return `This action returns all rounds`;
   }
 
   async findOne(id: number) {

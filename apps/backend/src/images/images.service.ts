@@ -1,5 +1,11 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { mkdir, readFile, writeFile } from 'fs/promises';
+import {
+  BadRequestException,
+  GoneException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
+import { mkdir, readFile, unlink, writeFile } from 'fs/promises';
 import { request } from 'https';
 import { PrismaService } from 'nestjs-prisma';
 import { AreasService } from 'src/areas/areas.service';
@@ -17,6 +23,10 @@ export class ImagesService {
   difficulties;
 
   async create(createImageDto: CreateImageDto) {
+    if ((await this.prisma.image.count()) >= Number(process.env.MAXIMUM_IMAGE_COUNT)) {
+      this.deleteWorstImage();
+    }
+
     const allAreas = await this.areas.findAll();
     const areas: Array<Feature> = [];
     createImageDto.areas.forEach((area) => {
@@ -73,6 +83,10 @@ export class ImagesService {
       throw new NotFoundException(`Image with id ${id} not found`);
     }
 
+    if (image.deleted) {
+      new GoneException('Image was deleted');
+    }
+
     return image.url;
   }
 
@@ -92,8 +106,54 @@ export class ImagesService {
     return image;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} image`;
+  async findForPlayers(createImageDto: CreateImageDto, playerIds: number[]) {
+    const imageScore = await this.prisma.imageScore.findFirst({
+      where: {
+        image: {
+          area: { in: createImageDto.areas },
+          difficulty: createImageDto.difficulty,
+          deleted: false,
+          //Filter for rounds none of the players have played before
+          Round: { none: { game: { members: { some: { playerId: { in: playerIds } } } } } },
+        },
+      },
+      orderBy: { score: 'desc' },
+      skip: Math.random() * 100,
+      include: { image: true },
+    });
+    return imageScore?.image;
+  }
+
+  async findOrCreateForPlayers(createImageDto: CreateImageDto, playerIds: number[]) {
+    let image;
+    //Small chance to create new image anyway
+    if (Math.random() > 0.01 && (await this.prisma.image.count()) >= Number(process.env.TARGET_IMAGE_COUNT)) {
+      image = await this.findForPlayers(createImageDto, playerIds);
+    }
+    if (!image) {
+      image = await this.create(createImageDto);
+    }
+    return image;
+  }
+
+  async delete(id: number) {
+    const image = await this.prisma.image.update({ where: { id }, data: { deleted: true } });
+    await unlink(image.url);
+    return image;
+  }
+
+  async deleteWorstImage() {
+    const imageScore = await this.prisma.imageScore.findFirst({
+      where: {
+        //Filter for images not in play
+        image: { deleted: false, Round: { none: { game: { active: { equals: true } } } } },
+      },
+      orderBy: { score: 'asc' },
+    });
+    if (imageScore) {
+      return await this.delete(imageScore.id);
+    }
+    return null;
   }
 }
 

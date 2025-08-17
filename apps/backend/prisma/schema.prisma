@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["views"]
 }
 
 datasource db {
@@ -69,10 +70,18 @@ model Image {
 
   cordinates String
   url        String
+  deleted    Boolean      @default(false)
   area       String
   difficulty Difficulty
+  //TODO: RENAME TO rounds
+  Round      Round[]
+  ImageScore ImageScore[]
+}
 
-  Round Round[]
+view ImageScore {
+  id    Int   @unique
+  image Image @relation(fields: [id], references: [id])
+  score Int
 }
 
 model Guess {
