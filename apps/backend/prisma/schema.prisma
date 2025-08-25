@@ -14,6 +14,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  GUEST
+  USER
+  ADMIN
+  SUPERUSER
+}
+
 model Game {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -36,6 +43,7 @@ model Player {
   id Int @id @default(autoincrement())
 
   name String
+  role Role   @default(GUEST)
 
   members Member[]
 }
