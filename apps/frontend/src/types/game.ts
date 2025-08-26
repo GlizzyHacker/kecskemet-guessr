@@ -1,8 +1,4 @@
-export enum Difficulty {
-  EASY = 'Normal',
-  NORMAL = 'Hard',
-  HARD = 'Impossible',
-}
+import { Difficulty, Image, ImageWithAnswer } from './image';
 
 export enum GamePhase {
   START,
@@ -45,16 +41,6 @@ export type RoundWithAnswer = {
   id: number;
   image: ImageWithAnswer;
   guesses: Array<Guess>;
-};
-
-export type Image = {
-  id: number;
-  area: string | undefined;
-};
-
-export type ImageWithAnswer = {
-  id: number;
-  cordinates: string;
 };
 
 export type Guess = {
