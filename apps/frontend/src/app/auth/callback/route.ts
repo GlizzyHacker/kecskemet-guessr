@@ -13,5 +13,5 @@ export async function GET(request: NextRequest): Promise<Response> {
   const cookieStore = await cookies();
   cookieStore.set('jwt', jwt, { path: '/' });
 
-  return NextResponse.redirect(new URL('/player', request.url));
+  return NextResponse.redirect(new URL(cookieStore.get('path')?.value ?? '/player', request.url));
 }
