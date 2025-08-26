@@ -84,14 +84,25 @@ export class ImagesService {
     }
 
     if (image.deleted) {
-      new GoneException('Image was deleted');
+      throw new GoneException('Image was deleted');
     }
 
     return image.url;
   }
 
-  findAll() {
-    return `This action returns all images`;
+  async findAll() {
+    const results = await this.prisma.imageScore.findMany({
+      where: {
+        image: {
+          deleted: false,
+        },
+      },
+      orderBy: { id: 'asc' },
+      //skip: Math.random() * 100,
+      //take:20
+      include: { image: true },
+    });
+    return results.map((result) => ({ ...result.image, score: result.score }));
   }
 
   async findOne(id: number) {
