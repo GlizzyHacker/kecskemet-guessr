@@ -18,10 +18,10 @@ export default function Auth() {
       router.push(response.data.url);
     } catch (e: unknown) {
       if (e instanceof AxiosError) {
-        if (e.response?.data?.message) {
+        if (e.response?.data?.message.join !== undefined) {
           setError(e.response.data.message.join(', '));
         } else {
-          setError(e.message);
+          setError(e?.response?.data?.message);
         }
       }
       console.log(e);
