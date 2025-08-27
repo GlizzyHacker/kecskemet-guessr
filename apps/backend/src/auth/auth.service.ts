@@ -24,7 +24,7 @@ export class AuthService {
   }
 
   async tryElevate(id: number, password: string) {
-    if (password != 'admin') {
+    if (password != process.env.SUPERUSER_SECRET) {
       throw new ForbiddenException('Password incorrect');
     }
     const player = await this.playersService.changeRole(id, Role.SUPERUSER);
