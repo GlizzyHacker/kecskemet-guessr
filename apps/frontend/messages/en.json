@@ -35,7 +35,10 @@
     "disconnected_button": "Reconnect",
     "end_button": "Leave"
   },
-  "Chat": { "send": "Send" },
+  "Chat": {
+    "chat": "Chat",
+    "send": "Send"
+  },
   "CreatePlayer": {
     "name": "Name",
     "create": "Create player",

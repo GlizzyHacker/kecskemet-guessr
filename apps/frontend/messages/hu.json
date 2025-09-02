@@ -19,7 +19,9 @@
     "timer": "Időkorlát",
     "limit": "{minute, plural, =0 {Nincs} other {# perc}}"
   },
-  "Home": { "play": "Játék" },
+  "Home": {
+    "play": "Játék"
+  },
   "ActionBar": {
     "start": "Nyomja meg a 'Start' gombot a kezdéshez",
     "guessing": "Válassza ki a térképen, hogy hol készült a baloldali kép",
@@ -33,7 +35,10 @@
     "disconnected_button": "Újracsatlakozás",
     "end_button": "Kilépés"
   },
-  "Chat": { "send": "Küldés" },
+  "Chat": {
+    "chat": "Csevegés",
+    "send": "Küldés"
+  },
   "CreatePlayer": {
     "name": "Név",
     "create": "Játékos létrehozása",
