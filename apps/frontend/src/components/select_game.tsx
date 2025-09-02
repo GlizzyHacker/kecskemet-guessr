@@ -30,15 +30,15 @@ export default function SelectGame() {
   }
 
   return (
-    <div className='bg-secondary flex flex-col p-10 rounded-xl '>
-      <Button onClick={handleCreateGame} className='mx-auto'>
+    <div className='bg-secondary flex flex-col rounded-xl '>
+      <Button onClick={handleCreateGame} className=''>
         {t('create')}
       </Button>
-      <br />
-      <form action={handleForm} className='mt-4 flex flex-col'>
+      <div className='h-0.5 my-4 bg-primary'/>
+      <form action={handleForm} className='flex flex-col'>
         <label htmlFor='gameId'>{t('id')}:</label>
         <input name='gameId' type='number' className='bg-primary flex rounded-xl p-2' />
-        <Button type='submit' className='mx-auto mt-2'>
+        <Button type='submit' className='mt-2'>
           {t('join')}
         </Button>
       </form>

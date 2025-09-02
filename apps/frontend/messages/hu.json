@@ -20,7 +20,9 @@
     "limit": "{minute, plural, =0 {Nincs} other {# perc}}"
   },
   "Home": {
-    "play": "Játék"
+    "play": "Játék",
+    "singleplayer": "Játsz egyedül",
+    "multiplayer": "Játsz barátokkal"
   },
   "ActionBar": {
     "start": "Nyomja meg a 'Start' gombot a kezdéshez",
