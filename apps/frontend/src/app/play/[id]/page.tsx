@@ -84,7 +84,7 @@ export default function Play() {
   return (
     <main className='flex flex-col items-stretch w-full space-y-2'>
       <GameInfo game={game} />
-      <div className='flex items-stretch w-full space-x-3'>
+      <div className='flex max-md:flex-col-reverse items-stretch w-full md:space-x-3 max-md:gap-2'>
         <Scoreboard className='flex-1  min-w-0' members={game.members} currentRound={currentRound} />
         <Chat
           className='flex-1 min-w-0'
@@ -102,10 +102,10 @@ export default function Play() {
       </div>
       {game.round == 0 || !game.active ? null : (
         <div className='flex-1 rounded-xl p-2 bg-secondary w-full relative'>
-          <div className={`${loading ? 'blur-xl' : ''} flex flex-row justify-center justify-items-center`}>
+          <div className={`${loading ? 'blur-xl' : ''} rounded-[10] overflow-hidden flex max-md:flex-col justify-center justify-items-center`}>
             <div className='flex-1'>
               <Image
-                className='w-full h-auto rounded-l-[10]'
+                className='w-full h-auto'
                 alt={t('image_placeholder')}
                 width={1000}
                 height={1000}
