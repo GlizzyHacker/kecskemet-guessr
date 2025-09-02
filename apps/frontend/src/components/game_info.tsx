@@ -16,7 +16,9 @@ export default function GameInfo({ className = '', game }: { className?: string;
           <FaChevronUp className={`transition-all duration-300 ${open ? '' : 'rotate-180'}`} />
         </button>
       </div>
-      <div className={`${open ? 'max-md:max-h-100' : 'max-md:max-h-0'} overflow-hidden transition-all duration-300 grid grid-cols-3`}>
+      <div
+        className={`${open ? 'max-md:max-h-100' : 'max-md:max-h-0'} overflow-hidden transition-all duration-300 grid grid-cols-3`}
+      >
         <p className='p-2 max-md:col-span-3 md:text-center'>
           {t('id')}: {game.id}
         </p>
