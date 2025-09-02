@@ -20,7 +20,9 @@
     "limit": "{minute, plural, =0 {None} =1 {1 minute} other {# minutes}}"
   },
   "Home": {
-    "play": "Play"
+    "play": "Play",
+    "singleplayer": "Play alone",
+    "multiplayer": "Play with friends"
   },
   "ActionBar": {
     "start": "Press 'Start' to start the game",
@@ -35,7 +37,10 @@
     "disconnected_button": "Reconnect",
     "end_button": "Leave"
   },
-  "Chat": { "send": "Send" },
+  "Chat": {
+    "chat": "Chat",
+    "send": "Send"
+  },
   "CreatePlayer": {
     "name": "Name",
     "create": "Create player",

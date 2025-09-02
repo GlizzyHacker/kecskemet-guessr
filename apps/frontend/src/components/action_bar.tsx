@@ -64,12 +64,14 @@ export default function ActionBar({
   }
 
   return (
-    <div className=' bg-secondary rounded-xl p-2 w-full flex items-center'>
+    <div className=' bg-secondary rounded-xl p-2 w-full flex items-center space-x-2'>
       <p className='flex-1 ml-2'>{text}</p>
-      <div className='min-w-14 mx-2'>{children}</div>
-      <Button onClick={() => onAction(phase)} enable={phase != GamePhase.GUESSED}>
-        {button}
-      </Button>
+      <div className='flex max-md:flex-col items-center'>
+        <div className='min-w-14 m-2'>{children}</div>
+        <Button onClick={() => onAction(phase)} enable={phase != GamePhase.GUESSED}>
+          {button}
+        </Button>
+      </div>
     </div>
   );
 }
