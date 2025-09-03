@@ -14,8 +14,8 @@ export default function Scoreboard({
   const t = useTranslations('Scoreboard');
   const sorted = members.toSorted(
     (a, b) =>
-      b.guesses.reduce((sum: number, guess: Guess) => sum + guess.score, 0) -
-      a.guesses.reduce((sum: number, guess: Guess) => sum + guess.score, 0)
+      b.guesses.reduce((sum: number, guess: Guess) => sum + (guess.roundId == currentRound?.id ? 0 : guess.score), 0) -
+      a.guesses.reduce((sum: number, guess: Guess) => sum + (guess.roundId == currentRound?.id ? 0 : guess.score), 0)
   );
 
   return (
