@@ -16,7 +16,11 @@ export default function Chat({
   const [open, setOpen] = useState(false);
 
   function handleForm(form: FormData) {
-    onSend(String(form.get('content')));
+    const message = String(form.get('content')).trim();
+    if (message.length == 0) {
+      return;
+    }
+    onSend(message);
   }
 
   return (
