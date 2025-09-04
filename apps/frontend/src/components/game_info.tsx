@@ -22,7 +22,7 @@ export default function GameInfo({ className = '', game }: { className?: string;
 
   return (
     <Card className={`${className}`}>
-      <div className='m-3 flex'>
+      <div className='m-3 space-x-3 flex'>
         <h1 className='flex-1 text-center'>{t('round', { round: game.round, rounds: game.totalRounds })}</h1>
         <button className='enabled:cursor-pointer disabled:opacity-30' disabled={loading} onClick={handleShare}>
           <FaShareAlt />
