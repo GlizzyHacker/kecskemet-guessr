@@ -50,6 +50,9 @@ export default function Play() {
     } else if (phase == GamePhase.END) {
       router.push('/play');
     }
+    else if (phase == GamePhase.DISCONNECTED){
+      router.refresh();
+    }
   }
 
   const game = gameState ?? initialGame;
