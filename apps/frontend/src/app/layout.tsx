@@ -31,11 +31,11 @@ export default function RootLayout({
         }}
       >
         <NextIntlClientProvider>
-          <div className='h-screen flex flex-col'>
+          <div className='h-screen flex flex-col dark:darkmode'>
             <div className='h-min'>
               <Header />
             </div>
-            <div className='flex flex-1 bg-[url(/Cifra_Palota.jpg)] bg-cover bg-transparent'>
+            <div className='flex flex-1 bg-[url(/Cifra_Palota.jpg)] dark:bg-gray-500 text-text bg-blend-multiply bg-cover bg-transparent'>
               <div className='flex flex-1 backdrop-blur-sm'>
                 <div className='flex-1 space-y-4 py-8 container mx-auto'>{children}</div>
               </div>

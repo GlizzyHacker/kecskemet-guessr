@@ -49,6 +49,8 @@ export default function Play() {
       sendNext();
     } else if (phase == GamePhase.END) {
       router.push('/play');
+    } else if (phase == GamePhase.DISCONNECTED) {
+      router.refresh();
     }
   }
 
