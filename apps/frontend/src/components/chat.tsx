@@ -49,13 +49,14 @@ export default function Chat({
           ))}
           <div />
         </div>
-        <form action={handleForm} className='flex space-x-2'>
+        <form action={handleForm} className='flex gap-2'>
           <input
             id='content'
             name='content'
             type='text'
             autoComplete='off'
-            className='bg-primary flex rounded-xl p-2 flex-1'
+            className='bg-primary rounded-xl p-2 flex-1'
+            size={1}
           />
           <Button type='submit'>{t('send')}</Button>
         </form>
