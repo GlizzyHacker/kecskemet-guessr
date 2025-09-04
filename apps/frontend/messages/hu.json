@@ -52,7 +52,8 @@
     "id": "Játék azonosító",
     "timer": "Időkorlát",
     "difficulty": "Nehézség",
-    "area": "Terület"
+    "area": "Terület",
+    "share_message": "Csatlakozz hozzám játszani"
   },
   "GuessMarker": {
     "my": "Tippem",
