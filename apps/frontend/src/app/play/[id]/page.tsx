@@ -39,6 +39,9 @@ export default function Play() {
   const t = useTranslations('Play');
 
   useEffect(() => {
+    if (loading) {
+      setGuess(undefined);
+    }
     setLoading(false);
   }, [gameState]);
 
