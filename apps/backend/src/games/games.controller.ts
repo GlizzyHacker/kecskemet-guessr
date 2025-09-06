@@ -24,6 +24,6 @@ export class GamesController {
     if (game.active || game.members.some((member) => member.playerId == player.id)) {
       return game;
     }
-    return new GoneException('Game is over');
+    throw new GoneException('Game is over');
   }
 }
