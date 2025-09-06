@@ -1,5 +1,6 @@
 import { Guess, Member, Round } from '@/types/game';
 import { useTranslations } from 'next-intl';
+import { FaCrown } from 'react-icons/fa';
 import Card from './card';
 
 export default function Scoreboard({
@@ -28,6 +29,7 @@ export default function Scoreboard({
         {sorted?.map((member, i) => [
           <p key={`${member.id}rank`} className='bg-primary text-center p-2'>{`${i + 1}.`}</p>,
           <p key={`${member.id}name`} className='col-span-2 bg-primary text-center p-2 overflow-ellipsis'>
+            {member.connected && member.isOwner && <FaCrown className='inline align-baseline mx-1' />}
             {member.player.name}
           </p>,
           <p key={`${member.id}score`} className='col-span-2 bg-primary text-center p-2'>
