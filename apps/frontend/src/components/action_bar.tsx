@@ -9,7 +9,7 @@ export default function ActionBar({
   onAction,
 }: {
   phase: GamePhase;
-  children: ReactNode;
+  children?: ReactNode;
   onAction: (phase: GamePhase) => void;
 }) {
   const t = useTranslations('ActionBar');

@@ -3,6 +3,7 @@
 import ActionBar from '@/components/action_bar';
 import Card from '@/components/card';
 import Chat from '@/components/chat';
+import ErrorCard from '@/components/error_card';
 import GameInfo from '@/components/game_info';
 import GuessCountdown from '@/components/guess_countdown';
 import ImageVote from '@/components/image_vote';
@@ -26,7 +27,7 @@ const Map = dynamic(() => import('@/components/map'), {
 export default function Play() {
   const { data: player } = usePlayer();
   const { id } = useParams();
-  const { data: initialGame } = useGame(Number(id));
+  const { data: initialGame, error: initialError } = useGame(Number(id));
   const { gameState, answer, isConnected, messages, sendNext, sendGuess, sendMessage } = useGameConnection(
     initialGame,
     player
@@ -55,8 +56,25 @@ export default function Play() {
   }
 
   const game = gameState ?? initialGame;
+  console.log(initialError?.response);
+  if (initialError) {
+    return initialError.status == 410 ? (
+      <ActionBar
+        phase={GamePhase.END}
+        onAction={function (phase: GamePhase): void {
+          handleAction(phase);
+        }}
+      />
+    ) : (
+      <div className='flex flex-col items-center space-y-2'>
+        <ErrorCard>
+          <p>{`${initialError}`}</p>
+        </ErrorCard>
+      </div>
+    );
+  }
 
-  if (!game) {
+  if (!game?.round) {
     return (
       <div className='flex flex-col items-center space-y-2'>
         <Card>
