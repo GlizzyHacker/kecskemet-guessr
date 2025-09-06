@@ -56,7 +56,7 @@ export default function Play() {
   }
 
   const game = gameState ?? initialGame;
-  console.log(initialError?.response);
+
   if (initialError) {
     return initialError.status == 410 ? (
       <ActionBar
@@ -74,7 +74,7 @@ export default function Play() {
     );
   }
 
-  if (!game?.round) {
+  if (!game) {
     return (
       <div className='flex flex-col items-center space-y-2'>
         <Card>
