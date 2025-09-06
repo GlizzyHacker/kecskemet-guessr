@@ -39,6 +39,9 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   async handleConnection(client) {
     const gameId = client.handshake.auth.game;
+    if (!gameId) {
+      return;
+    }
     const game = await this.gamesService.findOne(gameId);
     const jwt = await this.jwtService.verify(client.handshake.headers.authorization?.split(' ')[1] ?? '', {
       secret: process.env.JWT_SECRET,
