@@ -25,18 +25,21 @@ const Map = dynamic(() => import('@/components/map'), {
 });
 
 export default function Play() {
+  const router = useRouter();
+  const [guess, setGuess] = useState<ParsedCordinates | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
+  const t = useTranslations('Play');
+
   const { data: player } = usePlayer();
   const { id } = useParams();
   const { data: initialGame, error: initialError } = useGame(Number(id));
-  const { gameState, answer, isConnected, messages, sendNext, sendGuess, sendMessage } = useGameConnection(
+  const { gameState, answer, isConnected, messages, sendNext, sendGuess, sendMessage, sendKick } = useGameConnection(
     initialGame,
-    player
+    player,
+    () => {
+      router.replace('/play');
+    }
   );
-
-  const [guess, setGuess] = useState<ParsedCordinates | undefined>(undefined);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-  const t = useTranslations('Play');
 
   useEffect(() => {
     if (loading) {
@@ -108,7 +111,7 @@ export default function Play() {
     <main className='flex flex-col items-stretch w-full space-y-2'>
       <GameInfo game={game} />
       <div className='flex max-md:flex-col-reverse items-stretch w-full md:space-x-3 max-md:gap-2'>
-        <Scoreboard className='flex-1  min-w-0' members={game.members} currentRound={currentRound} />
+        <Scoreboard className='flex-1  min-w-0' members={game.members} currentRound={currentRound} onKick={sendKick} />
         <Chat
           className='flex-1 min-w-0'
           messages={[

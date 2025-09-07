@@ -1,11 +1,12 @@
-import { Game, Message, ParsedCordinates, Player, RoundWithAnswer } from '@/types/game';
+import { Game, Member, Message, ParsedCordinates, Player, RoundWithAnswer } from '@/types/game';
 import Cookies from 'js-cookie';
 import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 
 export default function useGameConnection(
   game: Game | undefined,
-  player: Player | undefined
+  player: Player | undefined,
+  onKicked?: () => void
 ): {
   gameState: Game | undefined;
   answer: RoundWithAnswer | null;
@@ -14,6 +15,7 @@ export default function useGameConnection(
   sendNext: () => void;
   sendGuess: (cords: ParsedCordinates) => void;
   sendMessage: (content: string) => void;
+  sendKick: (member: Member) => void;
 } {
   const [gameState, setGameState] = useState<Game | undefined>(game);
   const [answer, setAnswer] = useState<RoundWithAnswer | null>(null);
@@ -66,6 +68,10 @@ export default function useGameConnection(
       setAnswer(val);
     }
 
+    function onKick(): void {
+      onKicked?.();
+    }
+
     function onChat(val: Message): void {
       console.log(`New message:`);
       console.log(val);
@@ -79,6 +85,7 @@ export default function useGameConnection(
     socket.on('turn', onTurn);
     socket.on('guess', onGuess);
     socket.on('chat', onChat);
+    socket.on('kick', onKick);
 
     return (): void => {
       socket.off('connect', onConnect);
@@ -86,6 +93,7 @@ export default function useGameConnection(
       socket.off('turn', onTurn);
       socket.off('guess', onGuess);
       socket.off('chat', onChat);
+      socket.off('kick', onKick);
     };
   }, [player, game]);
 
@@ -108,6 +116,10 @@ export default function useGameConnection(
     socketRef.current.emit('chat', { message: { gameId: (gameState ?? game)?.id, content: content } });
   }
 
+  function sendKick(member: Member): void {
+    socketRef.current.emit('kick', { gameId: (gameState ?? game)?.id, memberId: member.id });
+  }
+
   return {
     gameState,
     answer,
@@ -116,5 +128,6 @@ export default function useGameConnection(
     sendNext,
     sendGuess,
     sendMessage,
+    sendKick,
   };
 }

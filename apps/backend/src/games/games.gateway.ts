@@ -174,6 +174,23 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
+  @SubscribeMessage('kick')
+  async handleKick(
+    @ConnectedSocket() client,
+    @MessageBody('gameId') gameId: number,
+    @MessageBody('memberId') memberId: number
+  ) {
+    const game = await this.gamesService.findOne(gameId);
+    const ownerId = this.clientToMember.get(client.id);
+    const owner = game.members.find((member) => member.id == ownerId);
+    if (!owner.isOwner) {
+      return;
+    }
+    this.sendTo(memberId, 'kick', {});
+    //HACK HANDLEDISCONNECT USE ONLY THE ID ANYWAY
+    await this.handleDisconnect({ id: this.memberToClient.get(memberId) });
+  }
+
   async updateGameState(gameId: number) {
     const game = await this.gamesService.findOne(gameId);
     await this.sendToAllInGame(game, 'turn', game);
