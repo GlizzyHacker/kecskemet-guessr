@@ -111,7 +111,12 @@ export default function Play() {
     <main className='flex flex-col items-stretch w-full space-y-2'>
       <GameInfo game={game} />
       <div className='flex max-md:flex-col-reverse items-stretch w-full md:space-x-3 max-md:gap-2'>
-        <Scoreboard className='flex-1  min-w-0' members={game.members} currentRound={currentRound} onKick={sendKick} />
+        <Scoreboard
+          className='flex-1  min-w-0'
+          members={game.members}
+          currentRound={currentRound}
+          onKick={game.members.find((member) => member.player.id == player?.id)?.isOwner ? sendKick : undefined}
+        />
         <Chat
           className='flex-1 min-w-0'
           messages={[
