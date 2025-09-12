@@ -53,11 +53,13 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     if (
       game.round != 0 &&
-      game.members.every((member) => member.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1]?.id))
+      game.members.every(
+        (member) =>
+          !member.connected || member.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1]?.id)
+      )
     ) {
       const round = await this.roundsService.findOne(game.rounds[game.round - 1].id);
-      const socket = this.server.sockets.sockets.get(client.id);
-      await socket.emit('guess', round);
+      await client.emit('guess', round);
     }
 
     const member = await this.membersService.add({ gameId: gameId, playerId: jwt.id });
