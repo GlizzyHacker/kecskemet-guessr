@@ -9,13 +9,15 @@ import { GamesModule } from './games/games.module';
 import { GuessesModule } from './guesses/guesses.module';
 import { ImagesModule } from './images/images.module';
 import { MembersModule } from './members/members.module';
+import { MessagesModule } from './messages/messages.module';
 import { PlayersModule } from './players/players.module';
 import { RoundsModule } from './rounds/rounds.module';
-import { MessagesModule } from './messages/messages.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     PrismaModule.forRoot({ isGlobal: true }),
+    ScheduleModule.forRoot(),
     ImagesModule,
     RoundsModule,
     GamesModule,

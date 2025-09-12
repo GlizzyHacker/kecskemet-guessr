@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 import { AreasService } from 'src/areas/areas.service';
@@ -109,6 +110,18 @@ export class GamesService {
       }
       console.error(e);
       throw new BadRequestException(`Could not update game with id ${id}`);
+    }
+  }
+
+  @Cron(CronExpression.EVERY_30_MINUTES)
+  async finishInactiveGames() {
+    const cutoffDate = new Date(Date.now() - 60 * 1000 * Number(process.env.GAME_INACTIVITY_MINUTES));
+    const result = await this.prisma.game.updateMany({
+      where: { updatedAt: { lte: cutoffDate }, active: true },
+      data: { active: false },
+    });
+    if (result.count > 0) {
+      console.log(`Finished ${result.count} inactive games`);
     }
   }
 }

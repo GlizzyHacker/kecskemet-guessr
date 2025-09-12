@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, GoneException, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { CurrentPlayer } from 'src/auth/current-player.decorator';
 import { CreateGameDto } from './dto/create-game.dto';
 import { GamesService } from './games.service';
 
@@ -15,8 +16,14 @@ export class GamesController {
     return await this.gamesService.create(createGameDto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.gamesService.findOne(+id, true);
+  async findOne(@CurrentPlayer() player, @Param('id') id: string) {
+    const game = await this.gamesService.findOne(+id, true);
+    if (game.active || game.members.some((member) => member.playerId == player.id)) {
+      return game;
+    }
+    throw new GoneException('Game is over');
   }
 }

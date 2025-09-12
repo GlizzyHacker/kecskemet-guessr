@@ -1,15 +1,19 @@
 import api from '@/lib/api';
 import { Game } from '@/types/game';
+import { AxiosError } from 'axios';
 import useSWR from 'swr';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-const fetcher = (url: string) => api.get(`${url}`).then((res) => res.data);
+const fetcher = (url: string) =>
+  api.get(`${url}`).then((res) => {
+    return res.data;
+  });
 
 export default function useApplications(id: number): {
   data: Game | undefined;
   isLoading: boolean;
   mutate: () => void;
-  error: unknown;
+  error: AxiosError;
 } {
   return useSWR<Game>(`/games/${id}`, fetcher);
 }

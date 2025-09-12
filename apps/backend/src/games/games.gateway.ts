@@ -39,6 +39,9 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   async handleConnection(client) {
     const gameId = client.handshake.auth.game;
+    if (!gameId) {
+      return;
+    }
     const game = await this.gamesService.findOne(gameId);
     const jwt = await this.jwtService.verify(client.handshake.headers.authorization?.split(' ')[1] ?? '', {
       secret: process.env.JWT_SECRET,
@@ -50,11 +53,13 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     if (
       game.round != 0 &&
-      game.members.every((member) => member.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1]?.id))
+      game.members.every(
+        (member) =>
+          !member.connected || member.guesses.some((guess) => guess.roundId == game.rounds[game.round - 1]?.id)
+      )
     ) {
       const round = await this.roundsService.findOne(game.rounds[game.round - 1].id);
-      const socket = this.server.sockets.sockets.get(client.id);
-      await socket.emit('guess', round);
+      await client.emit('guess', round);
     }
 
     const member = await this.membersService.add({ gameId: gameId, playerId: jwt.id });
@@ -169,6 +174,23 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
     if (message) {
       await this.sendToAllInGame(message.game, 'chat', message);
     }
+  }
+
+  @SubscribeMessage('kick')
+  async handleKick(
+    @ConnectedSocket() client,
+    @MessageBody('gameId') gameId: number,
+    @MessageBody('memberId') memberId: number
+  ) {
+    const game = await this.gamesService.findOne(gameId);
+    const ownerId = this.clientToMember.get(client.id);
+    const owner = game.members.find((member) => member.id == ownerId);
+    if (!owner.isOwner) {
+      return;
+    }
+    this.sendTo(memberId, 'kick', {});
+    //HACK HANDLEDISCONNECT USE ONLY THE ID ANYWAY
+    await this.handleDisconnect({ id: this.memberToClient.get(memberId) });
   }
 
   async updateGameState(gameId: number) {

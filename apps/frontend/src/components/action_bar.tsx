@@ -1,6 +1,6 @@
 import { GamePhase } from '@/types/game';
 import { useTranslations } from 'next-intl';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import Button from './button';
 
 export default function ActionBar({
@@ -9,56 +9,46 @@ export default function ActionBar({
   onAction,
 }: {
   phase: GamePhase;
-  children: ReactNode;
+  children?: ReactNode;
   onAction: (phase: GamePhase) => void;
 }) {
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    //DEFAULT TO LOADING TO AVOID FLASHING WHEN SWITCHING TO REVEAL
+    setLoading(true);
+    if (phase == GamePhase.REVEAL) {
+      setTimeout(() => setLoading(false), 2000);
+    }
+  }, [phase]);
+
   const t = useTranslations('ActionBar');
 
-  let text;
+  let text, button;
   switch (phase) {
     case GamePhase.START:
       text = t('start');
-      break;
-    case GamePhase.GUESSING:
-      text = t('guessing');
-      break;
-    case GamePhase.GUESSED:
-      text = t('guessed');
-      break;
-    case GamePhase.REVEAL:
-      text = t('reveal');
-      break;
-    case GamePhase.DISCONNECTED:
-      text = t('disconnected');
-      break;
-    case GamePhase.END:
-      text = t('end');
-      break;
-
-    default:
-      break;
-  }
-  let button;
-  switch (phase) {
-    case GamePhase.START:
       button = t('start_button');
       break;
     case GamePhase.GUESSING:
+      text = t('guessing');
       button = t('guessing_button');
       break;
     case GamePhase.GUESSED:
+      text = t('guessed');
       button = t('guessing_button');
       break;
     case GamePhase.REVEAL:
+      text = t('reveal');
       button = t('reveal_button');
       break;
     case GamePhase.DISCONNECTED:
+      text = t('disconnected');
       button = t('disconnected_button');
       break;
     case GamePhase.END:
+      text = t('end');
       button = t('end_button');
       break;
-
     default:
       break;
   }
@@ -68,7 +58,7 @@ export default function ActionBar({
       <p className='flex-1 ml-2'>{text}</p>
       <div className='flex max-md:flex-col items-center'>
         <div className='min-w-14 m-2'>{children}</div>
-        <Button onClick={() => onAction(phase)} enable={phase != GamePhase.GUESSED}>
+        <Button onClick={() => onAction(phase)} enable={!(loading && phase == GamePhase.REVEAL) && phase != GamePhase.GUESSED}>
           {button}
         </Button>
       </div>

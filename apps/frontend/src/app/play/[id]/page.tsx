@@ -3,6 +3,7 @@
 import ActionBar from '@/components/action_bar';
 import Card from '@/components/card';
 import Chat from '@/components/chat';
+import ErrorCard from '@/components/error_card';
 import GameInfo from '@/components/game_info';
 import GuessCountdown from '@/components/guess_countdown';
 import ImageVote from '@/components/image_vote';
@@ -24,20 +25,26 @@ const Map = dynamic(() => import('@/components/map'), {
 });
 
 export default function Play() {
-  const { data: player } = usePlayer();
-  const { id } = useParams();
-  const { data: initialGame } = useGame(Number(id));
-  const { gameState, answer, isConnected, messages, sendNext, sendGuess, sendMessage } = useGameConnection(
-    initialGame,
-    player
-  );
-
+  const router = useRouter();
   const [guess, setGuess] = useState<ParsedCordinates | undefined>(undefined);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
   const t = useTranslations('Play');
 
+  const { data: player } = usePlayer();
+  const { id } = useParams();
+  const { data: initialGame, error: initialError } = useGame(Number(id));
+  const { gameState, answer, isConnected, messages, sendNext, sendGuess, sendMessage, sendKick } = useGameConnection(
+    initialGame,
+    player,
+    () => {
+      router.replace('/play');
+    }
+  );
+
   useEffect(() => {
+    if (loading) {
+      setGuess(undefined);
+    }
     setLoading(false);
   }, [gameState]);
 
@@ -55,6 +62,23 @@ export default function Play() {
   }
 
   const game = gameState ?? initialGame;
+
+  if (initialError) {
+    return initialError.status == 410 ? (
+      <ActionBar
+        phase={GamePhase.END}
+        onAction={function (phase: GamePhase): void {
+          handleAction(phase);
+        }}
+      />
+    ) : (
+      <div className='flex flex-col items-center space-y-2'>
+        <ErrorCard>
+          <p>{`${initialError}`}</p>
+        </ErrorCard>
+      </div>
+    );
+  }
 
   if (!game) {
     return (
@@ -87,7 +111,12 @@ export default function Play() {
     <main className='flex flex-col items-stretch w-full space-y-2'>
       <GameInfo game={game} />
       <div className='flex max-md:flex-col-reverse items-stretch w-full md:space-x-3 max-md:gap-2'>
-        <Scoreboard className='flex-1  min-w-0' members={game.members} currentRound={currentRound} />
+        <Scoreboard
+          className='flex-1  min-w-0'
+          members={game.members}
+          currentRound={currentRound}
+          onKick={game.members.find((member) => member.player.id == player?.id)?.isOwner ? sendKick : undefined}
+        />
         <Chat
           className='flex-1 min-w-0'
           messages={[

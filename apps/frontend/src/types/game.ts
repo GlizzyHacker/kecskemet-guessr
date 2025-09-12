@@ -60,6 +60,7 @@ export type GuessWithPlayer = {
 export type Member = {
   id: number;
   connected: boolean;
+  isOwner: boolean;
   player: Player;
   guesses: Array<Guess>;
 };
