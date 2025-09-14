@@ -4,6 +4,7 @@ import './globals.css';
 
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,8 +21,9 @@ export default function RootLayout({
   return (
     <html lang='hu'>
       <head>
-        <script
+        <Script 
           async
+          strategy='lazyOnload'
           src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2865238097869430'
           crossOrigin='anonymous'
         />
