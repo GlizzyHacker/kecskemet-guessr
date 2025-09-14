@@ -9,4 +9,6 @@ export class CreateImageDto {
   @IsString({ each: true })
   @ArrayMinSize(1)
   areas: string[];
+
+  playerId?: number;
 }
