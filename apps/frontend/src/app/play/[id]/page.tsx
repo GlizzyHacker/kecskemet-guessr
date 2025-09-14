@@ -12,6 +12,7 @@ import Scoreboard from '@/components/scoreboard';
 import useGame from '@/hooks/useGame';
 import useGameConnection from '@/hooks/useGameConnection';
 import usePlayer from '@/hooks/usePlayer';
+import { parseCordinates } from '@/lib/cordinates';
 import { GamePhase, ParsedCordinates } from '@/types/game';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
@@ -46,6 +47,7 @@ export default function Play() {
       setGuess(undefined);
     }
     setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameState]);
 
   function handleAction(phase: GamePhase) {
@@ -184,10 +186,4 @@ export default function Play() {
       </ActionBar>
     </main>
   );
-}
-
-function parseCordinates(val: string) {
-  const rawLatLng = val.split(',');
-  const latLng = { lat: Number(rawLatLng[0]), lng: Number(rawLatLng[1]) };
-  return latLng;
 }
