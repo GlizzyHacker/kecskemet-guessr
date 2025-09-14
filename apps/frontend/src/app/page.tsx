@@ -14,9 +14,7 @@ export default function Home() {
               <h2 className='pb-2 text-center font-medium text-white'>{t('singleplayer')}</h2>
               <div className='flex-1 items-center flex '>
                 <Link className='w-full' href='/play/single'>
-                  <Button enable={false} className='w-full'>
-                    {t('play')}
-                  </Button>
+                  <Button className='w-full'>{t('play')}</Button>
                 </Link>
               </div>
             </div>
