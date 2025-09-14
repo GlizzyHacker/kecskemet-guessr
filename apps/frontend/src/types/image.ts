@@ -1,7 +1,7 @@
 export enum Difficulty {
-  EASY = 'Normal',
-  NORMAL = 'Hard',
-  HARD = 'Impossible',
+  EASY = 'NORMAL',
+  NORMAL = 'HARD',
+  HARD = 'IMPOSSIBLE',
 }
 
 export type Image = {

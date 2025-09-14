@@ -1,23 +1,19 @@
 'use client';
 
 import ActionBar from '@/components/action_bar';
-import Card from '@/components/card';
-import Chat from '@/components/chat';
-import ErrorCard from '@/components/error_card';
-import GameInfo from '@/components/game_info';
+import CreateGame from '@/components/create_game';
 import GuessCountdown from '@/components/guess_countdown';
 import ImageVote from '@/components/image_vote';
 import LoadingIndicator from '@/components/loading_indicator';
-import Scoreboard from '@/components/scoreboard';
-import useGame from '@/hooks/useGame';
-import useGameConnection from '@/hooks/useGameConnection';
+import SingleGameInfo from '@/components/single_game_info';
 import usePlayer from '@/hooks/usePlayer';
+import useSingleGame from '@/hooks/useSingleGame';
 import { parseCordinates } from '@/lib/cordinates';
-import { GamePhase, ParsedCordinates } from '@/types/game';
+import { Game, GamePhase, ParsedCordinates } from '@/types/game';
+import { Difficulty } from '@/types/image';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const Map = dynamic(() => import('@/components/map'), {
@@ -26,21 +22,21 @@ const Map = dynamic(() => import('@/components/map'), {
 });
 
 export default function Play() {
-  const router = useRouter();
   const [guess, setGuess] = useState<ParsedCordinates | undefined>(undefined);
   const [loading, setLoading] = useState(true);
+  const [initialGame, setInitialGame] = useState<Game>();
   const t = useTranslations('Play');
 
   const { data: player } = usePlayer();
-  const { id } = useParams();
-  const { data: initialGame, error: initialError } = useGame(Number(id));
-  const { gameState, answer, isConnected, messages, sendNext, sendGuess, sendMessage, sendKick } = useGameConnection(
+  const {
+    game: gameState,
+    answer,
+    sendNext,
+    sendGuess,
+  } = useSingleGame({
+    player: player,
     initialGame,
-    player,
-    () => {
-      router.replace('/play');
-    }
-  );
+  });
 
   useEffect(() => {
     if (loading) {
@@ -51,88 +47,54 @@ export default function Play() {
   }, [gameState]);
 
   function handleAction(phase: GamePhase) {
+    if (!initialGame) {
+      return;
+    }
     if (phase == GamePhase.GUESSING && guess) {
       sendGuess(guess);
     } else if (phase == GamePhase.REVEAL || phase == GamePhase.START) {
       setLoading(true);
       sendNext();
     } else if (phase == GamePhase.END) {
-      router.push('/play');
-    } else if (phase == GamePhase.DISCONNECTED) {
-      router.refresh();
+      setInitialGame(undefined);
     }
   }
 
+  async function handleForm(formData: FormData) {
+    const request = {
+      difficulty: Difficulty.EASY,
+      area: String(formData.get('areas')),
+      timer: Number(formData.get('timer')),
+      totalRounds: Number(formData.get('rounds')),
+      hint: Boolean(formData.get('hint')),
+      id: 0,
+      active: true,
+      round: 0,
+      members: [],
+      rounds: [],
+    };
+    setInitialGame(request);
+  }
+
+  if (!initialGame) {
+    return <CreateGame onForm={handleForm} />;
+  }
   const game = gameState ?? initialGame;
 
-  if (initialError) {
-    return initialError.status == 410 ? (
-      <ActionBar
-        phase={GamePhase.END}
-        onAction={function (phase: GamePhase): void {
-          handleAction(phase);
-        }}
-      />
-    ) : (
-      <div className='flex flex-col items-center space-y-2'>
-        <ErrorCard>
-          <p>{`${initialError}`}</p>
-        </ErrorCard>
-      </div>
-    );
-  }
-
-  if (!game) {
-    return (
-      <div className='flex flex-col items-center space-y-2'>
-        <Card>
-          <p>{t('loading')}</p>
-        </Card>
-      </div>
-    );
-  }
-
   const currentRound = game.rounds[game.round - 1] ?? null;
-  const guessed = game.members
-    .find((member) => member.player.id == player?.id)
-    ?.guesses.some((guess) => guess.roundId == currentRound?.id);
+  const guessed = currentRound?.guesses.length ?? 0 > 0;
 
   const phase = game.active
-    ? isConnected
-      ? game.round == 0
-        ? GamePhase.START
-        : answer
-          ? GamePhase.REVEAL
-          : guessed
-            ? GamePhase.GUESSED
-            : GamePhase.GUESSING
-      : GamePhase.DISCONNECTED
+    ? game.round == 0
+      ? GamePhase.START
+      : guessed
+        ? GamePhase.REVEAL
+        : GamePhase.GUESSING
     : GamePhase.END;
 
   return (
     <main className='flex flex-col items-stretch w-full space-y-2'>
-      <GameInfo game={game} />
-      <div className='flex max-md:flex-col-reverse items-stretch w-full md:space-x-3 max-md:gap-2'>
-        <Scoreboard
-          className='flex-1  min-w-0'
-          members={game.members}
-          currentRound={currentRound}
-          onKick={game.members.find((member) => member.player.id == player?.id)?.isOwner ? sendKick : undefined}
-        />
-        <Chat
-          className='flex-1 min-w-0'
-          messages={[
-            ...(initialGame?.messages ?? []).filter((msg) => !messages.find((m) => m.id == msg.id)),
-            ...messages,
-          ].map((msg) => ({
-            id: msg.id,
-            content: msg.content,
-            author: game.members.find((member) => member.id == msg.memberId)?.player.name ?? '',
-            date: new Date(msg.createdAt),
-          }))}
-          onSend={sendMessage}
-        />
-      </div>
+      <SingleGameInfo game={game} />
       {game.round == 0 || !game.active ? null : (
         <div className='flex-1 rounded-xl p-2 bg-secondary w-full relative'>
           <div
@@ -154,7 +116,7 @@ export default function Play() {
                 hint={currentRound?.image.area}
                 guess={guess}
                 guesses={
-                  answer?.guesses?.map((guess) => {
+                  currentRound?.guesses?.map((guess) => {
                     return {
                       score: guess.score,
                       player: game.members.find((member) => member.id == guess.memberId)!.player,

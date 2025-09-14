@@ -14,13 +14,13 @@ export type Game = {
   active: boolean;
   round: number;
   totalRounds: number;
-  guesses: number;
   difficulty: Difficulty;
   area: string;
   members: Array<Member>;
   rounds: Array<Round>;
   timer: number;
   messages?: Message[];
+  hint?: boolean;
 };
 
 export type Message = {
