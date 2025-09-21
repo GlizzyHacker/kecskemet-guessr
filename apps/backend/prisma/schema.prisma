@@ -33,6 +33,7 @@ model Game {
   hint        Boolean    @default(false)
   difficulty  Difficulty @default(EASY)
   timer       Int        @default(0)
+  joinCode    String     @default("")
 
   members  Member[]
   rounds   Round[]
