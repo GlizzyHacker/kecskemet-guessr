@@ -52,8 +52,7 @@
     "id": "Game id",
     "timer": "Time limit",
     "difficulty": "Difficulty",
-    "area": "Area",
-    "share_message": "Join me for a game"
+    "area": "Area"
   },
   "GuessMarker": {
     "my": "My guess",
@@ -77,7 +76,11 @@
   },
   "SelectGame": {
     "create": "Create game",
-    "id": "Game id",
+    "id": "Join code",
     "join": "Join game"
+  },
+  "JoinCode": {
+    "join_code": "Join code",
+    "share_message": "Join me for a game"
   }
 }

@@ -9,11 +9,11 @@ const fetcher = (url: string) =>
     return res.data;
   });
 
-export default function useApplications(id: number): {
+export default function useGame(joinCode: string): {
   data: Game | undefined;
   isLoading: boolean;
   mutate: () => void;
   error: AxiosError;
 } {
-  return useSWR<Game>(`/games/${id}`, fetcher);
+  return useSWR<Game>(`/games/${joinCode}`, fetcher);
 }

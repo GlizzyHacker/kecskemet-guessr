@@ -22,7 +22,7 @@ export default function Create() {
     };
     try {
       const response = await api.post(`/games`, request);
-      router.push(`/play/${response.data.id}`);
+      router.push(`/play/${response.data.joinCode}`);
     } catch (e: unknown) {
       if (e instanceof AxiosError) {
         if (e.response?.data?.message) {

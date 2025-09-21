@@ -33,7 +33,7 @@ export default function Play() {
 
   const { data: player } = usePlayer();
   const { id } = useParams();
-  const { data: initialGame, error: initialError } = useGame(Number(id));
+  const { data: initialGame, error: initialError } = useGame(String(id));
   const { gameState, answer, isConnected, messages, sendNext, sendGuess, sendMessage, sendKick } = useGameConnection(
     initialGame,
     player,
