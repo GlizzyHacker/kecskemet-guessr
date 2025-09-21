@@ -20,7 +20,7 @@ export class GamesController {
   @ApiBearerAuth()
   @Get(':id')
   async findOne(@CurrentPlayer() player, @Param('id') id: string) {
-    const game = await this.gamesService.findOne(+id, true);
+    const game = await this.gamesService.findJoinCode(id, true);
     if (game.active || game.members.some((member) => member.playerId == player.id)) {
       return game;
     }

@@ -43,3 +43,12 @@ export function inPolygon(x: number, y: number, polygon: number[][]) {
 export function getSecondsSince(date: Date): number {
   return Math.floor(Math.abs(Date.now() - date.getTime()) / 1000);
 }
+
+const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+export function generateJoinCode(): string {
+  let result = '';
+  for (let i = 0; i < 6; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
