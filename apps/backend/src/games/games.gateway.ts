@@ -38,11 +38,11 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
   gameToTimeout = new Map();
 
   async handleConnection(client) {
-    const gameId = client.handshake.auth.game;
-    if (!gameId) {
+    const joinCode = client.handshake.auth.game;
+    if (!joinCode) {
       return;
     }
-    const game = await this.gamesService.findOne(gameId);
+    const game = await this.gamesService.findJoinCode(joinCode);
     const jwt = await this.jwtService.verify(client.handshake.headers.authorization?.split(' ')[1] ?? '', {
       secret: process.env.JWT_SECRET,
     });
@@ -62,10 +62,10 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
       await client.emit('guess', round);
     }
 
-    const member = await this.membersService.add({ gameId: gameId, playerId: jwt.id });
+    const member = await this.membersService.add({ gameId: game.id, playerId: jwt.id });
     this.memberToClient.set(member.id, client.id);
     this.clientToMember.set(client.id, member.id);
-    await this.updateGameState(gameId);
+    await this.updateGameState(game.id);
   }
 
   async handleDisconnect(client) {

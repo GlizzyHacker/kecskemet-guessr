@@ -43,7 +43,7 @@ export default function useGameConnection(
       return;
     }
     console.log('connecting');
-    socket.auth = { game: game.id };
+    socket.auth = { game: game.joinCode };
     socket.connect();
     if (socket.connected) {
       onConnect();

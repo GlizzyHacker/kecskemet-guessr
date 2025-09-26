@@ -4,6 +4,7 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 import { AreasService } from 'src/areas/areas.service';
 import { RoundsService } from 'src/rounds/rounds.service';
+import { generateJoinCode } from 'src/util';
 import { CreateGameDto } from './dto/create-game.dto';
 
 @Injectable()
@@ -24,12 +25,38 @@ export class GamesService {
           area: areas.join(','),
           hint: createGameDto.hint,
           timer: createGameDto.timer,
+          joinCode: generateJoinCode(),
         },
       });
     } catch (e) {
       console.error(e);
       throw new BadRequestException('Could not create Game');
     }
+  }
+  async findJoinCode(joinCode: string, includeMessages: boolean = false) {
+    const game = await this.prisma.game.findFirst({
+      where: { joinCode: joinCode, active: true },
+      include: {
+        messages: includeMessages,
+        rounds: { include: { image: { select: { id: true, area: true } } } },
+        members: {
+          include: {
+            guesses: { select: { id: true, roundId: true, memberId: true, score: true } },
+            player: true,
+          },
+        },
+      },
+    });
+
+    if (!game) {
+      throw new NotFoundException(`Active game with join code ${joinCode} not found`);
+    }
+
+    if (!game.hint) {
+      game.rounds.forEach((round) => (round.image.area = undefined));
+    }
+
+    return game;
   }
 
   async findOne(id: number, includeMessages: boolean = false) {

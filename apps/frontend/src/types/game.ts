@@ -11,6 +11,7 @@ export enum GamePhase {
 
 export type Game = {
   id: number;
+  joinCode: string;
   active: boolean;
   round: number;
   totalRounds: number;
