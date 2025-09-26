@@ -46,7 +46,12 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const jwt = await this.jwtService.verify(client.handshake.headers.authorization?.split(' ')[1] ?? '', {
       secret: process.env.JWT_SECRET,
     });
-    if (!jwt || !game || !game.active) {
+    if (
+      !jwt ||
+      !game ||
+      !game.active ||
+      (game.members.length >= game.memberLimit && game.members.every((member) => member.playerId != jwt.id))
+    ) {
       client.disconnect();
       return;
     }
