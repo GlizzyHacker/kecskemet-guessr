@@ -72,6 +72,8 @@ export default function Play() {
       round: 0,
       members: [],
       rounds: [],
+      memberLimit: 1,
+      joinCode: '',
     };
     setInitialGame(request);
   }
