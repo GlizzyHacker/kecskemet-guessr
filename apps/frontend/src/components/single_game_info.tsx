@@ -1,11 +1,12 @@
 import { Game } from '@/types/game';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { FaChevronUp } from 'react-icons/fa';
 import Card from './card';
-import { useTranslations } from 'next-intl';
 
 export default function SingleGameInfo({ className = '', game }: { className?: string; game: Game }) {
   const t = useTranslations('GameInfo');
+  const tScore = useTranslations('Scoreboard');
   const topt = useTranslations('Create');
   const [open, setOpen] = useState(false);
 
@@ -25,7 +26,11 @@ export default function SingleGameInfo({ className = '', game }: { className?: s
         </p>
         <p className='p-2 max-md:col-span-3 md:text-center'>
           {t('difficulty')}: {topt(game.difficulty.toLowerCase())}
-        </p>{' '}
+        </p>
+        <p className='p-2 max-md:col-span-3 md:text-center'>
+          {tScore('score')}:{' '}
+          {game.rounds.map((round) => round.guesses[0]?.score ?? 0).reduce((prev, cur) => prev + cur, 0)}
+        </p>
         {game.rounds[game.round - 1]?.image.area && (
           <p className='p-2 max-md:col-span-3 md:text-center'>
             {t('hint')}: {game.rounds[game.round - 1]?.image.area}
