@@ -19,23 +19,26 @@ export default function GameInfo({ className = '', game }: { className?: string;
         </button>
       </div>
       <div
-        className={`${open ? 'max-md:max-h-100' : 'max-md:max-h-0'} overflow-hidden transition-all duration-300 grid grid-cols-3`}
+        className={`${open ? 'max-md:max-h-100' : 'max-md:max-h-0'} overflow-hidden transition-all duration-300 grid grid-cols-4`}
       >
-        <div className='p-2 max-md:col-span-3 md:text-center'>
+        <div className='p-2 max-md:col-span-4 md:text-center'>
           <JoinCode code={game.joinCode} />
         </div>
-        <p className='p-2 max-md:col-span-3 md:text-center'>
-          {t('timer')}: {topt('limit', { minute: game.timer / 60 })}
-        </p>
-        <p className='p-2 max-md:col-span-3 md:text-center'>
+        <p className='p-2 max-md:col-span-4 md:text-center'>
           {t('difficulty')}: {topt(game.difficulty.toLowerCase())}
         </p>{' '}
+        <p className='p-2 max-md:col-span-4 md:text-center'>
+          {t('timer')}: {topt('limit', { minute: game.timer / 60 })}
+        </p>
+        <p className='p-2 max-md:col-span-4 md:text-center'>
+          {t('members')}: {game.memberLimit}
+        </p>
         {game.rounds[game.round - 1]?.image.area && (
-          <p className='p-2 max-md:col-span-3 md:text-center'>
+          <p className='p-2 max-md:col-span-4 md:text-center'>
             {t('hint')}: {game.rounds[game.round - 1]?.image.area}
           </p>
         )}
-        <p className='p-2 col-span-3'>
+        <p className='p-2 col-span-4'>
           {t('area')}: {game.area.split(',').join(', ')}
         </p>
       </div>

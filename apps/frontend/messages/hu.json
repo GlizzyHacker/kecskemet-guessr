@@ -1,7 +1,8 @@
 {
   "Play": {
     "loading": "Játék töltése",
-    "image_placeholder": "Keresendő kép"
+    "image_placeholder": "Keresendő kép",
+    "full": "Játék megtelt"
   },
   "Create": {
     "difficulty": "Nehézség",
@@ -17,7 +18,8 @@
     "rounds": "Körök száma",
     "create": "Játék létrehozása",
     "timer": "Időkorlát",
-    "limit": "{minute, plural, =0 {Nincs} other {# perc}}"
+    "limit": "{minute, plural, =0 {Nincs} other {# perc}}",
+    "members": "Játékos korlát"
   },
   "Home": {
     "play": "Játék",
@@ -52,7 +54,8 @@
     "id": "Játék azonosító",
     "timer": "Időkorlát",
     "difficulty": "Nehézség",
-    "area": "Terület"
+    "area": "Terület",
+    "members": "Játékos korlát"
   },
   "GuessMarker": {
     "my": "Tippem",

@@ -26,6 +26,7 @@ export class GamesService {
           hint: createGameDto.hint,
           timer: createGameDto.timer,
           joinCode: generateJoinCode(),
+          memberLimit: createGameDto.memberLimit,
         },
       });
     } catch (e) {
