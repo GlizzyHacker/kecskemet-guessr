@@ -1,4 +1,5 @@
 import api from '@/lib/api';
+import { getDistance, parseCordinates } from '@/lib/cordinates';
 import { Game, ParsedCordinates, Player, Round, RoundWithAnswer } from '@/types/game';
 import { Image, ImageWithAnswer } from '@/types/image';
 import { useEffect, useState } from 'react';
@@ -37,8 +38,17 @@ export default function useSingleGame({
   }
 
   function sendGuess(cords: ParsedCordinates): void {
+    const target = parseCordinates(answer?.image.cordinates ?? '');
     const round = rounds.at(-1)!;
-    round?.guesses.push({ id: 0, memberId: 0, cordinates: `${cords.lat},${cords.lng}`, score: 0, roundId: 0 });
+    const distance = getDistance(target.lat, target.lng, cords.lat, cords.lng) * 1000;
+    const score = Math.max(500 - distance, 0);
+    round?.guesses.push({
+      id: 0,
+      memberId: 0,
+      cordinates: `${cords.lat},${cords.lng}`,
+      score: Math.floor(score),
+      roundId: 0,
+    });
     setRounds([...rounds.slice(0, -1), round]);
   }
 
@@ -63,6 +73,8 @@ export default function useSingleGame({
           round: rounds.length,
           rounds: rounds,
           active: initialGame.totalRounds >= rounds.length,
+          memberLimit: 1,
+          joinCode: '',
         };
   return { game, answer: (rounds.at(-1)?.guesses.length ?? 0 > 0) ? answer : null, sendNext, sendGuess };
 }
