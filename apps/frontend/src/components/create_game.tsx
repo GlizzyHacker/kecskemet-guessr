@@ -16,10 +16,12 @@ export default function CreateGame({
   onForm,
   error,
   loading,
+  isOnline,
 }: {
   onForm: (formData: FormData) => void;
   error?: ReactNode;
   loading?: boolean;
+  isOnline?: boolean;
 }) {
   const { data: areas } = useAreas();
   const [showAreaSelection, setShowAreaSelection] = useState(false);
@@ -160,6 +162,18 @@ export default function CreateGame({
                 className='bg-primary flex rounded-xl p-2'
               />
             </div>
+            {isOnline == true && (
+              <div className='mx-auto col-span-2'>
+                <label htmlFor='members'>{t('members')}</label>
+                <input
+                  type='number'
+                  id='members'
+                  name='members'
+                  defaultValue={5}
+                  className='bg-primary flex rounded-xl p-2'
+                />
+              </div>
+            )}
             <Button enable={!loading} className='mx-auto col-span-2 mt-2' type='submit'>
               {t('create')}
             </Button>

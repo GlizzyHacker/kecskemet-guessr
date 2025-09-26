@@ -1,7 +1,8 @@
 {
   "Play": {
     "loading": "Loading game",
-    "image_placeholder": "Image to guess"
+    "image_placeholder": "Image to guess",
+    "full": "Game is full"
   },
   "Create": {
     "difficulty": "Difficulty",
@@ -17,7 +18,8 @@
     "rounds": "Number of rounds",
     "create": "Create game",
     "timer": "Time limit",
-    "limit": "{minute, plural, =0 {None} =1 {1 minute} other {# minutes}}"
+    "limit": "{minute, plural, =0 {None} =1 {1 minute} other {# minutes}}",
+    "members": "Member limit"
   },
   "Home": {
     "play": "Play",
@@ -52,7 +54,8 @@
     "id": "Game id",
     "timer": "Time limit",
     "difficulty": "Difficulty",
-    "area": "Area"
+    "area": "Area",
+    "members": "Member limit"
   },
   "GuessMarker": {
     "my": "My guess",

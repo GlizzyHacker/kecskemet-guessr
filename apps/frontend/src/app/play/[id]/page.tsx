@@ -92,6 +92,14 @@ export default function Play() {
     );
   }
 
+  if (game.members.length >= game.memberLimit && game.members.every((member) => member.player.id !== player?.id)) {
+    return <div className='flex flex-col items-center space-y-2'>
+      <Card>
+        <p>{t('full')}</p>
+      </Card>
+    </div>;
+  }
+
   const currentRound = game.rounds[game.round - 1] ?? null;
   const guessed = game.members
     .find((member) => member.player.id == player?.id)

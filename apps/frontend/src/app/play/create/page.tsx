@@ -19,6 +19,7 @@ export default function Create() {
       timer: Number(formData.get('timer')),
       totalRounds: Number(formData.get('rounds')),
       hint: Boolean(formData.get('hint')),
+      memberLimit: Number(formData.get('members')),
     };
     try {
       const response = await api.post(`/games`, request);
@@ -38,7 +39,7 @@ export default function Create() {
 
   return (
     <main className='flex flex-col items-5 min-w-2/3 mx-auto'>
-      <CreateGame onForm={handleForm} error={error} loading={loading} />
+      <CreateGame onForm={handleForm} error={error} loading={loading} isOnline />
     </main>
   );
 }

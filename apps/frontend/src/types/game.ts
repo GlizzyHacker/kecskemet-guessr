@@ -22,6 +22,7 @@ export type Game = {
   timer: number;
   messages?: Message[];
   hint?: boolean;
+  memberLimit: number;
 };
 
 export type Message = {
