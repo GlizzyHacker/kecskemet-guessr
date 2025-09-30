@@ -1,4 +1,5 @@
 import { getRequestConfig } from 'next-intl/server';
+import { cookies, headers } from "next/headers";
 
 export default getRequestConfig(async () => {
   const defaultLocale = (await headers()).get("accept-language")?.split(",")[0];
