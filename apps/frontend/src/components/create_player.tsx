@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Button from './button';
 import ErrorCard from './error_card';
+import InputField from './input_field';
 
 export default function CreatePlayer() {
   const { data: player } = usePlayer();
@@ -53,27 +54,16 @@ export default function CreatePlayer() {
     <div>
       {!player && (
         <form action={handleCreatePlayer} className='bg-secondary p-2'>
-          <label htmlFor='name'>{t('name')}:</label>
-          <input
-            id='name'
-            name='name'
-            type='text'
-            placeholder='Prób András'
-            className='bg-primary flex rounded-xl p-2'
-          />
+          <InputField name='name' type='text' placeholder='Prób András'>
+            {t('name')}
+          </InputField>
           <br />
           <Button type='submit'>{t('create')}</Button>
         </form>
       )}
       {player && (
         <form action={handleRenamePlayer} className='bg-secondary flex flex-col p-2 rounded-xl '>
-          <input
-            id='name'
-            name='name'
-            type='text'
-            defaultValue={player!.name}
-            className='bg-primary flex rounded-xl p-2'
-          />
+          <InputField name='name' type='text' defaultValue={player!.name} />
           <br />
           <Button type='submit' className='mx-auto'>
             {t('rename')}

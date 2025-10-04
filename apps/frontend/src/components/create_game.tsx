@@ -5,6 +5,7 @@ import { ReactNode, useState } from 'react';
 import Button from './button';
 import Checkboxes from './checkboxes';
 import ErrorCard from './error_card';
+import InputField from './input_field';
 import Radio from './radio';
 
 const Map = dynamic(() => import('@/components/map'), {
@@ -153,25 +154,15 @@ export default function CreateGame({
               </label>
             </div>
             <div className='mx-auto col-span-2'>
-              <label htmlFor='rounds'>{t('rounds')}</label>
-              <input
-                type='number'
-                id='rounds'
-                name='rounds'
-                defaultValue={5}
-                className='bg-primary flex rounded-xl p-2'
-              />
+              <InputField type='number' name='rounds' defaultValue={5}>
+                {t('rounds')}
+              </InputField>
             </div>
             {isOnline == true && (
               <div className='mx-auto col-span-2'>
-                <label htmlFor='members'>{t('members')}</label>
-                <input
-                  type='number'
-                  id='members'
-                  name='members'
-                  defaultValue={5}
-                  className='bg-primary flex rounded-xl p-2'
-                />
+                <InputField type='number' name='members' defaultValue={5}>
+                  {t('members')}
+                </InputField>
               </div>
             )}
             <Button enable={!loading} className='mx-auto col-span-2 mt-2' type='submit'>
