@@ -8,6 +8,7 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
+import { $Enums } from '@prisma/client';
 import { GuessesService } from 'src/guesses/guesses.service';
 import { MembersService } from 'src/members/members.service';
 import { createMessageDto } from 'src/messages/dto/create-message.dto';
@@ -40,9 +41,45 @@ export class GamesGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async handleConnection(client) {
     const joinCode = client.handshake.auth.game;
     if (!joinCode) {
+      client.disconnect();
       return;
     }
-    const game = await this.gamesService.findJoinCode(joinCode);
+
+    //TODO: REPLACE WITH DTO
+    let game: {
+      members: ({
+        guesses: { id: number; roundId: number; score: number; memberId: number }[];
+        player: { id: number; name: string; role: $Enums.Role };
+      } & { playerId: number; id: number; connected: boolean; gameId: number; isOwner: boolean })[];
+      rounds: ({ image: { id: number; area: string } } & {
+        id: number;
+        createdAt: Date;
+        imageId: number;
+        gameId: number;
+      })[];
+      messages: { id: number; createdAt: Date; gameId: number | null; memberId: number; content: string }[];
+    } & {
+      active: boolean;
+      memberLimit: number;
+      id: number;
+      round: number;
+      createdAt: Date;
+      updatedAt: Date;
+      totalRounds: number;
+      area: string;
+      hint: boolean;
+      difficulty: $Enums.Difficulty;
+      timer: number;
+      joinCode: string;
+    };
+    try {
+      game = await this.gamesService.findJoinCode(joinCode);
+    } catch (e) {
+      console.error(e);
+      client.disconnect();
+      return;
+    }
+
     const jwt = await this.jwtService.verify(client.handshake.headers.authorization?.split(' ')[1] ?? '', {
       secret: process.env.JWT_SECRET,
     });
