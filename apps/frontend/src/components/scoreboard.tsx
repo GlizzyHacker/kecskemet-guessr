@@ -1,6 +1,7 @@
 import { Guess, Member, Round } from '@/types/game';
 import { useTranslations } from 'next-intl';
 import { FaBan, FaCrown } from 'react-icons/fa';
+import Button from './button';
 import Card from './card';
 
 export default function Scoreboard({
@@ -23,32 +24,28 @@ export default function Scoreboard({
 
   return (
     <Card className={className}>
-      <div className='w-full grid grid-cols-6 gap-y-0.5 bg-secondary'>
-        <p className='bg-primary text-center p-2 overflow-ellipsis'>{t('ranking')}</p>
-        <p className='col-span-2 bg-primary text-center p-2 overflow-ellipsis'>{t('name')}</p>
-        <p className='col-span-2 bg-primary text-center p-2 overflow-ellipsis'>{t('score')}</p>
-        <p className='bg-primary text-center p-2 overflow-hidden'>{t('guessed')}</p>
+      <div className='w-full grid grid-cols-6 gap-y-0.5 bg-outline-variant'>
+        <p className='bg-surface-container-low text-center p-2 overflow-ellipsis'>{t('ranking')}</p>
+        <p className='col-span-2 bg-surface-container-low text-center p-2 overflow-ellipsis'>{t('name')}</p>
+        <p className='col-span-2 bg-surface-container-low text-center p-2 overflow-ellipsis'>{t('score')}</p>
+        <p className='bg-surface-container-low text-center p-2 overflow-hidden'>{t('guessed')}</p>
         {sorted?.map((member, i) => [
-          <p key={`${member.id}rank`} className='bg-primary text-center p-2'>
+          <p key={`${member.id}rank`} className='bg-surface-container-low text-center p-2'>
             {onKick && (
-              <button
-                disabled={!member.connected}
-                className='inline align-baseline disabled:opacity-30 enabled:cursor-pointer mx-1'
-                onClick={() => onKick?.(member)}
-              >
-                <FaBan />
-              </button>
+              <Button icon enable={member.connected} className='inline align-baseline' onClick={() => onKick?.(member)}>
+                <FaBan className='text-primary' />
+              </Button>
             )}
             {`${i + 1}.`}
           </p>,
-          <p key={`${member.id}name`} className='col-span-2 bg-primary text-center p-2 overflow-ellipsis'>
+          <p key={`${member.id}name`} className='col-span-2 bg-surface-container-low text-center p-2 overflow-ellipsis'>
             {member.connected && member.isOwner && <FaCrown className='inline align-baseline mx-1' />}
             {member.player.name}
           </p>,
-          <p key={`${member.id}score`} className='col-span-2 bg-primary text-center p-2'>
+          <p key={`${member.id}score`} className='col-span-2 bg-surface-container-low text-center p-2'>
             {member.guesses.reduce((sum: number, guess: Guess) => sum + guess.score, 0)}
           </p>,
-          <p key={`${member.id}guess`} className='bg-primary text-center p-2 overflow-ellipsis'>
+          <p key={`${member.id}guess`} className='bg-surface-container-low text-center p-2 overflow-ellipsis'>
             {member.connected
               ? member.guesses.some((guess: Guess) => guess.roundId == currentRound?.id)
                 ? 'X'

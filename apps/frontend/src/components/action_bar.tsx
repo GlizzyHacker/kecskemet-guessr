@@ -2,6 +2,7 @@ import { GamePhase } from '@/types/game';
 import { useTranslations } from 'next-intl';
 import { ReactNode, useEffect, useState } from 'react';
 import Button from './button';
+import Card from './card';
 
 export default function ActionBar({
   phase,
@@ -54,14 +55,19 @@ export default function ActionBar({
   }
 
   return (
-    <div className=' bg-secondary rounded-xl p-2 w-full flex items-center space-x-2'>
-      <p className='flex-1 ml-2'>{text}</p>
-      <div className='flex max-md:flex-col items-center'>
-        <div className='min-w-14 m-2'>{children}</div>
-        <Button onClick={() => onAction(phase)} enable={!(loading && phase == GamePhase.REVEAL) && phase != GamePhase.GUESSED}>
-          {button}
-        </Button>
+    <Card className=' w-full'>
+      <div className='flex items-center space-x-2'>
+        <p className='flex-1 ml-2'>{text}</p>
+        <div className='flex max-md:flex-col items-center'>
+          <div className='min-w-14 m-2'>{children}</div>
+          <Button
+            onClick={() => onAction(phase)}
+            enable={!(loading && phase == GamePhase.REVEAL) && phase != GamePhase.GUESSED}
+          >
+            {button}
+          </Button>
+        </div>
       </div>
-    </div>
+    </Card>
   );
 }

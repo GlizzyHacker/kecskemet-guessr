@@ -2,6 +2,7 @@
 
 import Button from '@/components/button';
 import ErrorCard from '@/components/error_card';
+import InputField from '@/components/input_field';
 import api from '@/lib/api';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
@@ -30,7 +31,7 @@ export default function Auth() {
   return (
     <main className='flex flex-col items-center'>
       <form action={handleLogin} className='bg-secondary flex flex-col p-2 rounded-xl'>
-        <input id='password' name='password' type='password' className='bg-primary rounded-xl p-2' />
+        <InputField name='password' type='password'/>
         <br />
         <Button type='submit' className='mx-auto'>
           Try

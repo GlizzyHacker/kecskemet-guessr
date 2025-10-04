@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Button from './button';
 import ErrorCard from './error_card';
+import InputField from './input_field';
 
 export default function SelectGame() {
   const [error, setError] = useState<string | undefined>();
@@ -43,10 +44,11 @@ export default function SelectGame() {
       <Button onClick={handleCreateGame} className=''>
         {t('create')}
       </Button>
-      <div className='h-0.5 my-4 bg-primary' />
+      <div className='h-0.5 my-4 bg-outline-variant' />
       <form action={handleForm} className='flex flex-col gap-2'>
-        <label htmlFor='gameId'>{t('id')}:</label>
-        <input name='gameId' type='text' className='bg-primary flex rounded-xl p-2' />
+        <InputField name='gameId' type='text'>
+          {t('id')}
+        </InputField>
         <Button type='submit' className=''>
           {t('join')}
         </Button>

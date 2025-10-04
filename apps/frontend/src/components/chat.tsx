@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { FaChevronUp } from 'react-icons/fa';
 import Button from './button';
+import Card from './card';
 
 export default function Chat({
   messages,
@@ -24,7 +25,7 @@ export default function Chat({
   }
 
   return (
-    <div className={`${className} bg-secondary rounded-xl p-2`}>
+    <Card className={`${className}`}>
       <div className='m-2 flex'>
         <h2 className='flex-1 text-center'>{t('chat')}</h2>
         <button className='md:hidden' onClick={() => setOpen(!open)}>
@@ -35,7 +36,7 @@ export default function Chat({
         className={`${open ? 'max-md:max-h-[300]' : 'max-md:max-h-0'} md:max-h-[300] overflow-hidden transition-all duration-300 flex flex-col space-y-2`}
       >
         <div
-          className='bg-primary flex-1 space-y-4 overflow-y-scroll min-h-[80] max-h-[300] rounded-[8] p-2'
+          className='border-t-2 border-outline-variant flex-1 space-y-4 overflow-y-scroll min-h-[80] max-h-[300] p-2'
           style={{ overflowAnchor: 'none' }}
         >
           {messages.map((message, i) => (
@@ -59,12 +60,12 @@ export default function Chat({
             name='content'
             type='text'
             autoComplete='off'
-            className='bg-primary rounded-xl p-2 flex-1'
+            className='bg-primary text-on-primary not-hover:opacity-90 focus:opacity-100 rounded-xl p-2 flex-1'
             size={1}
           />
           <Button type='submit'>{t('send')}</Button>
         </form>
       </div>
-    </div>
+    </Card>
   );
 }

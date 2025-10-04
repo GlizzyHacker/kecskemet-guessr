@@ -1,6 +1,7 @@
 'use client';
 
 import ActionBar from '@/components/action_bar';
+import Card from '@/components/card';
 import CreateGame from '@/components/create_game';
 import GuessCountdown from '@/components/guess_countdown';
 import ImageVote from '@/components/image_vote';
@@ -98,7 +99,7 @@ export default function Play() {
     <main className='flex flex-col items-stretch w-full space-y-2'>
       <SingleGameInfo game={game} />
       {game.round == 0 || !game.active ? null : (
-        <div className='flex-1 rounded-xl p-2 bg-secondary w-full relative'>
+        <Card className='flex-1 w-full relative'>
           <div
             className={`${loading ? 'blur-xl' : ''} rounded-[10] overflow-hidden flex max-md:flex-col justify-center justify-items-center`}
           >
@@ -135,7 +136,7 @@ export default function Play() {
               <LoadingIndicator />
             </div>
           )}
-        </div>
+        </Card>
       )}
       <ActionBar phase={phase} onAction={handleAction}>
         {phase == GamePhase.REVEAL ? (

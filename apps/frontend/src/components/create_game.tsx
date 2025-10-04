@@ -3,8 +3,10 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { ReactNode, useState } from 'react';
 import Button from './button';
+import Card from './card';
 import Checkboxes from './checkboxes';
 import ErrorCard from './error_card';
+import InputField from './input_field';
 import Radio from './radio';
 
 const Map = dynamic(() => import('@/components/map'), {
@@ -82,7 +84,7 @@ export default function CreateGame({
   }
 
   return (
-    <div className='bg-secondary rounded-xl p-2'>
+    <Card>
       <div className='flex max-md:flex-col rounded-[10] overflow-hidden'>
         <div className='flex-1'>
           <Map areas={selectedAreas} />
@@ -95,7 +97,7 @@ export default function CreateGame({
               onForm(f);
             }}
           >
-            <h2 className='font-medium text-white transition px-4 pb-2 pt-4 col-span-2 mx-auto'>Create Game</h2>
+            <h2 className='font-medium transition px-4 pb-2 pt-4 col-span-2 mx-auto'>Create Game</h2>
             <div className=' max-md:col-span-2'>
               <h2>{t('difficulty')}</h2>
               <div className='pl-2'>
@@ -153,25 +155,15 @@ export default function CreateGame({
               </label>
             </div>
             <div className='mx-auto col-span-2'>
-              <label htmlFor='rounds'>{t('rounds')}</label>
-              <input
-                type='number'
-                id='rounds'
-                name='rounds'
-                defaultValue={5}
-                className='bg-primary flex rounded-xl p-2'
-              />
+              <InputField type='number' name='rounds' defaultValue={5}>
+                {t('rounds')}
+              </InputField>
             </div>
             {isOnline == true && (
               <div className='mx-auto col-span-2'>
-                <label htmlFor='members'>{t('members')}</label>
-                <input
-                  type='number'
-                  id='members'
-                  name='members'
-                  defaultValue={5}
-                  className='bg-primary flex rounded-xl p-2'
-                />
+                <InputField type='number' name='members' defaultValue={5}>
+                  {t('members')}
+                </InputField>
               </div>
             )}
             <Button enable={!loading} className='mx-auto col-span-2 mt-2' type='submit'>
@@ -181,6 +173,6 @@ export default function CreateGame({
           </form>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
