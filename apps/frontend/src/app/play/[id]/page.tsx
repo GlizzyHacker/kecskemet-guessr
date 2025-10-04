@@ -142,7 +142,7 @@ export default function Play() {
         />
       </div>
       {game.round == 0 || !game.active ? null : (
-        <div className='flex-1 rounded-xl p-2 bg-secondary w-full relative'>
+        <Card className='flex-1 w-full relative'>
           <div
             className={`${loading ? 'blur-xl' : ''} rounded-[10] overflow-hidden flex max-md:flex-col justify-center justify-items-center`}
           >
@@ -179,7 +179,7 @@ export default function Play() {
               <LoadingIndicator />
             </div>
           )}
-        </div>
+        </Card>
       )}
       <ActionBar phase={phase} onAction={handleAction}>
         {phase == GamePhase.REVEAL ? (

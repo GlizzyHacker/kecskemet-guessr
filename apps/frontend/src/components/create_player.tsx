@@ -63,11 +63,11 @@ export default function CreatePlayer() {
       )}
       {player && (
         <form action={handleRenamePlayer} className='bg-secondary flex flex-col p-2 rounded-xl '>
-          <InputField name='name' type='text' defaultValue={player!.name} />
+          <InputField name='name' type='text' defaultValue={player!.name}>
+            {t('name')}
+          </InputField>
           <br />
-          <Button type='submit' className='mx-auto'>
-            {t('rename')}
-          </Button>
+          <Button type='submit'>{t('rename')}</Button>
           {error && <ErrorCard className='m-2'>{error}</ErrorCard>}
         </form>
       )}

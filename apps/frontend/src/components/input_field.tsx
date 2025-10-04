@@ -22,7 +22,7 @@ export default function InputField({
         name={name}
         defaultValue={defaultValue}
         placeholder={placeholder}
-        className='bg-primary flex rounded-xl p-2'
+        className='bg-primary text-on-primary not-hover:opacity-90 focus:opacity-100 flex rounded-xl p-2'
       />
     </>
   );

@@ -44,7 +44,7 @@ export default function SelectGame() {
       <Button onClick={handleCreateGame} className=''>
         {t('create')}
       </Button>
-      <div className='h-0.5 my-4 bg-primary' />
+      <div className='h-0.5 my-4 bg-outline-variant' />
       <form action={handleForm} className='flex flex-col gap-2'>
         <InputField name='gameId' type='text'>
           {t('id')}

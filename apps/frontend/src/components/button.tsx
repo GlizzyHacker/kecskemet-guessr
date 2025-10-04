@@ -6,21 +6,23 @@ export default function Button({
   type = undefined,
   className = '',
   enable = true,
+  icon = false,
 }: {
   onClick?: () => void;
   children: ReactNode;
   type?: 'button' | 'reset' | 'submit' | undefined;
   className?: string;
   enable?: boolean;
+  icon?: boolean;
 }) {
   return (
     <button
       onClick={onClick}
       type={type}
       disabled={!enable}
-      className={`${className} disabled:opacity-15 enabled:cursor-pointer disabled:bg-black bg-tertiary items-center rounded-xl p-1`}
+      className={`${className} disabled:opacity-10 enabled:cursor-pointer disabled:bg-on-surface active:opacity-50 not-hover:opacity-90 items-center rounded-xl text-on-primary ${icon ? 'p-1' : 'bg-primary p-2'}`}
     >
-      <div className='bg-primary items-center rounded-[8] p-2'>{children}</div>
+      <div className=''>{children}</div>
     </button>
   );
 }

@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { ReactNode, useState } from 'react';
 import Button from './button';
+import Card from './card';
 import Checkboxes from './checkboxes';
 import ErrorCard from './error_card';
 import InputField from './input_field';
@@ -83,7 +84,7 @@ export default function CreateGame({
   }
 
   return (
-    <div className='bg-secondary rounded-xl p-2'>
+    <Card>
       <div className='flex max-md:flex-col rounded-[10] overflow-hidden'>
         <div className='flex-1'>
           <Map areas={selectedAreas} />
@@ -96,7 +97,7 @@ export default function CreateGame({
               onForm(f);
             }}
           >
-            <h2 className='font-medium text-white transition px-4 pb-2 pt-4 col-span-2 mx-auto'>Create Game</h2>
+            <h2 className='font-medium transition px-4 pb-2 pt-4 col-span-2 mx-auto'>Create Game</h2>
             <div className=' max-md:col-span-2'>
               <h2>{t('difficulty')}</h2>
               <div className='pl-2'>
@@ -172,6 +173,6 @@ export default function CreateGame({
           </form>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
