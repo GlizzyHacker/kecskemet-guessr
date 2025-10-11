@@ -29,11 +29,27 @@ export default function Home() {
       <div className='flex max-md:flex-col py-8 gap-4 flex-grow'>
         <Card className='flex-1'>
           <h2 className='font-medium text-xl px-4 pb-2 pt-4 text-center'>{t('about_title')}</h2>
-          <p className='px-4'>{t('about')}</p>
+          {t('about')
+            .split('\n')
+            .map((line, i) => (
+              // warning is a false positive because this array wont change
+              // eslint-disable-next-line react/no-array-index-key
+              <p key={'a' + i} className='px-4 pb-4 whitespace-pre-wrap'>
+                {line}
+              </p>
+            ))}
         </Card>
         <Card className='flex-1'>
           <h2 className='font-medium text-xl px-4 pb-2 pt-4 text-center'>{t('how_to_play_title')}</h2>
-          <p className='px-4'>{t('how_to_play')}</p>
+          {t('how_to_play')
+            .split('\n')
+            .map((line, i) => (
+              // warning is a false positive because this array wont change
+              // eslint-disable-next-line react/no-array-index-key
+              <p key={'h' + i} className='px-4 pb-4 whitespace-pre-wrap'>
+                {line}
+              </p>
+            ))}
         </Card>
       </div>
     </main>
