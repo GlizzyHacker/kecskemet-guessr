@@ -7,12 +7,12 @@ import Link from 'next/link';
 export default function Home() {
   const t = useTranslations('Home');
   return (
-    <main className='max-md:h-full '>
-      <div className='h-full flex flex-row justify-center items-center'>
-        <Card className='h-full md:w-1/2'>
+    <main className='h-full flex flex-col'>
+      <div className='flex flex-row justify-center items-center'>
+        <Card className='h-full md:w-1/2 max-md:w-full'>
           <div className='h-full bg-outline-variant flex max-md:flex-col gap-0.5'>
             <div className='flex-1 flex flex-col bg-surface-container-low p-4'>
-              <h2 className='pb-2 text-center font-medium'>{t('singleplayer')}</h2>
+              <h2 className='pb-2 text-center font-medium text-xl'>{t('singleplayer')}</h2>
               <div className='flex-1 items-center flex '>
                 <Link className='w-full' href='/play/single'>
                   <Button className='w-full'>{t('play')}</Button>
@@ -20,10 +20,32 @@ export default function Home() {
               </div>
             </div>
             <div className='flex-1 bg-surface-container-low p-4'>
-              <h2 className='pb-2 text-center font-medium'>{t('multiplayer')}</h2>
+              <h2 className='pb-2 text-center font-medium text-xl'>{t('multiplayer')}</h2>
               <SelectGame />
             </div>
           </div>
+        </Card>
+      </div>
+      <div className='flex max-md:flex-col py-8 gap-4 flex-grow'>
+        <Card className='flex-1'>
+          <h2 className='font-medium text-xl px-4 pb-2 pt-4 text-center'>About</h2>
+          <p className='px-4'>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum.
+          </p>
+        </Card>
+        <Card className='flex-1'>
+          <h2 className='font-medium text-xl px-4 pb-2 pt-4 text-center'>How to play</h2>
+          <p className='px-4'>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum.
+          </p>
         </Card>
       </div>
     </main>
