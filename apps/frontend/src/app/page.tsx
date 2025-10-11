@@ -29,23 +29,11 @@ export default function Home() {
       <div className='flex max-md:flex-col py-8 gap-4 flex-grow'>
         <Card className='flex-1'>
           <h2 className='font-medium text-xl px-4 pb-2 pt-4 text-center'>About</h2>
-          <p className='px-4'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
-          </p>
+          <p className='px-4'>{t('about')}</p>
         </Card>
         <Card className='flex-1'>
           <h2 className='font-medium text-xl px-4 pb-2 pt-4 text-center'>How to play</h2>
-          <p className='px-4'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
-          </p>
+          <p className='px-4'>{t('how_to_play')}</p>
         </Card>
       </div>
     </main>

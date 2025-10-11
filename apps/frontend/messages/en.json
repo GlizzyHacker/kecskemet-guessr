@@ -24,11 +24,15 @@
   "Home": {
     "play": "Play",
     "singleplayer": "Play alone",
-    "multiplayer": "Play with friends"
+    "multiplayer": "Play with friends",
+    "about_title": "About",
+    "how_to_play_title": "How to play",
+    "about": "Kecskemét Guessr is an image recognition game, that you can play alone or with friends.\nThe goal of the game is to find where each image was taken from and mark it on the map. The pictures are in select areas of Kecskemét and were taken from Google streetview.\n As a local I was always curious how well I knew my hometown. With this game you can prove your knowledge and learn more about this beautiful city!",
+    "how_to_play": "The owner of a game can set various rules: time limit, player limit, hint. Games are made up of rounds. Every round you get a new image. Mark your guess on the map with a tack. After everyone guessed, the answer is revealed and everyone is awarded points based on how far they guessed. Perfect guesses are awarded 500 points for each meter farther you lose a point. The player with most points wins."
   },
   "ActionBar": {
     "start": "Press 'Start' to start the game",
-    "guessing": "Select on the map where the image on the left is shot from",
+    "guessing": "Select on the map where the image was taken from",
     "guessed": "Waiting for other players to guess",
     "reveal": "Anwer revealed. Press 'Next' to begin next round",
     "disconnected": "You have been disconnected from the game",
@@ -85,5 +89,9 @@
   "JoinCode": {
     "join_code": "Join code",
     "share_message": "Join me for a game"
+  },
+  "Footer": {
+    "contact": "Contact",
+    "created_by": "Created by {first} {last}"
   }
 }
