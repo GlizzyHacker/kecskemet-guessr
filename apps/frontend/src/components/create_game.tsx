@@ -97,7 +97,7 @@ export default function CreateGame({
               onForm(f);
             }}
           >
-            <h2 className='font-medium transition px-4 pb-2 pt-4 col-span-2 mx-auto'>Create Game</h2>
+            <h2 className='font-medium text-xl transition px-4 pb-2 pt-4 col-span-2 mx-auto'>{t('create')}</h2>
             <div className=' max-md:col-span-2'>
               <h2>{t('difficulty')}</h2>
               <div className='pl-2'>
