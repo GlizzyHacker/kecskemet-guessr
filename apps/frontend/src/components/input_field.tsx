@@ -14,7 +14,7 @@ export default function InputField({
   placeholder?: string;
 }) {
   return (
-    <>
+    <div>
       <label htmlFor={name}>{children}</label>
       <input
         type={type}
@@ -24,6 +24,6 @@ export default function InputField({
         placeholder={placeholder}
         className='bg-primary text-on-primary not-hover:opacity-90 focus:opacity-100 flex rounded-xl p-2'
       />
-    </>
+    </div>
   );
 }

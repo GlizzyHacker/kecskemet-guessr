@@ -53,12 +53,17 @@ export default function CreatePlayer() {
   return (
     <div>
       {!player && (
-        <form action={handleCreatePlayer} className='bg-secondary p-2'>
+        <form
+          action={handleCreatePlayer}
+          className='flex flex-col bg-secondary-surface-low items-stretch p-2 gap-4 w-min'
+        >
+          <p>{t('message')}</p>
           <InputField name='name' type='text' placeholder='Prób András'>
             {t('name')}
           </InputField>
-          <br />
-          <Button type='submit'>{t('create')}</Button>
+          <Button className='w-full' type='submit'>
+            {t('create')}
+          </Button>
         </form>
       )}
       {player && (
@@ -67,7 +72,9 @@ export default function CreatePlayer() {
             {t('name')}
           </InputField>
           <br />
-          <Button type='submit'>{t('rename')}</Button>
+          <Button className='w-full' type='submit'>
+            {t('rename')}
+          </Button>
           {error && <ErrorCard className='m-2'>{error}</ErrorCard>}
         </form>
       )}

@@ -50,7 +50,8 @@
   "CreatePlayer": {
     "name": "Name",
     "create": "Create player",
-    "rename": "Rename"
+    "rename": "Rename",
+    "message": "Create a player to continue"
   },
   "GameInfo": {
     "round": "Round {round} out of {rounds}",

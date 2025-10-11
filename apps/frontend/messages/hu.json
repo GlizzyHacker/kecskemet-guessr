@@ -50,7 +50,8 @@
   "CreatePlayer": {
     "name": "Név",
     "create": "Játékos létrehozása",
-    "rename": "Átnevezés"
+    "rename": "Átnevezés",
+    "message": "A folytatáshoz hozzon létre egy játékost"
   },
   "GameInfo": {
     "round": "{round}/{rounds} kör",
