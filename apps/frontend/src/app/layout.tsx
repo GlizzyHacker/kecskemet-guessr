@@ -2,6 +2,7 @@ import Header from '@/components/header';
 import { NextIntlClientProvider } from 'next-intl';
 import './globals.css';
 
+import Footer from '@/components/footer';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
@@ -47,6 +48,7 @@ export default function RootLayout({
                 <div className='flex-1 space-y-4 py-8 container mx-auto'>{children}</div>
               </div>
             </div>
+            <Footer />
           </div>
         </NextIntlClientProvider>
       </body>

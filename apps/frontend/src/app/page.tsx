@@ -28,11 +28,11 @@ export default function Home() {
       </div>
       <div className='flex max-md:flex-col py-8 gap-4 flex-grow'>
         <Card className='flex-1'>
-          <h2 className='font-medium text-xl px-4 pb-2 pt-4 text-center'>About</h2>
+          <h2 className='font-medium text-xl px-4 pb-2 pt-4 text-center'>{t('about_title')}</h2>
           <p className='px-4'>{t('about')}</p>
         </Card>
         <Card className='flex-1'>
-          <h2 className='font-medium text-xl px-4 pb-2 pt-4 text-center'>How to play</h2>
+          <h2 className='font-medium text-xl px-4 pb-2 pt-4 text-center'>{t('how_to_play_title')}</h2>
           <p className='px-4'>{t('how_to_play')}</p>
         </Card>
       </div>
