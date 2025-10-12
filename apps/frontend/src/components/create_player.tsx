@@ -53,7 +53,7 @@ export default function CreatePlayer() {
   return (
     <div>
       {!player && (
-        <form action={handleCreatePlayer} className='flex flex-col items-stretch p-2 gap-4 w-min'>
+        <form action={handleCreatePlayer} className='flex flex-col p-2 gap-4'>
           <p>{t('message')}</p>
           <InputField name='name' type='text' placeholder='Prób András'>
             {t('name')}
@@ -64,11 +64,10 @@ export default function CreatePlayer() {
         </form>
       )}
       {player && (
-        <form action={handleRenamePlayer} className='flex flex-col p-2 rounded-xl '>
+        <form action={handleRenamePlayer} className='flex flex-col p-2 gap-4'>
           <InputField name='name' type='text' defaultValue={player!.name}>
             {t('name')}
           </InputField>
-          <br />
           <Button className='w-full' type='submit'>
             {t('rename')}
           </Button>
