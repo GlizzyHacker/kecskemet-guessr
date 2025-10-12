@@ -50,6 +50,7 @@ export default function Home() {
                 {line}
               </p>
             ))}
+          <video className='w-full h-auto rounded-lg' autoPlay muted loop src='/gameplay.mp4' />
         </Card>
       </div>
     </main>
