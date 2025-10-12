@@ -18,7 +18,7 @@ export default function DrawAreas({ areasToShow, hint }: { areasToShow: string[]
     });
 
     if (points.isValid()) {
-      map.fitBounds(points);
+      map.flyToBounds(points);
     }
   }, [areasToShow.length]);
 
