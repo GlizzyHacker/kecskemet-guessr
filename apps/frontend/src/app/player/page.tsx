@@ -1,11 +1,12 @@
+import Card from '@/components/card';
 import CreatePlayer from '@/components/create_player';
 
 export default function Player() {
   return (
     <div className='flex flex-row justify-center items-center'>
-      <div className='bg-secondary p-8 rounded-xl'>
+      <Card>
         <CreatePlayer />
-      </div>
+      </Card>
     </div>
   );
 }

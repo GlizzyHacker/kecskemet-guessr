@@ -1,8 +1,8 @@
 {
   "Play": {
-    "loading": "Játék töltése",
+    "loading": "Mérkőzés töltése",
     "image_placeholder": "Keresendő kép",
-    "full": "Játék megtelt"
+    "full": "Mérkőzés megtelt"
   },
   "Create": {
     "difficulty": "Nehézség",
@@ -16,15 +16,19 @@
     "other": "Egyéb",
     "area_hint": "Városrész segítség",
     "rounds": "Körök száma",
-    "create": "Játék létrehozása",
+    "create": "Mérkőzés létrehozása",
     "timer": "Időkorlát",
     "limit": "{minute, plural, =0 {Nincs} other {# perc}}",
     "members": "Játékos korlát"
   },
   "Home": {
-    "play": "Játék",
+    "play": "Start",
     "singleplayer": "Játsz egyedül",
-    "multiplayer": "Játsz barátokkal"
+    "multiplayer": "Játsz barátokkal",
+    "about_title": "Rólunk",
+    "how_to_play_title": "Hogyan játsz",
+    "about": "Kecskemét Guessr egy képfelismerő játék, amit egyedül vagy barátokkal játszhatsz. Asztali gépen és telefonon is játszható.\nA játék lényege az, hogy egy-egy képről eldöntsed és egy térképen kijelöld, hogy hol készült. A képek Kecskemét kiválasztott területein lehetnek és Google utcaképekből lettek válogatva. A játék próbál mindig olyan képet adni, amit még nem láttál\n Mint kecskeméti mindig is érdekelt mennyire ismerem szülővárosom. Ezzel a játékkal bizonyíthatod ismereted és jobban megismerheted eme hírős várost!\n A játékot egymagam fejlesztem. Ötleteket, panaszokat, bármilyen visszajelzést szívesen fogadok a lenti e-mail címemen.",
+    "how_to_play": "A mérkőzések körökre van osztva. Minden körben új képet kaptok. A térképre elhelyezett gombostűvel lehet kijelölni a tippeket. Miután mindenki véglegesítette a tippjét, az eredeti hely megjelenik és mindenki pontot kap attol függően milyen közel tippelt.\nAki telitalált az 500 pontot kap. Méterenként egy pontot veszítenek a tippek. A mérkőzést a legtöbb ponttal rendelkező játékos nyeri meg.\nA mérkőzés készítője különböző szabályokat állíthat például: időkorlát, létszámkorlát, segítség."
   },
   "ActionBar": {
     "start": "Nyomja meg a 'Start' gombot a kezdéshez",
@@ -32,7 +36,7 @@
     "guessed": "Várakozás a többi játékos tippjére",
     "reveal": "Válasz felfedve. Nyomja meg a 'Következő' gombot a következő kör kezdéséhez",
     "disconnected": "Megszakadt a kapcsolat a szerverrel",
-    "end": "A játék véget ért",
+    "end": "A mérkőzés véget ért",
     "start_button": "Start",
     "guessing_button": "Tipp",
     "reveal_button": "Következő",
@@ -46,12 +50,13 @@
   "CreatePlayer": {
     "name": "Név",
     "create": "Játékos létrehozása",
-    "rename": "Átnevezés"
+    "rename": "Átnevezés",
+    "message": "A folytatáshoz hozzon létre egy játékost"
   },
   "GameInfo": {
     "round": "{round}/{rounds} kör",
     "hint": "Segítség",
-    "id": "Játék azonosító",
+    "id": "Mérkőzés azonosító",
     "timer": "Időkorlát",
     "difficulty": "Nehézség",
     "area": "Terület",
@@ -78,12 +83,16 @@
     "left": "kilépett"
   },
   "SelectGame": {
-    "create": "Játék létrehozása",
+    "create": "Mérkőzés létrehozása",
     "id": "Belépési kód",
-    "join": "Belépés a játékba"
+    "join": "Belépés a mérkőzésbe"
   },
   "JoinCode": {
     "join_code": "Belépési kód",
     "share_message": "Csatlakozz hozzám játszani"
+  },
+  "Footer": {
+    "contact": "Kapcsolat",
+    "created_by": "Készítette {last} {first}"
   }
 }

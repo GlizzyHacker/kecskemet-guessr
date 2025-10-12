@@ -13,7 +13,7 @@ export default function GameInfo({ className = '', game }: { className?: string;
   return (
     <Card className={`${className}`}>
       <div className='m-3 space-x-3 flex'>
-        <h1 className='flex-1 text-center'>{t('round', { round: game.round, rounds: game.totalRounds })}</h1>
+        <h1 className='flex-1 font-medium text-lg text-center'>{t('round', { round: game.round, rounds: game.totalRounds })}</h1>
         <button className='md:hidden' onClick={() => setOpen(!open)}>
           <FaChevronUp className={`transition-all duration-300 ${open ? '' : 'rotate-180'}`} />
         </button>
