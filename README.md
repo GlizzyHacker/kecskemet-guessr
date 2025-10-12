@@ -1,8 +1,6 @@
-# NestJS + NextJS Starter Project by Kir-Dev
+# Kecskemét Guessr
 
-This is a starter project for a fullstack application using NestJS and NextJS.
-It includes a basic setup for a NestJS as backend and a NextJS as frontend,
-including shadcn/ui, ESLint, Prettier, and GitHub Actions.
+This project is based on a template created by the kir-dev team. The architecture is also inspired by their https://github.com/kir-dev/schbody project.
 
 ## Getting Started
 
