@@ -50,7 +50,7 @@ export default function Map({
       />
       {areas && <DrawAreas areasToShow={areas} hint={hint} />}
       <GuessMarker onMapClick={onMapClick} guess={guess} />
-      <LocationMarker location={location} bounds={guesses?.map((e) => e.latLng) ?? []} />
+      {location && <LocationMarker location={location} bounds={guesses?.map((e) => e.latLng) ?? []} />}
       {guesses?.map((e) => (
         <Marker key={e.player.id} position={[e.latLng.lat, e.latLng.lng]}>
           <Popup>{t('guess', { name: e.player.name, score: e.score })}</Popup>

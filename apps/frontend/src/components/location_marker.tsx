@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { Marker, Popup, useMap } from 'react-leaflet';
 
 export default function LocationMarker(options: {
-  location: ParsedCordinates | undefined;
+  location: ParsedCordinates;
   bounds: ParsedCordinates[] | undefined;
 }) {
   const t = useTranslations('GuessMarker');
@@ -13,12 +13,12 @@ export default function LocationMarker(options: {
   useMemo(() => {
     if (options.location) {
       const points = new LatLngBounds([[options.location.lat, options.location.lng]]);
-      if (options.bounds) {
+      if (options.bounds && options.bounds.length > 0) {
         for (let i = 0; i < options.bounds.length; i++) {
           points.extend([options.bounds[i].lat, options.bounds[i].lng]);
         }
+        map.flyToBounds(points);
       }
-      map.fitBounds(points);
     }
   }, [options.location]);
 
