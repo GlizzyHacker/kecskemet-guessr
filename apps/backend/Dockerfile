@@ -40,6 +40,7 @@ COPY --from=build /app/assets ./assets
 
 # Install only production dependencies
 RUN pnpm install --production
+RUN pnpm install pm2 -g
 RUN pnpx prisma generate
 
 EXPOSE 3001
