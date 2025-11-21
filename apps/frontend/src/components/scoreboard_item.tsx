@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { FaBan, FaCrown } from 'react-icons/fa';
 import Button from './button';
+import ScoreCounter from './score_counter';
 
 export default function ScoreboardItem({
   member,
@@ -37,10 +38,10 @@ export default function ScoreboardItem({
           {member.connected && member.isOwner && <FaCrown className='inline align-baseline mx-1' />}
           {member.player.name}
         </p>
-        <p className='flex-2 text-center'>
-          {member.guesses.reduce((sum: number, guess: Guess) => sum + guess.score, 0)}
-        </p>
-        <p className='flex-1 overflow-ellipsis'>
+        <div className='flex-2 text-center'>
+          <ScoreCounter score={member.guesses.reduce((sum: number, guess: Guess) => sum + guess.score, 0)} />
+        </div>
+        <p className='flex-1 overflow-ellipsis text-center'>
           {member.connected
             ? member.guesses.some((guess: Guess) => guess.roundId == currentRound?.id)
               ? 'X'

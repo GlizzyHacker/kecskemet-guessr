@@ -3,12 +3,22 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { FaChevronUp } from 'react-icons/fa';
 import Card from './card';
+import ScoreCounter from './score_counter';
 
 export default function SingleGameInfo({ className = '', game }: { className?: string; game: Game }) {
   const t = useTranslations('GameInfo');
   const tScore = useTranslations('Scoreboard');
   const topt = useTranslations('Create');
   const [open, setOpen] = useState(false);
+
+  const score = (
+    <div className='p-2 max-md:col-span-3 w-min min-w-50'>
+      {tScore('score')}:{' '}
+      <ScoreCounter
+        score={game.rounds.map((round) => round.guesses[0]?.score ?? 0).reduce((prev, cur) => prev + cur, 0)}
+      />
+    </div>
+  );
 
   return (
     <Card className={`${className}`}>
@@ -18,6 +28,7 @@ export default function SingleGameInfo({ className = '', game }: { className?: s
           <FaChevronUp className={`transition-all duration-300 ${open ? '' : 'rotate-180'}`} />
         </button>
       </div>
+      <div className='md:hidden mx-auto w-min'>{score}</div>
       <div
         className={`${open ? 'max-md:max-h-100' : 'max-md:max-h-0'} overflow-hidden transition-all duration-300 grid grid-cols-3`}
       >
@@ -27,10 +38,7 @@ export default function SingleGameInfo({ className = '', game }: { className?: s
         <p className='p-2 max-md:col-span-3 md:text-center'>
           {t('difficulty')}: {topt(game.difficulty.toLowerCase())}
         </p>
-        <p className='p-2 max-md:col-span-3 md:text-center'>
-          {tScore('score')}:{' '}
-          {game.rounds.map((round) => round.guesses[0]?.score ?? 0).reduce((prev, cur) => prev + cur, 0)}
-        </p>
+        <div className='max-md:hidden min-w mx-auto'>{score}</div>
         {game.rounds[game.round - 1]?.image.area && (
           <p className='p-2 max-md:col-span-3 md:text-center'>
             {t('hint')}: {game.rounds[game.round - 1]?.image.area}
