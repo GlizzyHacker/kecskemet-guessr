@@ -63,7 +63,7 @@ export default function Play() {
 
   async function handleForm(formData: FormData) {
     const request = {
-      difficulty: Difficulty.EASY,
+      difficulty: String(formData.get('difficulty')) as Difficulty,
       area: String(formData.get('areas')),
       timer: Number(formData.get('timer')),
       totalRounds: Number(formData.get('rounds')),
