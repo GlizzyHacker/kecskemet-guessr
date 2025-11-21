@@ -37,11 +37,11 @@ export default function CreatePlayer() {
     const name = formData.get('name')!.toString();
     try {
       await api.patch(`${process.env.NEXT_PUBLIC_API_URL}/players/me`, { name: name });
-      router.refresh();
+      window.location.reload();
     } catch (e: unknown) {
       if (e instanceof AxiosError) {
         if (e.response?.data?.message) {
-          setError(e.response.data.message.join(', '));
+          setError(e.response.data.message);
         } else {
           setError(e.message);
         }
