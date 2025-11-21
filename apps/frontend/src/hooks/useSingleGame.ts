@@ -18,6 +18,8 @@ export default function useSingleGame({
 } {
   const [rounds, setRounds] = useState<Round[]>([]);
   const [answer, setAnswer] = useState<RoundWithAnswer | null>(null);
+  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
+  const [timerExpired, setTimerExpired] = useState<boolean>(false);
   useEffect(() => {
     setRounds([]);
     setAnswer(null);
@@ -33,8 +35,12 @@ export default function useSingleGame({
     if (!initialGame?.hint) {
       imageArea.area = undefined;
     }
-    setRounds([...rounds, { id: 0, image: imageArea, createdAt: '', guesses: [] }]);
+    setRounds([...rounds, { id: 0, image: imageArea, createdAt: new Date(Date.now()).toString(), guesses: [] }]);
     setAnswer({ id: 0, image: imageLocation, guesses: [] });
+    if (game?.timer ?? 0 != 0) {
+      setTimerExpired(false);
+      setTimer(setTimeout(() => setTimerExpired(true), game!.timer * 1000));
+    }
   }
 
   function sendGuess(cords: ParsedCordinates): void {
@@ -50,6 +56,9 @@ export default function useSingleGame({
       roundId: 0,
     });
     setRounds([...rounds.slice(0, -1), round]);
+    if (timer) {
+      clearTimeout(timer);
+    }
   }
 
   const game: Game | null =
@@ -76,5 +85,10 @@ export default function useSingleGame({
           memberLimit: 1,
           joinCode: '',
         };
-  return { game, answer: (rounds.at(-1)?.guesses.length ?? 0 > 0) ? answer : null, sendNext, sendGuess };
+  return {
+    game,
+    answer: (rounds.at(-1)?.guesses.length ?? 0 > 0) || timerExpired ? answer : null,
+    sendNext,
+    sendGuess,
+  };
 }

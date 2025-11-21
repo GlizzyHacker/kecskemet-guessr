@@ -90,7 +90,7 @@ export default function Play() {
   const phase = game.active
     ? game.round == 0
       ? GamePhase.START
-      : guessed
+      : answer
         ? GamePhase.REVEAL
         : GamePhase.GUESSING
     : GamePhase.END;
