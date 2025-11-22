@@ -25,13 +25,12 @@ export default function ScoreboardItem({
       className=' bg-outline-variant will-change-transform pt-0.5'
     >
       <div className='bg-surface-container-low flex items-end gap-2 py-2'>
-        {' '}
-        <p className='flex-1 text-center'>
           {onKick && (
-            <Button icon enable={member.connected} className='inline align-baseline' onClick={() => onKick?.()}>
+            <Button icon enable={member.connected} className='absolute align-baseline' onClick={() => onKick?.()}>
               <FaBan className='text-primary' />
             </Button>
           )}
+        <p className='flex-1 text-center'>
           {`${placement + 1}.`}
         </p>
         <p className='flex-2 text-center overflow-ellipsis'>
