@@ -145,7 +145,7 @@ export default function Play() {
               (guess) => game.members.find((member) => member.player.id == player?.id)?.id == guess.memberId
             )}
           />
-        ) : (
+        ) : game.timer == 0 ? null : (
           <GuessCountdown game={game} />
         )}
       </ActionBar>
