@@ -54,7 +54,7 @@
     "message": "A folytatáshoz hozzon létre egy játékost"
   },
   "GameInfo": {
-    "round": "{round}/{rounds} kör",
+    "round": "{round}/{rounds}. kör",
     "hint": "Segítség",
     "id": "Mérkőzés azonosító",
     "timer": "Időkorlát",
