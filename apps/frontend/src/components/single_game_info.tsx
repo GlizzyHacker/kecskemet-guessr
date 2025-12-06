@@ -46,13 +46,13 @@ export default function SingleGameInfo({ className = '', game }: { className?: s
             {t('hint')}: {game.rounds[game.round - 1]?.image.area}
           </p>
         )}
-        <p className='p-2 flex flex-wrap items-center col-span-3 md:mx-20'>
+        <div className='p-2 flex flex-wrap items-center col-span-3 md:mx-20'>
           {game.area.split(',').map((area) => (
             <div className='m-1 px-2 py-1 rounded-2xl bg-secondary-container text-on-secondary-container' key={area}>
               {area}
             </div>
           ))}
-        </p>
+        </div>
       </div>
     </Card>
   );
