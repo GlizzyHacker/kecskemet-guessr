@@ -1,7 +1,6 @@
 import { GamePhase } from '@/types/game';
 import { useTranslations } from 'next-intl';
 import { ReactNode, useEffect, useState } from 'react';
-import Ad from './ad';
 import Button from './button';
 import Card from './card';
 
@@ -70,7 +69,6 @@ export default function ActionBar({
           </Button>
         </div>
       </div>
-      <Ad />
     </Card>
   );
 }
