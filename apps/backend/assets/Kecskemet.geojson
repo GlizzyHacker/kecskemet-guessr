@@ -4,7 +4,7 @@
   "features": [
     {
       "type": "Feature",
-      "properties": { "Name": "alsószéktó és homokbánya" },
+      "properties": { "Name": "külső Alsószéktó" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -47,7 +47,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "halasi úti kiskertek" },
+      "properties": { "Name": "Halasi úti kiskertek" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -67,7 +67,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "reptér" },
+      "properties": { "Name": "Repülőtér" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -90,7 +90,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "máriaváros" },
+      "properties": { "Name": "Máriaváros" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -115,7 +115,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "külső bethlenváros" },
+      "properties": { "Name": "külső Bethlenváros" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -148,7 +148,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "hunyadiváros" },
+      "properties": { "Name": "Hunyadiváros" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -181,7 +181,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "szent istván-város" },
+      "properties": { "Name": "Szent István-város" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -203,7 +203,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "petőfiváros" },
+      "properties": { "Name": "Petőfiváros" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -224,7 +224,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "hetényegyháza" },
+      "properties": { "Name": "Hetényegyháza" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -243,7 +243,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "kadafalva" },
+      "properties": { "Name": "Kadafalva" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -268,7 +268,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "katonatelep" },
+      "properties": { "Name": "Katonatelep" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -296,7 +296,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "árpádváros" },
+      "properties": { "Name": "Árpádváros" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -317,7 +317,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "domb" },
+      "properties": { "Name": "Vízműdomb" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -335,7 +335,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "vízmű és egyetem" },
+      "properties": { "Name": "belső Felsőszéktó" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -355,7 +355,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "kossuthváros" },
+      "properties": { "Name": "Kossuthváros" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -378,7 +378,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "erzsébetváros" },
+      "properties": { "Name": "Erzsébetváros" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -403,7 +403,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "rákócziváros" },
+      "properties": { "Name": "Rákócziváros" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -424,7 +424,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "villanegyed" },
+      "properties": { "Name": "Villanegyed" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -448,7 +448,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "széchenyiváros" },
+      "properties": { "Name": "Széchenyiváros" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -468,7 +468,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "belső bethlenváros" },
+      "properties": { "Name": "belső Bethlenváros" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -493,7 +493,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "műkertváros" },
+      "properties": { "Name": "Műkertváros" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -524,7 +524,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "szent lászló-város" },
+      "properties": { "Name": "Szent László-város" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -545,7 +545,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "muszáj" },
+      "properties": { "Name": "Muszáj" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -564,7 +564,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "belváros" },
+      "properties": { "Name": "Belváros" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
@@ -587,7 +587,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "Name": "belső alsószéktó" },
+      "properties": { "Name": "belső Alsószéktó" },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
