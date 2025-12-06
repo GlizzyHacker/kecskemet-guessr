@@ -61,30 +61,29 @@ export default function useSingleGame({
     }
   }
 
-  const game: Game | null =
-    !player || !initialGame
-      ? null
-      : {
-          id: 0,
-          timer: initialGame.timer,
-          totalRounds: initialGame.totalRounds,
-          members: [
-            {
-              id: 0,
-              player: player,
-              isOwner: true,
-              guesses: [],
-              connected: true,
-            },
-          ],
-          area: initialGame.area,
-          difficulty: initialGame.difficulty,
-          round: rounds.length,
-          rounds: rounds,
-          active: initialGame.totalRounds >= rounds.length,
-          memberLimit: 1,
-          joinCode: '',
-        };
+  const game: Game | null = !initialGame
+    ? null
+    : {
+        id: 0,
+        timer: initialGame.timer,
+        totalRounds: initialGame.totalRounds,
+        members: [
+          {
+            id: 0,
+            player: player ?? { id: 0, name: 'Player' },
+            isOwner: true,
+            guesses: [],
+            connected: true,
+          },
+        ],
+        area: initialGame.area,
+        difficulty: initialGame.difficulty,
+        round: rounds.length,
+        rounds: rounds,
+        active: initialGame.totalRounds >= rounds.length,
+        memberLimit: 1,
+        joinCode: '',
+      };
   return {
     game,
     answer: (rounds.at(-1)?.guesses.length ?? 0 > 0) || timerExpired ? answer : null,

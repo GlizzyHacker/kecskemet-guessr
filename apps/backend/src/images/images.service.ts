@@ -98,8 +98,6 @@ export class ImagesService {
         },
       },
       orderBy: { id: 'asc' },
-      //skip: Math.random() * 100,
-      //take:20
       include: { image: true },
     });
     return results.map((result) => ({ ...result.image, score: result.score }));

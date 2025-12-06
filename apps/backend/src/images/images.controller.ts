@@ -9,7 +9,10 @@ export class ImagesController {
 
   @Post()
   async create(@Body() createImageDto: CreateImageDto) {
-    return await this.imagesService.findOrCreateForPlayers(createImageDto, [createImageDto.playerId]);
+    return await this.imagesService.findOrCreateForPlayers(
+      createImageDto,
+      createImageDto.playerId == null ? [] : [createImageDto.playerId]
+    );
   }
 
   @Get()
