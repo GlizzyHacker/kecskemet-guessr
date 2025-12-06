@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { FaBan, FaCrown } from 'react-icons/fa';
 import Button from './button';
+import ScoreCounter from './score_counter';
 
 export default function ScoreboardItem({
   member,
@@ -24,23 +25,22 @@ export default function ScoreboardItem({
       className=' bg-outline-variant will-change-transform pt-0.5'
     >
       <div className='bg-surface-container-low flex items-end gap-2 py-2'>
-        {' '}
-        <p className='flex-1 text-center'>
           {onKick && (
-            <Button icon enable={member.connected} className='inline align-baseline' onClick={() => onKick?.()}>
+            <Button icon enable={member.connected} className='absolute align-baseline' onClick={() => onKick?.()}>
               <FaBan className='text-primary' />
             </Button>
           )}
+        <p className='flex-1 text-center'>
           {`${placement + 1}.`}
         </p>
         <p className='flex-2 text-center overflow-ellipsis'>
           {member.connected && member.isOwner && <FaCrown className='inline align-baseline mx-1' />}
           {member.player.name}
         </p>
-        <p className='flex-2 text-center'>
-          {member.guesses.reduce((sum: number, guess: Guess) => sum + guess.score, 0)}
-        </p>
-        <p className='flex-1 overflow-ellipsis'>
+        <div className='flex-2 text-center'>
+          <ScoreCounter score={member.guesses.reduce((sum: number, guess: Guess) => sum + guess.score, 0)} />
+        </div>
+        <p className='flex-1 overflow-ellipsis text-center'>
           {member.connected
             ? member.guesses.some((guess: Guess) => guess.roundId == currentRound?.id)
               ? 'X'

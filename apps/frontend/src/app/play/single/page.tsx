@@ -63,7 +63,7 @@ export default function Play() {
 
   async function handleForm(formData: FormData) {
     const request = {
-      difficulty: Difficulty.EASY,
+      difficulty: String(formData.get('difficulty')) as Difficulty,
       area: String(formData.get('areas')),
       timer: Number(formData.get('timer')),
       totalRounds: Number(formData.get('rounds')),
@@ -90,7 +90,7 @@ export default function Play() {
   const phase = game.active
     ? game.round == 0
       ? GamePhase.START
-      : guessed
+      : answer
         ? GamePhase.REVEAL
         : GamePhase.GUESSING
     : GamePhase.END;
@@ -145,7 +145,7 @@ export default function Play() {
               (guess) => game.members.find((member) => member.player.id == player?.id)?.id == guess.memberId
             )}
           />
-        ) : (
+        ) : game.timer == 0 ? null : (
           <GuessCountdown game={game} />
         )}
       </ActionBar>

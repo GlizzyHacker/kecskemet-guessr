@@ -36,7 +36,7 @@ export class GamesService {
   }
   async findJoinCode(joinCode: string, includeMessages: boolean = false) {
     const game = await this.prisma.game.findFirst({
-      where: { joinCode: joinCode, active: true },
+      where: { joinCode: joinCode },
       include: {
         messages: includeMessages,
         rounds: { include: { image: { select: { id: true, area: true } } } },

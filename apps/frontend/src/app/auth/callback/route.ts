@@ -11,7 +11,7 @@ export async function GET(request: NextRequest): Promise<Response> {
   }
 
   const cookieStore = await cookies();
-  cookieStore.set('jwt', jwt, { path: '/' });
+  cookieStore.set('jwt', jwt, { path: '/', maxAge: 60 * 60 * 24 * 365 });
 
   return NextResponse.redirect(new URL(cookieStore.get('path')?.value ?? '/player', request.url));
 }

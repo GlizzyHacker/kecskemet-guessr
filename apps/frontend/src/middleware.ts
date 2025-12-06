@@ -3,6 +3,9 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(request: NextRequest): Promise<NextResponse<unknown>> {
+  if (request.nextUrl.pathname == '/play/single') {
+    return NextResponse.next();
+  }
   const jwt = request.cookies.get('jwt');
   const role = getRoleFromJwt(jwt?.value);
   const cookieStore = await cookies();

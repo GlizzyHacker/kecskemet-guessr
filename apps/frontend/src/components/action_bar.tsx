@@ -1,6 +1,7 @@
 import { GamePhase } from '@/types/game';
 import { useTranslations } from 'next-intl';
 import { ReactNode, useEffect, useState } from 'react';
+import Ad from './ad';
 import Button from './button';
 import Card from './card';
 
@@ -59,8 +60,9 @@ export default function ActionBar({
       <div className='flex items-center space-x-2'>
         <p className='flex-1 ml-2'>{text}</p>
         <div className='flex max-md:flex-col items-center'>
-          <div className='min-w-14 m-2'>{children}</div>
+          {children && <div className='min-w-14 m-2'>{children}</div>}
           <Button
+            className=''
             onClick={() => onAction(phase)}
             enable={!(loading && phase == GamePhase.REVEAL) && phase != GamePhase.GUESSED}
           >
@@ -68,6 +70,7 @@ export default function ActionBar({
           </Button>
         </div>
       </div>
+      <Ad />
     </Card>
   );
 }
