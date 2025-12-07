@@ -55,5 +55,13 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "^5.9.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "wrap-ansi": "7.0.0",
+      "string-width": "4.1.0",
+      "prisma": "6.18.0",
+      "@prisma/engines": "6.18.0"
+    }
   }
 }
