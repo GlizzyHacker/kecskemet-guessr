@@ -12,7 +12,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 
 # Install the project dependencies using Yarn
-RUN pnpm install
+RUN pnpm install --frozen-lockfile
 
 # Copy the rest of the project files to the container
 COPY . .
@@ -37,7 +37,7 @@ COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=build /app/prisma ./prisma
 COPY --from=build /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=build /app/node_modules/@prisma/client ./node_modules/@prisma/client
+COPY --from=build /app/node_modules/@prisma+client@6.14.0_prisma@6.14.0_typescript@5.9.2__typescript@5.9.2/node_modules/@prisma/client ./node_modules/@prisma+client@6.14.0_prisma@6.14.0_typescript@5.9.2__typescript@5.9.2/node_modules/@prisma/client
 COPY --from=build /app/assets ./assets
 
 # Install only production dependencies
