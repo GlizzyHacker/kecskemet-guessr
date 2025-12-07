@@ -5,8 +5,8 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@types/react': 19.2.7
-  '@types/react-dom': 19.2.3
+  wrap-ansi: 7.0.0
+  string-width: 4.1.0
 
 importers:
 
@@ -41,7 +41,7 @@ importers:
         version: 11.1.6(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.6)(@nestjs/platform-socket.io@11.1.6)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@prisma/client':
         specifier: ^6.14.0
-        version: 6.14.0(prisma@6.14.0(typescript@5.9.2))(typescript@5.9.2)
+        version: 6.14.0(prisma@6.18.0(typescript@5.9.2))(typescript@5.9.2)
       '@scalar/nestjs-api-reference':
         specifier: ^0.4.16
         version: 0.4.16
@@ -62,7 +62,7 @@ importers:
         version: 0.0.1
       nestjs-prisma:
         specifier: ^0.25.0
-        version: 0.25.0(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@prisma/client@6.14.0(prisma@6.14.0(typescript@5.9.2))(typescript@5.9.2))(chokidar@4.0.3)(prisma@6.14.0(typescript@5.9.2))
+        version: 0.25.0(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@prisma/client@6.14.0(prisma@6.18.0(typescript@5.9.2))(typescript@5.9.2))(chokidar@4.0.3)(prisma@6.18.0(typescript@5.9.2))
       passport:
         specifier: ^0.7.0
         version: 0.7.0
@@ -110,8 +110,8 @@ importers:
         specifier: ^0.8.0
         version: 0.8.0(@types/eslint@9.6.1)(eslint@8.57.1)(typescript@5.9.2)
       prisma:
-        specifier: ^6.14.0
-        version: 6.14.0(typescript@5.9.2)
+        specifier: ~6.18.0
+        version: 6.18.0(typescript@5.9.2)
       source-map-support:
         specifier: ^0.5.21
         version: 0.5.21
@@ -536,23 +536,23 @@ packages:
       typescript:
         optional: true
 
-  '@prisma/config@6.14.0':
-    resolution: {integrity: sha512-IwC7o5KNNGhmblLs23swnfBjADkacBb7wvyDXUWLwuvUQciKJZqyecU0jw0d7JRkswrj+XTL8fdr0y2/VerKQQ==}
+  '@prisma/config@6.18.0':
+    resolution: {integrity: sha512-rgFzspCpwsE+q3OF/xkp0fI2SJ3PfNe9LLMmuSVbAZ4nN66WfBiKqJKo/hLz3ysxiPQZf8h1SMf2ilqPMeWATQ==}
 
-  '@prisma/debug@6.14.0':
-    resolution: {integrity: sha512-j4Lf+y+5QIJgQD4sJWSbkOD7geKx9CakaLp/TyTy/UDu9Wo0awvWCBH/BAxTHUaCpIl9USA5VS/KJhDqKJSwug==}
+  '@prisma/debug@6.18.0':
+    resolution: {integrity: sha512-PMVPMmxPj0ps1VY75DIrT430MoOyQx9hmm174k6cmLZpcI95rAPXOQ+pp8ANQkJtNyLVDxnxVJ0QLbrm/ViBcg==}
 
-  '@prisma/engines-version@6.14.0-25.717184b7b35ea05dfa71a3236b7af656013e1e49':
-    resolution: {integrity: sha512-EgN9ODJpiX45yvwcngoStp3uQPJ3l+AEVoQ6dMMO2QvmwIlnxfApzKmJQExzdo7/hqQANrz5txHJdGYHzOnGHA==}
+  '@prisma/engines-version@6.18.0-8.34b5a692b7bd79939a9a2c3ef97d816e749cda2f':
+    resolution: {integrity: sha512-T7Af4QsJQnSgWN1zBbX+Cha5t4qjHRxoeoWpK4JugJzG/ipmmDMY5S+O0N1ET6sCBNVkf6lz+Y+ZNO9+wFU8pQ==}
 
-  '@prisma/engines@6.14.0':
-    resolution: {integrity: sha512-LhJjqsALFEcoAtF07nSaOkVguaxw/ZsgfROIYZ8bAZDobe7y8Wy+PkYQaPOK1iLSsFgV2MhCO/eNrI1gdSOj6w==}
+  '@prisma/engines@6.18.0':
+    resolution: {integrity: sha512-i5RzjGF/ex6AFgqEe2o1IW8iIxJGYVQJVRau13kHPYEL1Ck8Zvwuzamqed/1iIljs5C7L+Opiz5TzSsUebkriA==}
 
-  '@prisma/fetch-engine@6.14.0':
-    resolution: {integrity: sha512-MPzYPOKMENYOaY3AcAbaKrfvXVlvTc6iHmTXsp9RiwCX+bPyfDMqMFVUSVXPYrXnrvEzhGHfyiFy0PRLHPysNg==}
+  '@prisma/fetch-engine@6.18.0':
+    resolution: {integrity: sha512-TdaBvTtBwP3IoqVYoGIYpD4mWlk0pJpjTJjir/xLeNWlwog7Sl3bD2J0jJ8+5+q/6RBg+acb9drsv5W6lqae7A==}
 
-  '@prisma/get-platform@6.14.0':
-    resolution: {integrity: sha512-7VjuxKNwjnBhKfqPpMeWiHEa2sVjYzmHdl1slW6STuUCe9QnOY0OY1ljGSvz6wpG4U8DfbDqkG1yofd/1GINww==}
+  '@prisma/get-platform@6.18.0':
+    resolution: {integrity: sha512-uXNJCJGhxTCXo2B25Ta91Rk1/Nmlqg9p7G9GKh8TPhxvAyXCvMNQoogj4JLEUy+3ku8g59cpyQIKFhqY2xO2bg==}
 
   '@scalar/nestjs-api-reference@0.4.16':
     resolution: {integrity: sha512-Nb/+IrQyErzDA0Z5nlYIEuGtVJvpjSzmfftWG9VY0/Zjhj1ERXdQ17z7HOa1wlC1NFvlOfVeYTK/zYcdMjykEQ==}
@@ -920,6 +920,10 @@ packages:
     resolution: {integrity: sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==}
     engines: {node: '>=8'}
 
+  ansi-regex@4.1.1:
+    resolution: {integrity: sha512-ILlv4k/3f6vfQ4OoP2AGvirOktlQ98ZEL1k9FaQjxa3L1abBgbuTDAdPOpvbGncC0BTVQrl+OM8xZGK6tWXt7g==}
+    engines: {node: '>=6'}
+
   ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
     engines: {node: '>=8'}
@@ -931,10 +935,6 @@ packages:
   ansi-styles@4.3.0:
     resolution: {integrity: sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==}
     engines: {node: '>=8'}
-
-  ansi-styles@6.2.3:
-    resolution: {integrity: sha512-4Dj6M28JB+oAH8kFkTLUo+a2jwOFkuqb3yucU0CANcRRUbxS0cP0nZYCGjcc3BNXwRIsUVmDGgzawme7zvJHvg==}
-    engines: {node: '>=12'}
 
   ansis@4.1.0:
     resolution: {integrity: sha512-BGcItUBWSMRgOCe+SVZJ+S7yTRG0eGt9cXAHev72yuGcY23hnLA7Bky5L/xLyPINoSN95geovfBkqoTlNZYa7w==}
@@ -1216,26 +1216,20 @@ packages:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
 
-  eastasianwidth@0.2.0:
-    resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
-
   ecdsa-sig-formatter@1.0.11:
     resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==}
 
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  effect@3.16.12:
-    resolution: {integrity: sha512-N39iBk0K71F9nb442TLbTkjl24FLUzuvx2i1I2RsEAQsdAdUTuUoW0vlfUXgkMTUOnYqKnWcFfqw4hK4Pw27hg==}
+  effect@3.18.4:
+    resolution: {integrity: sha512-b1LXQJLe9D11wfnOKAk3PKxuqYshQ0Heez+y5pnkd3jLj1yx9QhM72zZ9uUrOQyNvrs2GZZd/3maL0ZV18YuDA==}
 
   electron-to-chromium@1.5.200:
     resolution: {integrity: sha512-rFCxROw7aOe4uPTfIAx+rXv9cEcGx+buAF4npnhtTqCJk5KDFRnh3+KYj7rdVh6lsFt5/aPs+Irj9rZ33WMA7w==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
-
-  emoji-regex@9.2.2:
-    resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
 
   empathic@2.0.0:
     resolution: {integrity: sha512-i6UzDscO/XfAcNYD75CfICkmfLedpyPDdozrLMmQc5ORaQcdMoc21OnlEylMIqI7U8eniKrPMxxtj8k0vhmJhA==}
@@ -2012,8 +2006,8 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  prisma@6.14.0:
-    resolution: {integrity: sha512-QEuCwxu+Uq9BffFw7in8In+WfbSUN0ewnaSUKloLkbJd42w6EyFckux4M0f7VwwHlM3A8ssaz4OyniCXlsn0WA==}
+  prisma@6.18.0:
+    resolution: {integrity: sha512-bXWy3vTk8mnRmT+SLyZBQoC2vtV9Z8u7OHvEu+aULYxwiop/CPiFZ+F56KsNRNf35jw+8wcu8pmLsjxpBxAO9g==}
     engines: {node: '>=18.18'}
     hasBin: true
     peerDependencies:
@@ -2226,16 +2220,20 @@ packages:
     resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
     engines: {node: '>=10.0.0'}
 
+  string-width@4.1.0:
+    resolution: {integrity: sha512-NrX+1dVVh+6Y9dnQ19pR0pP4FiEIlUvdTGn8pw6CKTNq5sgib2nIhmUNT5TAmhWmvKr3WcxBcP3E8nWezuipuQ==}
+    engines: {node: '>=8'}
+
   string-width@4.2.3:
     resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==}
     engines: {node: '>=8'}
 
-  string-width@5.1.2:
-    resolution: {integrity: sha512-HnLOCR3vjcY8beoNLtcjZ5/nxn2afmME6lhrDrebokqMap+XbeW8n9TXpPDOqdGK5qcI3oT0GKTW6wC7EMiVqA==}
-    engines: {node: '>=12'}
-
   string_decoder@1.3.0:
     resolution: {integrity: sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==}
+
+  strip-ansi@5.2.0:
+    resolution: {integrity: sha512-DuRs1gKbBqsMKIZlrffwlug8MHkcnpjs5VPmL1PAh+mA30U0DTotfDZ0d2UUsXpPmPmMMJ6W773MaA3J+lbiWA==}
+    engines: {node: '>=6'}
 
   strip-ansi@6.0.1:
     resolution: {integrity: sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==}
@@ -2483,17 +2481,9 @@ packages:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
     engines: {node: '>=0.10.0'}
 
-  wrap-ansi@6.2.0:
-    resolution: {integrity: sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==}
-    engines: {node: '>=8'}
-
   wrap-ansi@7.0.0:
     resolution: {integrity: sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==}
     engines: {node: '>=10'}
-
-  wrap-ansi@8.1.0:
-    resolution: {integrity: sha512-si7QWI6zUMq56bESFvagtmzMdGOtoxfR+Sez11Mobfc7tm+VkUckk9bW2UeffTGVUbOksxmSw0AA2gs8g71NCQ==}
-    engines: {node: '>=12'}
 
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
@@ -2664,7 +2654,7 @@ snapshots:
       cli-width: 4.1.0
       mute-stream: 2.0.0
       signal-exit: 4.1.0
-      wrap-ansi: 6.2.0
+      wrap-ansi: 7.0.0
       yoctocolors-cjs: 2.1.2
     optionalDependencies:
       '@types/node': 22.17.1
@@ -2784,11 +2774,11 @@ snapshots:
 
   '@isaacs/cliui@8.0.2':
     dependencies:
-      string-width: 5.1.2
+      string-width: 4.1.0
       string-width-cjs: string-width@4.2.3
       strip-ansi: 7.1.0
       strip-ansi-cjs: strip-ansi@6.0.1
-      wrap-ansi: 8.1.0
+      wrap-ansi: 7.0.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
 
   '@jridgewell/gen-mapping@0.3.13':
@@ -2992,40 +2982,40 @@ snapshots:
 
   '@pkgr/core@0.2.9': {}
 
-  '@prisma/client@6.14.0(prisma@6.14.0(typescript@5.9.2))(typescript@5.9.2)':
+  '@prisma/client@6.14.0(prisma@6.18.0(typescript@5.9.2))(typescript@5.9.2)':
     optionalDependencies:
-      prisma: 6.14.0(typescript@5.9.2)
+      prisma: 6.18.0(typescript@5.9.2)
       typescript: 5.9.2
 
-  '@prisma/config@6.14.0':
+  '@prisma/config@6.18.0':
     dependencies:
       c12: 3.1.0
       deepmerge-ts: 7.1.5
-      effect: 3.16.12
+      effect: 3.18.4
       empathic: 2.0.0
     transitivePeerDependencies:
       - magicast
 
-  '@prisma/debug@6.14.0': {}
+  '@prisma/debug@6.18.0': {}
 
-  '@prisma/engines-version@6.14.0-25.717184b7b35ea05dfa71a3236b7af656013e1e49': {}
+  '@prisma/engines-version@6.18.0-8.34b5a692b7bd79939a9a2c3ef97d816e749cda2f': {}
 
-  '@prisma/engines@6.14.0':
+  '@prisma/engines@6.18.0':
     dependencies:
-      '@prisma/debug': 6.14.0
-      '@prisma/engines-version': 6.14.0-25.717184b7b35ea05dfa71a3236b7af656013e1e49
-      '@prisma/fetch-engine': 6.14.0
-      '@prisma/get-platform': 6.14.0
+      '@prisma/debug': 6.18.0
+      '@prisma/engines-version': 6.18.0-8.34b5a692b7bd79939a9a2c3ef97d816e749cda2f
+      '@prisma/fetch-engine': 6.18.0
+      '@prisma/get-platform': 6.18.0
 
-  '@prisma/fetch-engine@6.14.0':
+  '@prisma/fetch-engine@6.18.0':
     dependencies:
-      '@prisma/debug': 6.14.0
-      '@prisma/engines-version': 6.14.0-25.717184b7b35ea05dfa71a3236b7af656013e1e49
-      '@prisma/get-platform': 6.14.0
+      '@prisma/debug': 6.18.0
+      '@prisma/engines-version': 6.18.0-8.34b5a692b7bd79939a9a2c3ef97d816e749cda2f
+      '@prisma/get-platform': 6.18.0
 
-  '@prisma/get-platform@6.14.0':
+  '@prisma/get-platform@6.18.0':
     dependencies:
-      '@prisma/debug': 6.14.0
+      '@prisma/debug': 6.18.0
 
   '@scalar/nestjs-api-reference@0.4.16':
     dependencies:
@@ -3504,6 +3494,8 @@ snapshots:
     dependencies:
       type-fest: 0.21.3
 
+  ansi-regex@4.1.1: {}
+
   ansi-regex@5.0.1: {}
 
   ansi-regex@6.1.0: {}
@@ -3511,8 +3503,6 @@ snapshots:
   ansi-styles@4.3.0:
     dependencies:
       color-convert: 2.0.1
-
-  ansi-styles@6.2.3: {}
 
   ansis@4.1.0: {}
 
@@ -3649,7 +3639,7 @@ snapshots:
 
   cli-table3@0.6.5:
     dependencies:
-      string-width: 4.2.3
+      string-width: 4.1.0
     optionalDependencies:
       '@colors/colors': 1.5.0
 
@@ -3776,15 +3766,13 @@ snapshots:
       es-errors: 1.3.0
       gopd: 1.2.0
 
-  eastasianwidth@0.2.0: {}
-
   ecdsa-sig-formatter@1.0.11:
     dependencies:
       safe-buffer: 5.2.1
 
   ee-first@1.1.1: {}
 
-  effect@3.16.12:
+  effect@3.18.4:
     dependencies:
       '@standard-schema/spec': 1.0.0
       fast-check: 3.23.2
@@ -3792,8 +3780,6 @@ snapshots:
   electron-to-chromium@1.5.200: {}
 
   emoji-regex@8.0.0: {}
-
-  emoji-regex@9.2.2: {}
 
   empathic@2.0.0: {}
 
@@ -4442,14 +4428,14 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  nestjs-prisma@0.25.0(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@prisma/client@6.14.0(prisma@6.14.0(typescript@5.9.2))(typescript@5.9.2))(chokidar@4.0.3)(prisma@6.14.0(typescript@5.9.2)):
+  nestjs-prisma@0.25.0(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@prisma/client@6.14.0(prisma@6.18.0(typescript@5.9.2))(typescript@5.9.2))(chokidar@4.0.3)(prisma@6.18.0(typescript@5.9.2)):
     dependencies:
       '@angular-devkit/core': 13.3.11(chokidar@4.0.3)
       '@angular-devkit/schematics': 13.3.11(chokidar@4.0.3)
       '@nestjs/common': 11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@prisma/client': 6.14.0(prisma@6.14.0(typescript@5.9.2))(typescript@5.9.2)
+      '@prisma/client': 6.14.0(prisma@6.18.0(typescript@5.9.2))(typescript@5.9.2)
       '@schematics/angular': 13.3.11(chokidar@4.0.3)
-      prisma: 6.14.0(typescript@5.9.2)
+      prisma: 6.18.0(typescript@5.9.2)
     transitivePeerDependencies:
       - chokidar
 
@@ -4597,10 +4583,10 @@ snapshots:
 
   prettier@3.6.2: {}
 
-  prisma@6.14.0(typescript@5.9.2):
+  prisma@6.18.0(typescript@5.9.2):
     dependencies:
-      '@prisma/config': 6.14.0
-      '@prisma/engines': 6.14.0
+      '@prisma/config': 6.18.0
+      '@prisma/engines': 6.18.0
     optionalDependencies:
       typescript: 5.9.2
     transitivePeerDependencies:
@@ -4838,21 +4824,25 @@ snapshots:
 
   streamsearch@1.1.0: {}
 
+  string-width@4.1.0:
+    dependencies:
+      emoji-regex: 8.0.0
+      is-fullwidth-code-point: 3.0.0
+      strip-ansi: 5.2.0
+
   string-width@4.2.3:
     dependencies:
       emoji-regex: 8.0.0
       is-fullwidth-code-point: 3.0.0
       strip-ansi: 6.0.1
 
-  string-width@5.1.2:
-    dependencies:
-      eastasianwidth: 0.2.0
-      emoji-regex: 9.2.2
-      strip-ansi: 7.1.0
-
   string_decoder@1.3.0:
     dependencies:
       safe-buffer: 5.2.1
+
+  strip-ansi@5.2.0:
+    dependencies:
+      ansi-regex: 4.1.1
 
   strip-ansi@6.0.1:
     dependencies:
@@ -5084,23 +5074,11 @@ snapshots:
 
   word-wrap@1.2.5: {}
 
-  wrap-ansi@6.2.0:
-    dependencies:
-      ansi-styles: 4.3.0
-      string-width: 4.2.3
-      strip-ansi: 6.0.1
-
   wrap-ansi@7.0.0:
     dependencies:
       ansi-styles: 4.3.0
-      string-width: 4.2.3
+      string-width: 4.1.0
       strip-ansi: 6.0.1
-
-  wrap-ansi@8.1.0:
-    dependencies:
-      ansi-styles: 6.2.3
-      string-width: 5.1.2
-      strip-ansi: 7.1.0
 
   wrappy@1.0.2: {}
 
