@@ -8,8 +8,8 @@ ENV NODE_ENV=development
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and yarn.lock to the container
-COPY package.json ./
+# Copy package.json and lock to the container
+COPY package.json pnpm-lock.yaml ./
 
 # Install the project dependencies using Yarn
 RUN pnpm install
@@ -41,7 +41,7 @@ COPY --from=build /app/assets ./assets
 # Install only production dependencies
 RUN pnpm install --production --frozen-lockfile
 RUN pnpm install pm2 -g
-RUN pnpx prisma generate
+RUN pnpm prisma generate
 
 EXPOSE 3001
 
