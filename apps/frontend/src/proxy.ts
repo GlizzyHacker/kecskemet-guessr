@@ -2,7 +2,7 @@ import { decode } from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function middleware(request: NextRequest): Promise<NextResponse<unknown>> {
+export async function proxy(request: NextRequest): Promise<NextResponse<unknown>> {
   if (request.nextUrl.pathname == '/play/single') {
     return NextResponse.next();
   }

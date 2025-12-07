@@ -1,8 +1,13 @@
 import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
+import path from 'path';
 
 const config: NextConfig = {
+  turbopack: {
+    root: path.join(__dirname, '..'),
+  },
   images: {
+    dangerouslyAllowLocalIP: process.env.NODE_ENV === 'development',
     remotePatterns: [
       {
         protocol: process.env.NODE_ENV === 'production' ? 'https' : 'http',
