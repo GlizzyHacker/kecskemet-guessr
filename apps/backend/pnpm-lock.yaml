@@ -42,8 +42,8 @@ importers:
         specifier: ^11.1.6
         version: 11.1.6(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.6)(@nestjs/platform-socket.io@11.1.6)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@prisma/client':
-        specifier: ^6.14.0
-        version: 6.14.0(prisma@6.18.0(typescript@5.9.2))(typescript@5.9.2)
+        specifier: 6.18.0
+        version: 6.18.0(prisma@6.18.0(typescript@5.9.2))(typescript@5.9.2)
       '@scalar/nestjs-api-reference':
         specifier: ^0.4.16
         version: 0.4.16
@@ -63,8 +63,8 @@ importers:
         specifier: ^0.0.1
         version: 0.0.1
       nestjs-prisma:
-        specifier: ^0.25.0
-        version: 0.25.0(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@prisma/client@6.14.0(prisma@6.18.0(typescript@5.9.2))(typescript@5.9.2))(chokidar@4.0.3)(prisma@6.18.0(typescript@5.9.2))
+        specifier: 0.25.0
+        version: 0.25.0(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@prisma/client@6.18.0(prisma@6.18.0(typescript@5.9.2))(typescript@5.9.2))(chokidar@4.0.3)(prisma@6.18.0(typescript@5.9.2))
       passport:
         specifier: ^0.7.0
         version: 0.7.0
@@ -526,8 +526,8 @@ packages:
     resolution: {integrity: sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
-  '@prisma/client@6.14.0':
-    resolution: {integrity: sha512-8E/Nk3eL5g7RQIg/LUj1ICyDmhD053STjxrPxUtCRybs2s/2sOEcx9NpITuAOPn07HEpWBfhAVe1T/HYWXUPOw==}
+  '@prisma/client@6.18.0':
+    resolution: {integrity: sha512-jnL2I9gDnPnw4A+4h5SuNn8Gc+1mL1Z79U/3I9eE2gbxJG1oSA+62ByPW4xkeDgwE0fqMzzpAZ7IHxYnLZ4iQA==}
     engines: {node: '>=18.18'}
     peerDependencies:
       prisma: 6.18.0
@@ -2984,7 +2984,7 @@ snapshots:
 
   '@pkgr/core@0.2.9': {}
 
-  '@prisma/client@6.14.0(prisma@6.18.0(typescript@5.9.2))(typescript@5.9.2)':
+  '@prisma/client@6.18.0(prisma@6.18.0(typescript@5.9.2))(typescript@5.9.2)':
     optionalDependencies:
       prisma: 6.18.0(typescript@5.9.2)
       typescript: 5.9.2
@@ -4430,12 +4430,12 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  nestjs-prisma@0.25.0(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@prisma/client@6.14.0(prisma@6.18.0(typescript@5.9.2))(typescript@5.9.2))(chokidar@4.0.3)(prisma@6.18.0(typescript@5.9.2)):
+  nestjs-prisma@0.25.0(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@prisma/client@6.18.0(prisma@6.18.0(typescript@5.9.2))(typescript@5.9.2))(chokidar@4.0.3)(prisma@6.18.0(typescript@5.9.2)):
     dependencies:
       '@angular-devkit/core': 13.3.11(chokidar@4.0.3)
       '@angular-devkit/schematics': 13.3.11(chokidar@4.0.3)
       '@nestjs/common': 11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@prisma/client': 6.14.0(prisma@6.18.0(typescript@5.9.2))(typescript@5.9.2)
+      '@prisma/client': 6.18.0(prisma@6.18.0(typescript@5.9.2))(typescript@5.9.2)
       '@schematics/angular': 13.3.11(chokidar@4.0.3)
       prisma: 6.18.0(typescript@5.9.2)
     transitivePeerDependencies:
