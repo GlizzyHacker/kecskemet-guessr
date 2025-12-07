@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM node:20-slim AS build
+FROM node:18-slim AS build
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
