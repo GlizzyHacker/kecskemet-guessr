@@ -61,7 +61,7 @@
       "wrap-ansi": "7.0.0",
       "string-width": "4.1.0",
       "prisma": "6.18.0",
-      "@prisma/engines": "6.18.0"
+      "@prisma/engines": "6.0.0"
     }
   }
 }
