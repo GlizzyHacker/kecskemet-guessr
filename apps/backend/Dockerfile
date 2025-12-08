@@ -18,6 +18,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Build the NestJS application
+RUN pnpm prisma generate
 RUN pnpm build
 
 # Stage 2: Create a lightweight container with the built application
