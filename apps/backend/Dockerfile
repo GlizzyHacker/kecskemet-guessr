@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM node:18-slim AS build
+FROM node:20-slim AS build
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -22,7 +22,7 @@ RUN pnpm prisma generate
 RUN pnpm build
 
 # Stage 2: Create a lightweight container with the built application
-FROM node:18-slim AS production
+FROM node:20-slim AS production
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
